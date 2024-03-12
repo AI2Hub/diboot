@@ -37,6 +37,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 
@@ -119,10 +121,10 @@ public class AliyunOssFileStorageServiceImpl implements FileStorageService {
     @Override
     public InputStream getFile(String filePath) throws Exception {
         FileProperties.OSS.Aliyun aliyun = fileProperties.getOss().getAliyun();
-        //拼接云储存的文件名
-        String filename = S.substringBefore(S.substringAfterLast(filePath, Cons.SEPARATOR_SLASH), "?");
-        //调用ossClient.getObject返回一个OSSObject实例，该实例包含文件内容及文件元信息
-        OSSObject ossObject = ossClient.getObject(aliyun.getBucketName(), filename);//bucketName需要自己设置
+        // 截取云储存的文件完整路径
+        String filename = S.substringAfter(S.substringBefore(filePath, "?"), aliyun.getEndpoint() + "/");
+        // 调用ossClient.getObject返回一个OSSObject实例，该实例包含文件内容及文件元信息
+        OSSObject ossObject = ossClient.getObject(aliyun.getBucketName(), URLDecoder.decode(filename, StandardCharsets.UTF_8)); //bucketName需要自己设置
         return ossObject.getObjectContent();
     }
 
@@ -140,7 +142,8 @@ public class AliyunOssFileStorageServiceImpl implements FileStorageService {
     @Override
     public boolean delete(String filePath) {
         FileProperties.OSS.Aliyun aliyun = fileProperties.getOss().getAliyun();
-        ossClient.deleteObject(aliyun.getBucketName(), S.substringBefore(S.substringAfterLast(filePath, Cons.SEPARATOR_SLASH), "?"));
+        String filename = S.substringAfter(S.substringBefore(filePath, "?"), aliyun.getEndpoint() + "/");
+        ossClient.deleteObject(aliyun.getBucketName(), URLDecoder.decode(filename, StandardCharsets.UTF_8));
         return true;
     }
 
