@@ -68,9 +68,6 @@ public class IamUserServiceImpl extends BaseIamServiceImpl<IamUserMapper, IamUse
     @Autowired
     private IamUserPositionService iamUserPositionService;
 
-    @Autowired
-    private IamUserPositionService iamUserPositionService;
-
     @Autowired(required = false)
     private IamCustomize iamCustomize;
 
