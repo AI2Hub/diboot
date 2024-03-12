@@ -37,13 +37,12 @@ public class SqliteTranslator extends BaseTranslator {
     protected String translateColDefineSql(String colDefineSql) {
         // boolean 类型
         colDefineSql = S.replaceEach(colDefineSql,
-            new String[]{" smallint ", " int ", " tinyint(1) ", " tinyint ", " datetime ", " bigint ", " json ", " JSON ", " text"},
-            new String[]{" INTEGER ", " INTEGER ", " INTEGER ", " INTEGER ", " TEXT "," INTEGER ", " TEXT ", " TEXT ", " BLOB"}
+            new String[]{" smallint ", " int ", " tinyint(1) ", " tinyint ", " datetime ", " bigint ", " json ", " JSON ", " text", " VARCHAR("},
+            new String[]{" INTEGER ", " INTEGER ", " INTEGER ", " INTEGER ", " TEXT "," INTEGER ", " TEXT ", " TEXT ", " TEXT", " varchar("}
         );
-        if(S.containsIgnoreCase(colDefineSql, "varchar(")) {
+        if(S.contains(colDefineSql, "varchar(")) {
             colDefineSql = S.substringBefore(colDefineSql, "varchar(") + " TEXT " + S.substringAfter(colDefineSql, ") ");
         }
-        colDefineSql = S.replaceIgnoreCase(colDefineSql, "DEFAULT CURRENT_TIMESTAMP", "");
         return escapeKeyword(colDefineSql);
     }
 
@@ -52,7 +51,7 @@ public class SqliteTranslator extends BaseTranslator {
         if(input.contains("`")) {
             String key = S.substringBetween(input, "`", "`");
             if(ESCAPE_KEYWORDS.contains(key)) {
-                return S.replace(input, "`"+key+"`", "/" + key + "/");
+                return S.replace(input, "`"+key+"`", key);
             }
             else {
                 return S.replace(input, "`", "");
