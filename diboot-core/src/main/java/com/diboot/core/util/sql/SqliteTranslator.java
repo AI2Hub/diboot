@@ -21,15 +21,15 @@ import com.diboot.core.util.V;
 import java.util.List;
 
 /**
- * SqlLite SQL翻译器
+ * Sqlite SQL翻译器
  * @author mazc@dibo.ltd
  * @version v3.3.0
  * @date 2024/03/09
  */
-public class SqlLiteTranslator extends BaseTranslator {
+public class SqliteTranslator extends BaseTranslator {
 
-    public SqlLiteTranslator(){}
-    public SqlLiteTranslator(List<String> keywords) {
+    public SqliteTranslator(){}
+    public SqliteTranslator(List<String> keywords) {
         ESCAPE_KEYWORDS.addAll(keywords);
     }
 
