@@ -405,6 +405,23 @@ public class QueryCondition implements Serializable {
     }
 
     /**
+     * 是否包含某字段的条件
+     * @param field
+     * @return
+     */
+    public boolean containsCriteria(String field) {
+        if(V.isEmpty(this.criteriaList)) {
+            return false;
+        }
+        for(CriteriaItem item : criteriaList) {
+            if(item.getField().equals(field)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 获取查询条件
      * @param field
      * @return
