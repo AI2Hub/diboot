@@ -461,7 +461,7 @@ public class QueryCondition implements Serializable {
                 this.orderItems = S.splitToList(orderByStr, Cons.SEPARATOR_COMMA);
             }
             else {
-                this.orderItems = Arrays.asList(Cons.FieldName.id.name()+":DESC");
+                this.orderItems = Collections.singletonList(Pagination.ORDER_BY_ID_DESC);
             }
         }
         return this;
@@ -585,4 +585,14 @@ public class QueryCondition implements Serializable {
         return query;
     }
 
+    /**
+     * 是否为默认排序
+     * @return
+     */
+    public boolean isDefaultOrder() {
+        if (V.notEmpty(orderItems) && orderItems.size() == 1 && orderItems.get(0).equals(Pagination.ORDER_BY_ID_DESC)) {
+            return true;
+        }
+        return false;
+    }
 }
