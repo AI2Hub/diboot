@@ -317,7 +317,11 @@ public class QueryBuilder {
             }
             // 有默认值的boolean类型，提示
             if (field.getType().getName().equals("boolean")) {
-                log.warn("{}.{} 字段类型为 boolean，其默认值将参与构建查询条件，可能导致结果与预期不符，建议调整为 Boolean 类型 或 指定 @BindQuery(ignore=true)", dtoClass.getSimpleName(), field.getName());
+                TableLogic tableLogic = field.getAnnotation(TableLogic.class);
+                // 非逻辑删除才提示
+                if(tableLogic == null) {
+                    log.warn("{}.{} 字段类型为 boolean，其默认值将参与构建查询条件，可能导致结果与预期不符，建议调整为 Boolean 类型 或 指定 @BindQuery(ignore=true)", dtoClass.getSimpleName(), field.getName());
+                }
             }
             //打开私有访问 获取值
             field.setAccessible(true);
