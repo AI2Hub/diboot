@@ -355,6 +355,19 @@ public class QueryCondition implements Serializable {
     }
 
     /**
+     * 添加 BaseCriteria 简单查询条件
+     * @param criteria
+     * @return
+     */
+    public QueryCondition addCriteria(BaseCriteria criteria) {
+        if(criteriaList == null) {
+            criteriaList = new ArrayList<>();
+        }
+        criteriaList.add(new CriteriaItem(criteria));
+        return this;
+    }
+
+    /**
      * 更新查询条件
      * @param field
      * @return
