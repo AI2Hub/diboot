@@ -700,7 +700,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		}
 		// 否则，调用MP默认实现
 		if(pagination != null){
-			IPage<T> page = convertToIPage(queryWrapper, pagination);
+			IPage<T> page = convertToIPage(pagination);
 			page = super.page(page, queryWrapper);
 			// 如果重新执行了count进行查询，则更新pagination中的总数
 			if(page.searchCount()){
@@ -854,7 +854,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 	@Override
 	public List<Map<String, Object>> getMapList(Wrapper queryWrapper, Pagination pagination) {
 		if(pagination != null){
-			IPage page = convertToIPage(queryWrapper, pagination);
+			IPage page = convertToIPage(pagination);
 			IPage<Map<String, Object>> resultPage = super.pageMaps(page, queryWrapper);
 			// 如果重新执行了count进行查询，则更新pagination中的总数
 			if(page.searchCount()){
@@ -1186,10 +1186,21 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 
 	/***
 	 * 转换为IPage
+	 * @param pagination 分页
+	 * @return
+	 */
+	protected Page<T> convertToIPage(Pagination pagination){
+		return ServiceAdaptor.convertToIPage(pagination, entityClass);
+	}
+
+	/***
+	 * 转换为IPage（已废弃）
+	 * @see #convertToIPage(Pagination)
 	 * @param queryWrapper 查询条件
 	 * @param pagination 分页
 	 * @return
 	 */
+	@Deprecated
 	protected Page<T> convertToIPage(Wrapper queryWrapper, Pagination pagination){
 		return ServiceAdaptor.convertToIPage(pagination, entityClass);
 	}
