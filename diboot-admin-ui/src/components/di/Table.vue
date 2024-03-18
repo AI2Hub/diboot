@@ -94,7 +94,7 @@ const onSelectionChange = (rows: Array<Record<string, unknown>>) => {
           ({
             value: item[props.primaryKey],
             label: item[dataLabel as keyof typeof item]
-          } as LabelValue)
+          }) as LabelValue
       )
   )
   selectedRows.value = allSelectedRows

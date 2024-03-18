@@ -62,9 +62,12 @@ resetRefreshTimer()
  */
 function resetRefreshTimer() {
   clearTimeout(refreshTimer)
-  refreshTimer = setTimeout(() => {
-    refresh()
-  }, MESSAGE_REFRESH_EXPIRE * 60 * 1000)
+  refreshTimer = setTimeout(
+    () => {
+      refresh()
+    },
+    MESSAGE_REFRESH_EXPIRE * 60 * 1000
+  )
 }
 
 const refresh = () => {
