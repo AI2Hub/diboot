@@ -22,6 +22,7 @@ export interface UserModel {
   statusLabel?: LabelValue<{ color?: string }>
   createTime?: string
   avatarUrl?: string
+  sortId?: number
 }
 
 export interface AccountInfo {
