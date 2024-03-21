@@ -92,6 +92,7 @@ public class NotificationAutoConfig {
         }
 
         @Bean
+        @ConditionalOnMissingBean
         public Client smsClient() throws Exception {
             Config config = new Config()
                     .setAccessKeyId(notificationProperties.getSms().getAccessKeyId())
