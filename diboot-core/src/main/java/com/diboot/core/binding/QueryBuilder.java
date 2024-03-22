@@ -319,20 +319,15 @@ public class QueryBuilder {
             if (field.getType().getName().equals("boolean")) {
                 TableLogic tableLogic = field.getAnnotation(TableLogic.class);
                 // 非逻辑删除才提示
-                if(tableLogic == null) {
+                if (tableLogic == null) {
                     log.warn("{}.{} 字段类型为 boolean，其默认值将参与构建查询条件，可能导致结果与预期不符，建议调整为 Boolean 类型 或 指定 @BindQuery(ignore=true)", dtoClass.getSimpleName(), field.getName());
                 }
             }
-            //打开私有访问 获取值
-            field.setAccessible(true);
             Object value = null;
             try {
-                value = field.get(dto);
-                if (V.isEmpty(value)) {
-                    String prefix = V.equals(boolean.class, field.getType()) ? "is" : "get";
-                    Method method = dtoClass.getMethod(prefix + S.capFirst(fieldName));
-                    value = method.invoke(dto);
-                }
+                String prefix = V.equals(boolean.class, field.getType()) ? "is" : "get";
+                Method method = dtoClass.getMethod(prefix + S.capFirst(fieldName));
+                value = method.invoke(dto);
             } catch (IllegalAccessException e) {
                 log.error("通过反射获取属性值出错：{}", e.getMessage());
             } catch (NoSuchMethodException e) {
