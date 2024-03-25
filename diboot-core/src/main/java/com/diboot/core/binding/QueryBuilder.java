@@ -320,7 +320,10 @@ public class QueryBuilder {
                 TableLogic tableLogic = field.getAnnotation(TableLogic.class);
                 // 非逻辑删除才提示
                 if (tableLogic == null) {
-                    log.warn("{}.{} 字段类型为 boolean，其默认值将参与构建查询条件，可能导致结果与预期不符，建议调整为 Boolean 类型 或 指定 @BindQuery(ignore=true)", dtoClass.getSimpleName(), field.getName());
+                    TableField tableField = field.getAnnotation(TableField.class);
+                    if(tableField == null || tableField.exist()) {
+                        log.warn("{}.{} 字段类型为 boolean，其默认值将参与构建查询条件，可能导致结果与预期不符，建议调整为 Boolean 类型 或 指定 @BindQuery(ignore=true)", dtoClass.getSimpleName(), field.getName());
+                    }
                 }
             }
             Object value = null;
