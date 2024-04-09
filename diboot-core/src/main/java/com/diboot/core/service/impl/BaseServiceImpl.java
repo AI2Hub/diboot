@@ -209,6 +209,24 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 	}
 
 	/**
+	 * 删除数据的前拦截，值可能为单值或集合
+	 * @param entityIds
+	 */
+	protected void beforeDelete(Object entityIds) {
+		String pk = ContextHolder.getIdFieldName(entityClass);
+		beforeDelete(pk, entityIds);
+	}
+
+	/**
+	 * 删除数据的后拦截，值可能为单值或集合
+	 * @param entityIds
+	 */
+	protected void afterDelete(Object entityIds) {
+		String pk = ContextHolder.getIdFieldName(entityClass);
+		afterDelete(pk, entityIds);
+	}
+
+	/**
 	 * 删除数据的后拦截，值可能为单值或集合
 	 * @param fieldKey
 	 * @param fieldVal
@@ -253,6 +271,29 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 			for(RE relation : relatedEntities){
 				mapper.insert(relation);
 			}
+			return true;
+		}
+	}
+
+	@Override
+	public <RE, R> boolean createRelatedEntity(Serializable entityId, RE relatedEntity, ISetter<RE, R> relatedEntitySetter) {
+		if(relatedEntity == null){
+			return true;
+		}
+		Class relatedEntityClass = relatedEntity.getClass();
+		String relatedEntitySetterFld = BeanUtils.convertToFieldName(relatedEntitySetter);
+		// 填充关联关系
+		BeanUtils.setProperty(relatedEntity, relatedEntitySetterFld, entityId);
+		// 获取关联对象对应的Service
+		BaseService relatedEntityService = ContextHolder.getBaseServiceByEntity(relatedEntityClass);
+		if(relatedEntityService != null){
+			return relatedEntityService.createEntity(relatedEntity);
+		}
+		else{
+			// 查找mapper
+			BaseMapper mapper = ContextHolder.getBaseMapperByEntity(relatedEntityClass);
+			// 新增关联，无service只能循环插入
+			mapper.insert(relatedEntity);
 			return true;
 		}
 	}
@@ -573,7 +614,8 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		String attributeName = BeanUtils.convertToFieldName(relatedEntitySetter);
 		//获取原 关联entity list
 		QueryWrapper<RE> queryWrapper = new QueryWrapper();
-		queryWrapper.eq(S.toSnakeCase(attributeName), entityId);
+		PropInfo propInfo = BindingCacheManager.getPropInfoByClass(relatedEntityClass);
+		queryWrapper.eq(propInfo.getColumnByField(attributeName), entityId);
 		List<RE> oldRelatedEntities = relatedEntityService.getEntityList(queryWrapper);
 		// 遍历更新关联对象
 		Set relatedEntityIds = new HashSet();
@@ -608,6 +650,39 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 	}
 
 	@Override
+	public <RE, R> boolean updateRelatedEntity(Serializable entityId, RE relatedEntity, ISetter<RE, R> relatedEntitySetter) {
+		// 获取关联entity的类
+		Class relatedEntityClass;
+		if(relatedEntity != null){
+			relatedEntityClass = BeanUtils.getTargetClass(relatedEntity);
+		}
+		else{
+			try{
+				relatedEntityClass = Class.forName(BeanUtils.getSerializedLambda(relatedEntitySetter).getImplClass().replaceAll("/", "."));
+			}
+			catch (Exception e){
+				log.warn("无法识别关联Entity的Class: {}", e.getMessage());
+				return false;
+			}
+		}
+		// 获取关联对象对应的Service
+		BaseService relatedEntityService = ContextHolder.getBaseServiceByEntity(relatedEntityClass);
+		if(relatedEntityService == null){
+			log.error("未能识别到Entity: {} 的Service实现，请检查！", relatedEntityClass.getName());
+			return false;
+		}
+		// 获取主键
+		if(relatedEntity != null){
+			relatedEntityService.createOrUpdateEntity(relatedEntity);
+		}
+		else {
+			String attributeName = BeanUtils.convertToFieldName(relatedEntitySetter);
+			relatedEntityService.deleteEntity(attributeName, entityId);
+		}
+		return true;
+	}
+
+	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public <RE,R> boolean deleteEntityAndRelatedEntities(Serializable id, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter) {
 		boolean success = deleteEntity(id);
@@ -620,11 +695,17 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 	}
 
 	@Override
-	public <RE, R> boolean deleteRelatedEntities(Serializable id, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter) {
+	public <RE, R> boolean deleteRelatedEntities(Object entityIds, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter) {
 		// 获取主键的关联属性
 		PropInfo propInfo = BindingCacheManager.getPropInfoByClass(relatedEntityClass);
 		String relatedEntitySetterFld = BeanUtils.convertToFieldName(relatedEntitySetter);
-		QueryWrapper<RE> queryWrapper = new QueryWrapper<RE>().eq(propInfo.getColumnByField(relatedEntitySetterFld), id);
+		QueryWrapper<RE> queryWrapper = new QueryWrapper<RE>();
+		if(entityIds instanceof Collection){
+			queryWrapper.in(propInfo.getColumnByField(relatedEntitySetterFld), entityIds);
+		}
+		else {
+			queryWrapper.eq(propInfo.getColumnByField(relatedEntitySetterFld), entityIds);
+		}
 		// 删除关联子表数据
 		BaseService relatedEntityService = ContextHolder.getBaseServiceByEntity(relatedEntityClass);
 		if(relatedEntityService != null){
@@ -632,6 +713,11 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		}
 		BaseMapper relatedMapper = ContextHolder.getBaseMapperByEntity(relatedEntityClass);
 		return relatedMapper.delete(queryWrapper) >= 0;
+	}
+
+	@Override
+	public <RE, R> boolean deleteRelatedEntity(Object entityIds, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter) {
+		return deleteRelatedEntities(entityIds, relatedEntityClass, relatedEntitySetter);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -644,11 +730,10 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 				throw new BusinessException(Status.FAIL_VALIDATION, "当前节点下存在下级节点，不允许被删除！");
 			}
 		}
-		String pk = ContextHolder.getIdFieldName(entityClass);
-		this.beforeDelete(pk, id);
+		this.beforeDelete(id);
 		boolean success = super.removeById(id);
 		if(success) {
-			this.afterDelete(pk, id);
+			this.afterDelete(id);
 		}
 		return success;
 	}
@@ -668,10 +753,10 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		}
 		String pk = ContextHolder.getIdFieldName(entityClass);
 		List<String> entityIds = BeanUtils.collectToList(entityList, pk);
-		this.beforeDelete(pk, entityIds);
+		this.beforeDelete(entityIds);
 		boolean success = super.removeByIds(entityIds);
 		if(success) {
-			this.afterDelete(pk, entityIds);
+			this.afterDelete(entityIds);
 		}
 		return success;
 	}
