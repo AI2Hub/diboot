@@ -12,33 +12,38 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */
-package com.diboot.iam.auth;
+ */package com.diboot.iam.auth;
 
-import java.util.List;
+import com.diboot.iam.dto.SsoAuthorizeInfo;
+
+import java.util.Map;
 
 /**
- * 租户权限过滤
+ * SsoManager
  *
- * @author : uu
- * @version : v1.0
- * @Date 2023/12/21  21:19
+ * @author : fullstackyang
+ * @version : v3.3.0
+ * @Date 2023/03/11
  */
-public interface IamTenantPermission {
+public interface SsoManager {
 
     /**
-     * 过滤出当前租户的所有权限id
-     *
-     * @param tenantId
+     * 获取认证类型
      * @return
      */
-    List<String> findAllPermissions(String tenantId);
+    String getAuthType();
 
     /**
-     * 过滤出当前租户的所有权限code
-     *
-     * @param tenantId
+     * 获取单点登录的登录地址
+     * @param callback 前端回调地址
      * @return
      */
-    List<String> findAllPermissionCodes(String tenantId);
+    SsoAuthorizeInfo getAuthorizeInfo(String callback);
+
+    /**
+     * 通过单点登录的凭证信息获取认证后的token
+     * @param paramsMap 获取token的单点认证的凭证信息
+     * @return
+     */
+    String getToken(Map<String, Object> paramsMap);
 }

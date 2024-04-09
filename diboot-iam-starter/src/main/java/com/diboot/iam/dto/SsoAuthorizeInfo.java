@@ -1,3 +1,4 @@
+package com.diboot.iam.dto;
 /*
  * Copyright (c) 2015-2020, www.dibo.ltd (service@dibo.ltd).
  * <p>
@@ -13,32 +14,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.iam.auth;
-
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * 租户权限过滤
+ * 授权信息
  *
- * @author : uu
- * @version : v1.0
- * @Date 2023/12/21  21:19
+ * @author : fullstackyang
+ * @version : v3.3.0
+ * @Date 2023/03/11
  */
-public interface IamTenantPermission {
+@Getter
+@Setter
+public class SsoAuthorizeInfo {
+    private String url;
+    private String state;
 
-    /**
-     * 过滤出当前租户的所有权限id
-     *
-     * @param tenantId
-     * @return
-     */
-    List<String> findAllPermissions(String tenantId);
+    public SsoAuthorizeInfo(String url, String state) {
+        this.url = url;
+        this.state = state;
+    }
 
-    /**
-     * 过滤出当前租户的所有权限code
-     *
-     * @param tenantId
-     * @return
-     */
-    List<String> findAllPermissionCodes(String tenantId);
+    public SsoAuthorizeInfo(String url) {
+        this.url = url;
+    }
 }
