@@ -354,7 +354,7 @@ public interface BaseService<T> extends GeneralService<T>{
      * @param id
      * @return
      */
-    <FT> boolean isValueUnique(SFunction<T, FT> getterFn, String value, Serializable id);
+    <FT> boolean isValueUnique(SFunction<T, FT> getterFn, Object value, Serializable id);
 
     /**
      * 检查值是否唯一
@@ -363,7 +363,7 @@ public interface BaseService<T> extends GeneralService<T>{
      * @param id
      * @return
      */
-    boolean isValueUnique(String field, String value, Serializable id);
+    boolean isValueUnique(String field, Object value, Serializable id);
 
     /**
      * 获取指定属性的Map列表
@@ -448,6 +448,15 @@ public interface BaseService<T> extends GeneralService<T>{
      * @param <VO>
      */
     <VO> VO getViewObject(Wrapper queryWrapper, Class<VO> voClass);
+
+    /**
+     * 获取View Object对象
+     * @param fieldKey 字段名
+     * @param fieldValue 字段值
+     * @param voClass vo类
+     * @return entity
+     */
+    <VO> VO getViewObject(String fieldKey, Object fieldValue, Class<VO> voClass);
 
     /**
      * list 排序
