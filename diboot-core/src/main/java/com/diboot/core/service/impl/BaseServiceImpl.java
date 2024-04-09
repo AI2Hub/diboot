@@ -153,7 +153,6 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		return save(entity);
 	}
 
-	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public boolean save(T entity) {
 		this.beforeCreate(entity);
@@ -172,30 +171,35 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 			fillTreeNodeParentPath(entity);
 		}
 	}
+
 	/**
 	 * 创建数据的后拦截
 	 * @param entity
 	 */
 	protected void afterCreate(T entity) {
 	}
+
 	/**
 	 * 批量创建数据的前拦截
 	 * @param entityList
 	 */
 	protected void beforeBatchCreate(Collection<T> entityList) {
 	}
+
 	/**
 	 * 批量创建数据的后拦截
 	 * @param entityList
 	 */
 	protected void afterBatchCreate(Collection<T> entityList) {
 	}
+
 	/**
 	 * 更新数据的后拦截
 	 * @param entity
 	 */
 	protected void afterUpdate(T entity) {
 	}
+
 	/**
 	 * 删除数据的前拦截，值可能为单值或集合
 	 * @param fieldKey
@@ -203,6 +207,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 	 */
 	protected void beforeDelete(String fieldKey, Object fieldVal) {
 	}
+
 	/**
 	 * 删除数据的后拦截，值可能为单值或集合
 	 * @param fieldKey
@@ -222,12 +227,20 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		if(V.isEmpty(relatedEntities)){
 			return true;
 		}
-		Class relatedEntityClass = relatedEntities.get(0).getClass();
 		// 获取主键
 		Object pkValue = getPrimaryKeyValue(entity);
+		return createRelatedEntities((Serializable) pkValue, relatedEntities, relatedEntitySetter);
+	}
+
+	@Override
+	public <RE, R> boolean createRelatedEntities(Serializable entityId, List<RE> relatedEntities, ISetter<RE, R> relatedEntitySetter) {
+		if(V.isEmpty(relatedEntities)){
+			return true;
+		}
+		Class relatedEntityClass = relatedEntities.get(0).getClass();
 		String relatedEntitySetterFld = BeanUtils.convertToFieldName(relatedEntitySetter);
 		// 填充关联关系
-		relatedEntities.forEach(relatedEntity-> BeanUtils.setProperty(relatedEntity, relatedEntitySetterFld, pkValue));
+		relatedEntities.forEach(relatedEntity-> BeanUtils.setProperty(relatedEntity, relatedEntitySetterFld, entityId));
 		// 获取关联对象对应的Service
 		BaseService relatedEntityService = ContextHolder.getBaseServiceByEntity(relatedEntityClass);
 		if(relatedEntityService != null){
@@ -528,6 +541,14 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 			log.warn("更新Entity失败: {}", entity.toString());
 			return false;
 		}
+		// 更新关联entity的数据
+		// 获取主键
+		Object pkValue = getPrimaryKeyValue(entity);
+		return updateRelatedEntities((Serializable) pkValue, relatedEntities, relatedEntitySetter);
+	}
+
+	@Override
+	public <RE, R> boolean updateRelatedEntities(Serializable entityId, List<RE> relatedEntities, ISetter<RE, R> relatedEntitySetter) {
 		// 获取关联entity的类
 		Class relatedEntityClass;
 		if(V.notEmpty(relatedEntities)){
@@ -549,20 +570,18 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 			return false;
 		}
 		// 获取主键
-		Object pkValue = getPrimaryKeyValue(entity);
 		String attributeName = BeanUtils.convertToFieldName(relatedEntitySetter);
 		//获取原 关联entity list
 		QueryWrapper<RE> queryWrapper = new QueryWrapper();
-		queryWrapper.eq(S.toSnakeCase(attributeName), pkValue);
+		queryWrapper.eq(S.toSnakeCase(attributeName), entityId);
 		List<RE> oldRelatedEntities = relatedEntityService.getEntityList(queryWrapper);
-
 		// 遍历更新关联对象
 		Set relatedEntityIds = new HashSet();
 		if(V.notEmpty(relatedEntities)){
 			// 新建 修改 删除
 			List<RE> newRelatedEntities = new ArrayList<>();
 			for(RE relatedEntity : relatedEntities){
-				BeanUtils.setProperty(relatedEntity, attributeName, pkValue);
+				BeanUtils.setProperty(relatedEntity, attributeName, entityId);
 				Object relPkValue = getPrimaryKeyValue(relatedEntity);
 				if(V.notEmpty(relPkValue)){
 					relatedEntityService.updateEntity(relatedEntity);
@@ -596,6 +615,12 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 			log.warn("删除Entity失败: {}",id);
 			return false;
 		}
+		// 获取主键的关联属性
+		return deleteRelatedEntities(id, relatedEntityClass, relatedEntitySetter);
+	}
+
+	@Override
+	public <RE, R> boolean deleteRelatedEntities(Serializable id, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter) {
 		// 获取主键的关联属性
 		PropInfo propInfo = BindingCacheManager.getPropInfoByClass(relatedEntityClass);
 		String relatedEntitySetterFld = BeanUtils.convertToFieldName(relatedEntitySetter);

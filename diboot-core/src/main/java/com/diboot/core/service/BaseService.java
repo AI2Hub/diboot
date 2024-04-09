@@ -89,6 +89,15 @@ public interface BaseService<T> extends GeneralService<T>{
     <RE, R> boolean createEntityAndRelatedEntities(T entity, List<RE> relatedEntities, ISetter<RE, R> relatedEntitySetter);
 
     /**
+     * 添加entity的关联子项entities
+     * @param entityId 主表entity id
+     * @param relatedEntities 关联表entities
+     * @param relatedEntitySetter 关联Entity类的setter
+     * @return
+     */
+    <RE, R> boolean createRelatedEntities(Serializable entityId, List<RE> relatedEntities, ISetter<RE, R> relatedEntitySetter);
+
+    /**
      * 创建或更新n-n关联
      * （在主对象的service中调用，不依赖中间表service实现中间表操作）
      *
@@ -136,13 +145,22 @@ public interface BaseService<T> extends GeneralService<T>{
     boolean updateEntity(Wrapper updateWrapper);
 
     /**
-     * 添加entity 及 其关联子项entities
+     * 更新entity 及 其关联子项entities
      * @param entity 主表entity
      * @param relatedEntities 关联表entities
      * @param relatedEntitySetter 关联Entity类的setter
      * @return
      */
     <RE,R> boolean updateEntityAndRelatedEntities(T entity, List<RE> relatedEntities, ISetter<RE,R> relatedEntitySetter);
+
+    /**
+     * 更新entity的关联子项entities
+     * @param entityId 主表entity id
+     * @param relatedEntities 关联表entities
+     * @param relatedEntitySetter 关联Entity类的setter
+     * @return
+     */
+    <RE,R> boolean updateRelatedEntities(Serializable entityId, List<RE> relatedEntities, ISetter<RE,R> relatedEntitySetter);
 
     /**
      * 删除entity 及 其关联子项entities
@@ -152,6 +170,15 @@ public interface BaseService<T> extends GeneralService<T>{
      * @return
      */
     <RE,R> boolean deleteEntityAndRelatedEntities(Serializable id, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter);
+
+    /**
+     * 删除entity 的关联子项entities
+     * @param id 待删除entity的主键
+     * @param relatedEntityClass 待删除关联Entity类
+     * @param  relatedEntitySetter 待删除类的setter方法
+     * @return
+     */
+    <RE,R> boolean deleteRelatedEntities(Serializable id, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter);
 
     /**
      * 按条件删除实体
