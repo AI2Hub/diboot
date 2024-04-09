@@ -673,6 +673,11 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		}
 		// 获取主键
 		if(relatedEntity != null){
+			// 填充关联关系id
+			String relatedEntitySetterFld = BeanUtils.convertToFieldName(relatedEntitySetter);
+			if(BeanUtils.getProperty(relatedEntity, relatedEntitySetterFld) == null) {
+				BeanUtils.setProperty(relatedEntity, relatedEntitySetterFld, entityId);
+			}
 			relatedEntityService.createOrUpdateEntity(relatedEntity);
 		}
 		else {
