@@ -103,6 +103,13 @@ public interface IamRoleResourceService extends BaseService<IamRoleResource> {
     boolean updateRoleResourceRelations(String roleId, List<String> resourceIdList);
 
     /**
+     * 删除角色下的资源
+     * @param roleId
+     * @return
+     */
+    boolean deleteRoleResourceRelations(String roleId);
+
+    /**
      * 获取RoleService实例
      *
      * @return
