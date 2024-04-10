@@ -19,6 +19,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.diboot.core.binding.Binder;
 import com.diboot.core.exception.BusinessException;
+import com.diboot.core.service.BaseService;
+import com.diboot.core.service.impl.BaseServiceImpl;
 import com.diboot.core.util.BeanUtils;
 import com.diboot.core.util.ContextHolder;
 import com.diboot.core.util.V;
@@ -62,7 +64,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class IamRoleResourceServiceImpl extends BaseIamServiceImpl<IamRoleResourceMapper, IamRoleResource> implements IamRoleResourceService {
+public class IamRoleResourceServiceImpl extends BaseServiceImpl<IamRoleResourceMapper, IamRoleResource> implements IamRoleResourceService {
 
     @Autowired
     private IamRoleService iamRoleService;
