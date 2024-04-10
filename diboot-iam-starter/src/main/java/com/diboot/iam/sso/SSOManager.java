@@ -12,7 +12,7 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */package com.diboot.iam.auth;
+ */package com.diboot.iam.sso;
 
 import com.diboot.iam.dto.SsoAuthorizeInfo;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  * @version : v3.3.0
  * @Date 2023/03/11
  */
-public interface SsoManager {
+public interface SSOManager {
 
     /**
      * 获取认证类型
