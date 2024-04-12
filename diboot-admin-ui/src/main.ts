@@ -22,4 +22,4 @@ app.use(directives)
 app.use(i18n)
 app.mount('#app')
 
-initFunction()
+// initFunction()
