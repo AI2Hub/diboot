@@ -237,4 +237,16 @@ public class IamSecurityUtils extends SecurityUtils {
         return new SimpleHash(ALGORITHM, password, ByteSource.Util.bytes(salt), ITERATIONS).toHex();
     }
 
+    /**
+     * 是否为超管
+     * @return
+     */
+    public static boolean isSuperAdmin() {
+        Subject subject = getSubject();
+        if (subject != null) {
+            return subject.hasRole(Cons.ROLE_SUPER_ADMIN);
+        }
+        return false;
+    }
+
 }

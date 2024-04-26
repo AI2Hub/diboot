@@ -67,7 +67,7 @@ public class BindPermissionAspect {
             return;
         }
         // 超级管理员 权限放过
-        if (IamSecurityUtils.getSubject().hasRole(Cons.ROLE_SUPER_ADMIN)) {
+        if (IamSecurityUtils.isSuperAdmin()) {
             return;
         }
         // 需要验证
