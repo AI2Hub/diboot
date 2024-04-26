@@ -27,7 +27,7 @@ public class AiClient {
     private final AiConfiguration configuration;
 
     /**
-     * AI 配置
+     * 模型列表
      */
     private final List<ModelProvider> modelProviders;
 
@@ -48,7 +48,7 @@ public class AiClient {
         if (V.isEmpty(this.modelProviders)) {
             sseEmitter.send("尚未启用模型服务");
         }
-        sseEmitter.onError(throwable -> log.error("请求异常，使用模型：{}", aiRequest.getModel(), throwable));
+        sseEmitter.onError(throwable -> log.error("请求异常，当前正在使用模型：{}", aiRequest.getModel(), throwable));
         for (ModelProvider modelProvider : this.modelProviders) {
             if (!modelProvider.supports(aiRequest.getModel())) {
                 continue;

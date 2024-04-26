@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 通义千问请求
+ * 通义千问请求消息
  *
  * @author : uu
  * @version : v3.4

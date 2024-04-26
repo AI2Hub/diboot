@@ -35,6 +35,4 @@ public class AiProperties {
     @NestedConfigurationProperty
     private AliConfig aliConfig;
 
-    private String name;
-
 }

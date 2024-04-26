@@ -4,12 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * AI 通用枚举
+ *
  * @author : uu
  * @version v3.4
  * @Date 2024/4/26
  */
 public interface AiEnum {
 
+    /**
+     * 对话时模型角色
+     */
     @Getter
     @AllArgsConstructor
     enum Role {
