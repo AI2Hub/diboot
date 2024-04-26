@@ -25,6 +25,7 @@
         <module>diboot-notification-starter</module>
         <module>diboot-mobile-starter</module>
         <module>diboot-tenant-starter</module>
+        <module>diboot-ai-starter</module>
     </modules>
 
     <properties>

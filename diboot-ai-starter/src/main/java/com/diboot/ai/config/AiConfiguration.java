@@ -1,0 +1,96 @@
+package com.diboot.ai.config;
+
+import com.diboot.ai.models.ModelProvider;
+import com.diboot.ai.models.ali.AliChatModelProvider;
+import com.diboot.ai.models.ali.AliConfig;
+import lombok.Getter;
+import lombok.Setter;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import org.springframework.core.io.support.SpringFactoriesLoader;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Ai配置文件类
+ *
+ * @author : uu
+ * @version : v1.0
+ * @Date 2024/4/25
+ */
+@Getter
+@Setter
+public class AiConfiguration {
+    // configurator扩展配置
+    private final static String AI_CONFIGURATOR = "META-INF/aiconfigurator.factories";
+
+    // ====== 模型配置 start=====
+    /**
+     * 阿里云 通义千问配置
+     */
+    private AliConfig aliConfig;
+
+    // ====== 模型配置 end=====
+
+    // ====== Http客户端配置 start =======
+    /**
+     * okhttp 客户端
+     */
+    private OkHttpClient okhttpClient;
+
+    /**
+     * okhttp 客户端日志级别
+     * <p>
+     * NONE：不记录任何日志。
+     * BASIC：记录请求类型、URL、响应状态码以及响应时间。
+     * HEADERS：记录请求和响应的头部信息，以及BASIC级别的信息。
+     * BODY：记录请求和响应的头部信息、body内容，以及BASIC级别的信息。注意，记录body内容可能会消耗资源，并且会读取body数据，这可能会影响请求的执行。
+     */
+    private HttpLoggingInterceptor.Level httpLoggingLevel = HttpLoggingInterceptor.Level.BASIC;
+
+    // ====== 客户端配置 end =======
+
+    /**
+     * 模型拦截器
+     */
+    private List<ModelProvider> modelProviders = new ArrayList<>();
+
+    /**
+     * 配置增强
+     */
+    private List<AiConfigurator> aiConfigurators;
+
+    public AiConfiguration(OkHttpClient okHttpClient) {
+        this.okhttpClient = okHttpClient;
+        initConfigurators();
+        initDefaultModelProvider();
+        configure();
+    }
+
+    /**
+     * 初始化Configurator
+     */
+    private void initConfigurators() {
+        SpringFactoriesLoader springFactoriesLoader = SpringFactoriesLoader.forResourceLocation(AI_CONFIGURATOR);
+        this.aiConfigurators = springFactoriesLoader.load(AiConfigurator.class);
+        // 排序
+        aiConfigurators.sort(Comparator.comparingInt(AiConfigurator::getPriority));
+    }
+
+    /**
+     * 初始化默认的模型供应
+     */
+    private void initDefaultModelProvider() {
+        modelProviders.add(new AliChatModelProvider(this));
+    }
+
+    /**
+     * 初始化配置器
+     */
+    private void configure() {
+        // 执行扩展配置
+        aiConfigurators.forEach(aiConfigurator -> aiConfigurator.configure(this));
+    }
+}
