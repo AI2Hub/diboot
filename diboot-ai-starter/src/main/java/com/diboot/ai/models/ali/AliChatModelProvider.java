@@ -29,13 +29,10 @@ import com.diboot.ai.models.ali.params.AliChatRequest;
 import com.diboot.ai.models.ali.params.AliChatResponse;
 import com.diboot.ai.models.ali.params.AliEnum;
 import com.diboot.ai.models.ali.params.AliMessage;
-import com.diboot.core.exception.BusinessException;
 import com.diboot.core.util.JSON;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSourceListener;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -84,7 +81,6 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
                 .build();
         // 实例化EventSource，注册EventSource监听器，包装外部监听器，对响应数据进行处理
         factory.newEventSource(request, wrapEventSourceListener(listener, (result) -> JSON.parseObject(result, AliChatResponse.class)));
-        // 实例化EventSource，注册EventSource监听器
     }
 
     @Override
