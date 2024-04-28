@@ -16,12 +16,14 @@
 package com.diboot.ai.client;
 
 import com.diboot.ai.config.AiConfiguration;
-import com.diboot.ai.request.AiRequest;
+import com.diboot.ai.common.request.AiRequest;
 import com.diboot.ai.models.ModelProvider;
+import com.diboot.core.exception.BusinessException;
 import com.diboot.core.util.V;
+import com.diboot.core.vo.Status;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import okhttp3.sse.EventSourceListener;
 
 import java.util.List;
 
@@ -55,22 +57,21 @@ public class AiClient {
      * 流式 执行
      *
      * @param aiRequest
-     * @param sseEmitter
      * @return
      * @throws Exception
      */
-    public void executeStream(AiRequest aiRequest, SseEmitter sseEmitter) throws Exception {
+    public void executeStream(AiRequest aiRequest, EventSourceListener listener) throws Exception {
         if (V.isEmpty(this.modelProviders)) {
-            sseEmitter.send("尚未启用模型服务");
+            throw new BusinessException(Status.FAIL_OPERATION, "尚未启用模型服务");
         }
-        sseEmitter.onError(throwable -> log.error("请求异常，当前正在使用模型：{}", aiRequest.getModel(), throwable));
         for (ModelProvider modelProvider : this.modelProviders) {
             if (!modelProvider.supports(aiRequest.getModel())) {
                 continue;
             }
-            modelProvider.executeStream(aiRequest, sseEmitter);
+            modelProvider.executeStream(aiRequest, listener);
+            return;
         }
-        sseEmitter.send(aiRequest.getModel() + "无对应模型服务，请选择其他模型");
+        throw new BusinessException(Status.FAIL_OPERATION, aiRequest.getModel() + "无对应模型服务，请选择其他模型");
     }
 
 

@@ -16,9 +16,9 @@
 package com.diboot.ai;
 
 import com.diboot.ai.client.AiClient;
-import com.diboot.ai.request.AiChatRequest;
-import com.diboot.ai.request.AiEnum;
-import com.diboot.ai.request.AiMessage;
+import com.diboot.ai.common.AiMessage;
+import com.diboot.ai.common.request.AiChatRequest;
+import com.diboot.ai.common.request.AiEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -13,15 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.response;
+package com.diboot.ai.common.request;
 
 /**
- * 请求响应统一封装
+ * 对话请求
  *
  * @author : uu
  * @version : v3.4
  * @Date 2024/4/25
  */
 
-public interface AiResponse {
+public interface AiRequest {
+
+    /**
+     * 获取模型
+     *
+     * @return
+     */
+    String getModel();
 }

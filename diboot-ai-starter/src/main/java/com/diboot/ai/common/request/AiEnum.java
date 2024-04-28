@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.request;
+package com.diboot.ai.common.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

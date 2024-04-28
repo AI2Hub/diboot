@@ -13,16 +13,34 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.response;
+package com.diboot.ai.common.request;
+
+import com.diboot.ai.common.AiMessage;
+import com.diboot.ai.models.ali.params.AliEnum;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 /**
- * 响应转换器
+ * 对话请求
  *
  * @author : uu
  * @version : v3.4
  * @Date 2024/4/26
  */
-public interface AiResponseConvert<S, R extends AiResponse> {
+@Getter
+@Setter
+public class AiChatRequest implements AiRequest {
 
-    AiResponse convert(S response);
+
+    /**
+     * 对话消息
+     */
+    private List<AiMessage> messages;
+
+    /**
+     * 对话模型
+     */
+    String model = AliEnum.Model.ALI_QWEN_TURBO.getCode();
 }

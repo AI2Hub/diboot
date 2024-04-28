@@ -13,16 +13,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.request;
+package com.diboot.ai.common;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
- * 请求转换器
+ * 请求消息体
  *
  * @author : uu
  * @version : v3.4
- * @Date 2024/4/26
+ * @Date 2024/4/25
  */
-public interface AiRequestConvert<S extends AiRequest, R> {
+@Getter
+@Setter
+@Accessors(chain = true)
+public class AiMessage {
+    // system、user、assistant和tool。
+    private String role;
 
-    R convert(S aiRequest);
+    private String content;
+    // role为tool时不能省略
+    private String name;
 }

@@ -15,14 +15,20 @@
  */
 package com.diboot.ai.models.ali;
 
+import com.diboot.ai.common.AiMessage;
+import com.diboot.ai.common.request.AiChatRequest;
+import com.diboot.ai.common.request.AiEnum;
+import com.diboot.ai.common.request.AiRequest;
+import com.diboot.ai.common.request.AiRequestConvert;
+import com.diboot.ai.common.response.AiChatResponse;
+import com.diboot.ai.common.response.AiResponse;
+import com.diboot.ai.common.response.AiResponseConvert;
 import com.diboot.ai.config.AiConfiguration;
 import com.diboot.ai.models.AbstractModelProvider;
 import com.diboot.ai.models.ali.params.AliChatRequest;
+import com.diboot.ai.models.ali.params.AliChatResponse;
 import com.diboot.ai.models.ali.params.AliEnum;
 import com.diboot.ai.models.ali.params.AliMessage;
-import com.diboot.ai.request.AiChatRequest;
-import com.diboot.ai.request.AiRequest;
-import com.diboot.ai.request.AiRequestConvert;
 import com.diboot.core.exception.BusinessException;
 import com.diboot.core.util.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +39,6 @@ import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSourceListener;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +52,8 @@ import java.util.stream.Collectors;
  * @Date 2024/4/25
  */
 @Slf4j
-public class AliChatModelProvider extends AbstractModelProvider implements AiRequestConvert<AiChatRequest, AliChatRequest> {
+public class AliChatModelProvider extends AbstractModelProvider implements AiRequestConvert<AiChatRequest, AliChatRequest>,
+        AiResponseConvert<AliChatResponse, AiChatResponse> {
 
     /**
      * 对话APi
@@ -65,9 +71,9 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
     }
 
     @Override
-    public void executeStream(AiRequest aiRequest, SseEmitter sseEmitter) {
+    public void executeStream(AiRequest aiRequest, EventSourceListener listener) {
         // 将通用参数 转化为 具体模型参数
-        AliChatRequest aliChatRequest = convert((AiChatRequest) aiRequest);
+        AliChatRequest aliChatRequest = convertRequest((AiChatRequest) aiRequest);
         // 构建请求对象
         AliConfig aliConfig = configuration.getAliConfig();
         Request request = new Request.Builder()
@@ -76,29 +82,9 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
                 .header(HttpHeaders.ACCEPT, MediaType.TEXT_EVENT_STREAM_VALUE)
                 .post(RequestBody.Companion.create(JSON.toJSONString(aliChatRequest), okhttp3.MediaType.parse(MediaType.APPLICATION_JSON_VALUE)))
                 .build();
+        // 实例化EventSource，注册EventSource监听器，包装外部监听器，对响应数据进行处理
+        factory.newEventSource(request, wrapEventSourceListener(listener, (result) -> JSON.parseObject(result, AliChatResponse.class)));
         // 实例化EventSource，注册EventSource监听器
-        // 创建一个用于处理服务器发送事件的实例，并定义处理事件的回调逻辑
-        factory.newEventSource(request, new EventSourceListener() {
-            @Override
-            public void onEvent(EventSource eventSource, String id, String type, String data) {
-                try {
-                    // 发送数据
-                    sseEmitter.send(data);
-                } catch (Exception e) {
-                    throw new BusinessException(e.getMessage());
-                }
-            }
-
-            @Override
-            public void onClosed(EventSource eventSource) {
-                sseEmitter.complete();
-            }
-
-            @Override
-            public void onFailure(EventSource eventSource, Throwable t, Response response) {
-                sseEmitter.completeWithError(t);
-            }
-        });
     }
 
     @Override
@@ -107,7 +93,7 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
     }
 
     @Override
-    public AliChatRequest convert(AiChatRequest source) {
+    public AliChatRequest convertRequest(AiChatRequest source) {
         // 将消息转换aliMessage
         List<AliMessage> aliMessages = source.getMessages().stream()
                 .map(message -> new AliMessage().setRole(message.getRole())
@@ -118,5 +104,17 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
         return new AliChatRequest()
                 .setModel(source.getModel())
                 .setInput(new AliChatRequest.Input().setMessages(aliMessages));
+    }
+
+    @Override
+    public AiResponse convertResponse(AliChatResponse response) {
+        return new AiChatResponse()
+                .setChoices(Arrays.asList(new AiChatResponse.AiChoice()
+                        .setFinishReason(response.getOutput().getFinishReason())
+                        .setMessage(Arrays.asList(
+                                new AiMessage().setRole(AiEnum.Role.SYSTEM.getCode())
+                                        .setContent(response.getOutput().getText())
+                        ))
+                ));
     }
 }

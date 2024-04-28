@@ -13,13 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.response;
+package com.diboot.ai.common.response;
 
+import com.diboot.ai.common.AiMessage;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 对话请求响应
@@ -30,9 +33,30 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class AiChatResponse implements AiResponse, Serializable {
 
 
     @Serial
     private static final long serialVersionUID = 1897111766782881992L;
+
+    /**
+     * 对话信息
+     */
+    private List<AiChoice> choices;
+
+    @Getter
+    @Setter
+    @Accessors(chain = true)
+    public static class AiChoice {
+        /**
+         * 完成原因
+         */
+        private String finishReason;
+
+        /**
+         * 内容
+         */
+        private List<AiMessage> message;
+    }
 }

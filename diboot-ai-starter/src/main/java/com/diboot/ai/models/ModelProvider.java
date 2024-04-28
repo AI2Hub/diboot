@@ -15,8 +15,8 @@
  */
 package com.diboot.ai.models;
 
-import com.diboot.ai.request.AiRequest;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import com.diboot.ai.common.request.AiRequest;
+import okhttp3.sse.EventSourceListener;
 
 /**
  * 模型拦截器
@@ -31,10 +31,10 @@ public interface ModelProvider {
      * 流式 执行器
      *
      * @param aiRequest
-     * @param sseEmitter
+     * @param listener
      * @return
      */
-    void executeStream(AiRequest aiRequest, SseEmitter sseEmitter);
+    void executeStream(AiRequest aiRequest, EventSourceListener listener);
 
     /**
      * 当前拦截器是否支持模型

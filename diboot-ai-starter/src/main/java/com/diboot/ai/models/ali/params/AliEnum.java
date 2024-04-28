@@ -29,7 +29,9 @@ public interface AliEnum {
     enum Model {
         // 通义千问模型 ：https://help.aliyun.com/zh/dashscope/developer-reference/model-introduction?spm=a2c4g.11186623.0.0.6e2a512086lFix
         ALI_QWEN_TURBO("qwen-turbo", "通义千问超大规模语言模型，支持中文、英文等不同语言输入。"),
-        ALI_QWEN_PLUS("qwen-plus", "通义千问超大规模语言模型增强版，支持中文、英文等不同语言输入。");
+        ALI_QWEN_PLUS("qwen-plus", "通义千问超大规模语言模型增强版，支持中文、英文等不同语言输入。"),
+        ALI_QWEN_MAX("qwen-max", "通义千问千亿级别超大规模语言模型，支持中文、英文等不同语言输入。随着模型的升级，qwen-max将滚动更新升级。")
+        ;
         /**
          * AI 模型编码
          */
@@ -39,5 +41,16 @@ public interface AliEnum {
          * AI 模型描述
          */
         private String desc;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    enum FinishReason {
+        NULL("null", "正在生成"),
+        STOP("stop", "生成结束"),
+        LENGTH("length", "生成长度过长");
+
+        private final String code;
+        private final String desc;
     }
 }

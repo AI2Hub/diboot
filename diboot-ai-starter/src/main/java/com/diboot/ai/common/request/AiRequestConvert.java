@@ -13,22 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.request;
+package com.diboot.ai.common.request;
 
 /**
- * 对话请求
+ * 请求转换器
  *
  * @author : uu
  * @version : v3.4
- * @Date 2024/4/25
+ * @Date 2024/4/26
  */
+public interface AiRequestConvert<S extends AiRequest, R> {
 
-public interface AiRequest {
-
-    /**
-     * 获取模型
-     *
-     * @return
-     */
-    String getModel();
+    R convertRequest(S aiRequest);
 }
