@@ -29,7 +29,9 @@ import com.diboot.ai.models.ali.params.AliChatRequest;
 import com.diboot.ai.models.ali.params.AliChatResponse;
 import com.diboot.ai.models.ali.params.AliEnum;
 import com.diboot.ai.models.ali.params.AliMessage;
+import com.diboot.core.util.BeanUtils;
 import com.diboot.core.util.JSON;
+import com.diboot.core.util.V;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -63,7 +65,9 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
         super(configuration,
                 Arrays.asList(
                         AliEnum.Model.ALI_QWEN_TURBO.getCode(),
-                        AliEnum.Model.ALI_QWEN_PLUS.getCode())
+                        AliEnum.Model.ALI_QWEN_PLUS.getCode(),
+                        AliEnum.Model.ALI_QWEN_MAX.getCode()
+                )
         );
     }
 
@@ -104,13 +108,24 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
 
     @Override
     public AiResponse convertResponse(AliChatResponse response) {
-        return new AiChatResponse()
-                .setChoices(Arrays.asList(new AiChatResponse.AiChoice()
-                        .setFinishReason(response.getOutput().getFinishReason())
-                        .setMessage(Arrays.asList(
-                                new AiMessage().setRole(AiEnum.Role.SYSTEM.getCode())
-                                        .setContent(response.getOutput().getText())
-                        ))
-                ));
+        String finishReason = response.getOutput().getFinishReason();
+        List<AliChatResponse.AliChoice> choices = response.getOutput().getChoices();
+        if (V.notEmpty(finishReason)) {
+            return new AiChatResponse()
+                    .setChoices(Arrays.asList(new AiChatResponse.AiChoice()
+                            .setFinishReason(finishReason)
+                            .setMessage(new AiMessage().setRole(AiEnum.Role.SYSTEM.getCode())
+                                    .setContent(response.getOutput().getText()))
+                    ));
+        }
+//       入参 result_format = message
+        else if (V.notEmpty(choices)) {
+            return new AiChatResponse()
+                    .setChoices(Arrays.asList(new AiChatResponse.AiChoice()
+                            .setFinishReason(choices.get(0).getFinishReason())
+                            .setMessage(BeanUtils.convert(choices.get(0).getMessage(), AiMessage.class))
+                    ));
+        }
+        return null;
     }
 }

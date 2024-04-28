@@ -58,7 +58,7 @@ public class AiAutoConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnMissingBean
     public AiClient aiClient() {
-        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(aiProperties.getHttpLoggingLevel()))
                 .build();
         // 构建 AiConfiguration

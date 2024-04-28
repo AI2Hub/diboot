@@ -121,6 +121,6 @@ public class AliChatResponse implements Serializable {
         /**
          * 内容
          */
-        private List<AliMessage> message;
+        private AliMessage message;
     }
 }

@@ -32,10 +32,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AliMessage implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 7080298360964364141L;
+public class AliMessage {
     /**
      * 角色
      */

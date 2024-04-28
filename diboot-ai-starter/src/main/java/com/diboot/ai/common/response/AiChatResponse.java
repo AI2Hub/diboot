@@ -57,6 +57,6 @@ public class AiChatResponse implements AiResponse, Serializable {
         /**
          * 内容
          */
-        private List<AiMessage> message;
+        private AiMessage message;
     }
 }
