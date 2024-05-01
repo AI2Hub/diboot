@@ -108,6 +108,9 @@ public class AliChatModelProvider extends AbstractModelProvider implements AiReq
 
     @Override
     public AiResponse convertResponse(AliChatResponse response) {
+        if (V.isEmpty(response.getOutput())) {
+            return null;
+        }
         String finishReason = response.getOutput().getFinishReason();
         List<AliChatResponse.AliChoice> choices = response.getOutput().getChoices();
         if (V.notEmpty(finishReason)) {

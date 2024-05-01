@@ -19,7 +19,13 @@ import com.diboot.ai.client.AiClient;
 import com.diboot.ai.common.AiMessage;
 import com.diboot.ai.common.request.AiChatRequest;
 import com.diboot.ai.common.request.AiEnum;
+import com.diboot.ai.models.ali.params.AliEnum;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
+import okhttp3.sse.EventSource;
+import okhttp3.sse.EventSourceListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ServletInitializer.class)
@@ -39,9 +46,29 @@ public class ApplicationTest {
     @Test
     public void testChat() throws Exception {
         AiChatRequest aiRequest = new AiChatRequest();
+        aiRequest.setModel(AliEnum.Model.ALI_QWEN_MAX.getCode());
         aiRequest.setMessages(
-                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("java 框架 diboot 简介"))
+                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
         );
-//        aiClient.executeStream(aiRequest, new SseEmitter());
+        // 保持长链接
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        aiClient.executeStream(aiRequest, new EventSourceListener() {
+            @Override
+            public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type, @NotNull String data) {
+                log.debug("---------> {}, {}, {}", id, type);
+                log.debug(data);
+            }
+
+            @Override
+            public void onClosed(@NotNull EventSource eventSource) {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onFailure(@NotNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
+                countDownLatch.countDown();
+            }
+        });
+        countDownLatch.await();
     }
 }
