@@ -20,12 +20,14 @@ import com.diboot.ai.config.AiConfiguration;
 import com.diboot.ai.config.AiProperties;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -40,6 +42,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Order(909)
 @Configuration
 @EnableConfigurationProperties({AiProperties.class})
+@ComponentScan(basePackages = {"com.diboot.ai"})
+@MapperScan(basePackages = {"com.diboot.ai.mapper"})
 public class AiAutoConfig implements WebMvcConfigurer {
     private static final Logger log = LoggerFactory.getLogger(AiAutoConfig.class);
 

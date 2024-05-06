@@ -13,28 +13,32 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.common;
+package com.diboot.ai.vo;
 
+import com.diboot.ai.entity.AiSession;
+import com.diboot.ai.entity.AiSessionRecord;
+import com.diboot.core.binding.annotation.BindField;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
+
 /**
- * 请求消息体
+ * 会话记录 VO
  *
  * @author : uu
  * @version : v3.4
- * @Date 2024/4/25
+ * @Date 2024/5/6
  */
-@Getter
-@Setter
-@Accessors(chain = true)
-public class AiMessage {
-    // system、user、assistant和tool。
-    private String role;
+@Getter@Setter@Accessors(chain = true)
+public class AiSessionRecordVO extends AiSessionRecord {
 
-    private String content;
-
-    // role为tool时不能省略
-    private String name;
+    @Serial
+    private static final long serialVersionUID = 67250247687728519L;
+    /**
+     * 关联会话
+     */
+    @BindField(entity = AiSession.class, field = "title", condition = "this.session_id=id")
+    private String sessionTitle;
 }

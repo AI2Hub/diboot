@@ -13,28 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.common;
+package com.diboot.ai.service.impl;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import com.diboot.ai.entity.AiSessionRecord;
+import com.diboot.ai.mapper.AiSessionRecordMapper;
+import com.diboot.ai.service.AiSessionRecordService;
+import com.diboot.core.service.impl.BaseServiceImpl;
+import org.springframework.stereotype.Service;
 
 /**
- * 请求消息体
+ * AI会话记录ServiceImpl
  *
  * @author : uu
  * @version : v3.4
- * @Date 2024/4/25
+ * @Date 2024/5/1
  */
-@Getter
-@Setter
-@Accessors(chain = true)
-public class AiMessage {
-    // system、user、assistant和tool。
-    private String role;
-
-    private String content;
-
-    // role为tool时不能省略
-    private String name;
+@Service
+public class AiSessionRecordServiceImpl extends BaseServiceImpl<AiSessionRecordMapper, AiSessionRecord> implements AiSessionRecordService {
 }

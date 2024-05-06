@@ -13,28 +13,19 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.common;
+package com.diboot.ai.mapper;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import com.diboot.ai.entity.AiSessionRecord;
+import com.diboot.core.mapper.BaseCrudMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 请求消息体
+ * ai session record mapper
  *
  * @author : uu
  * @version : v3.4
- * @Date 2024/4/25
+ * @Date 2024/5/1
  */
-@Getter
-@Setter
-@Accessors(chain = true)
-public class AiMessage {
-    // system、user、assistant和tool。
-    private String role;
-
-    private String content;
-
-    // role为tool时不能省略
-    private String name;
+@Mapper
+public interface AiSessionRecordMapper extends BaseCrudMapper<AiSessionRecord> {
 }
