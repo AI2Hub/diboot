@@ -30,6 +30,7 @@ import java.util.List;
  * @Date 2024/4/25
  */
 public abstract class AbstractModelProvider implements ModelProvider {
+    protected static final String BEARER_TOKEN_PREFIX = "Bearer ";
 
     // 当前拦截器支持的模型
     protected List<String> supportModels = new ArrayList<>();

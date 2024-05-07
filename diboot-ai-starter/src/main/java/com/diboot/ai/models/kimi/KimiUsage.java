@@ -15,6 +15,7 @@
  */
 package com.diboot.ai.models.kimi;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -31,10 +32,13 @@ import java.io.Serializable;
 public class KimiUsage implements Serializable {
     private static final long serialVersionUID = -5562582362343016552L;
 
-    private int prompt_tokens;
+    @JsonProperty("prompt_tokens")
+    private int promptTokens;
 
-    private int completion_tokens;
+    @JsonProperty("completion_tokens")
+    private int completionTokens;
 
-    private int total_tokens;
+    @JsonProperty("total_tokens")
+    private int totalTokens;
 
 }

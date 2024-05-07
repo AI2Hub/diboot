@@ -13,39 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models.ali.params;
+package com.diboot.ai.models.kimi;
 
+import com.diboot.ai.models.AiConfig;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Accessors;
-
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
- * 通义千问请求消息
- *
- * @author : uu
- * @version : v3.4
- * @Date 2024/4/25
+ * Kimi 配置
  */
 @Getter
 @Setter
-@Accessors(chain = true)
-public class AliMessage {
+public class KimiConfig extends AiConfig {
     /**
-     * 角色
+     * 对话 APi
      */
-    // system、user、assistant和tool。
-    private String role;
+    private String chatApi = "https://api.moonshot.cn/v1/chat/completions";
 
-    /**
-     * 内容
-     */
-    private String content;
-
-    /**
-     * role为tool时不能省略
-     */
-    private String name;
 }

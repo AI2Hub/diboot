@@ -13,34 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.common.request;
+package com.diboot.ai.models;
 
-import com.diboot.ai.common.AiMessage;
-import com.diboot.ai.models.qwen.QwenEnum;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
- * 对话请求
- *
- * @author : uu
- * @version : v3.4
- * @Date 2024/4/26
+ * @author JerryMa
+ * @version v3.4.0
+ * @date 2024/5/7
  */
-@Getter
-@Setter
-public class AiChatRequest implements AiRequest {
-
-
+@Getter @Setter
+public class AiConfig {
     /**
-     * 对话消息
+     * api key
      */
-    private List<AiMessage> messages;
+    private String apikey;
 
-    /**
-     * 对话模型
-     */
-    String model = QwenEnum.Model.ALI_QWEN_TURBO.getCode();
 }

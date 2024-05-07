@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models.ali.params;
+package com.diboot.ai.models.qwen;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +23,8 @@ import lombok.Getter;
  * @version v3.4
  * @Date 2024/4/26
  */
-public interface AliEnum {
+public interface QwenEnum {
+
     @Getter
     @AllArgsConstructor
     enum Model {

@@ -39,7 +39,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @version : v3.4
  * @Date 2024/4/26
  */
-@Order(909)
+@Order(961)
 @Configuration
 @EnableConfigurationProperties({AiProperties.class})
 @ComponentScan(basePackages = {"com.diboot.ai"})
@@ -51,7 +51,7 @@ public class AiAutoConfig implements WebMvcConfigurer {
     private AiProperties aiProperties;
 
     public AiAutoConfig() {
-        log.info("初始化 ai 内核 自动配置");
+        log.info("初始化 AI 内核 自动配置");
     }
 
     /**
@@ -68,7 +68,8 @@ public class AiAutoConfig implements WebMvcConfigurer {
         // 构建 AiConfiguration
         AiConfiguration aiConfiguration = new AiConfiguration(okHttpClient);
         // 设置模型配置
-        aiConfiguration.setAliConfig(aiProperties.getAliConfig());
+        aiConfiguration.setQwen(aiProperties.getQwen());
+        aiConfiguration.setKimi(aiProperties.getKimi());
         return new AiClient(aiConfiguration);
     }
 

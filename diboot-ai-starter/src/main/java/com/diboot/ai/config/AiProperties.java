@@ -15,7 +15,8 @@
  */
 package com.diboot.ai.config;
 
-import com.diboot.ai.models.ali.AliConfig;
+import com.diboot.ai.models.kimi.KimiConfig;
+import com.diboot.ai.models.qwen.QwenConfig;
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -48,6 +49,12 @@ public class AiProperties {
      * 阿里模型配置
      */
     @NestedConfigurationProperty
-    private AliConfig aliConfig;
+    private QwenConfig qwen;
+
+    /**
+     * Kimi模型配置
+     */
+    @NestedConfigurationProperty
+    private KimiConfig kimi;
 
 }

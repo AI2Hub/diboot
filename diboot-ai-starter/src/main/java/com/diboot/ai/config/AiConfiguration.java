@@ -16,8 +16,9 @@
 package com.diboot.ai.config;
 
 import com.diboot.ai.models.ModelProvider;
-import com.diboot.ai.models.ali.AliChatModelProvider;
-import com.diboot.ai.models.ali.AliConfig;
+import com.diboot.ai.models.qwen.QwenChatModelProvider;
+import com.diboot.ai.models.qwen.QwenConfig;
+import com.diboot.ai.models.kimi.KimiConfig;
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.OkHttpClient;
@@ -45,7 +46,11 @@ public class AiConfiguration {
     /**
      * 阿里云 通义千问配置
      */
-    private AliConfig aliConfig;
+    private QwenConfig qwen;
+    /**
+     * Kimi 配置
+     */
+    private KimiConfig kimi;
 
     // ====== 模型配置 end=====
 
@@ -98,7 +103,7 @@ public class AiConfiguration {
      * 初始化默认的模型供应
      */
     private void initDefaultModelProvider() {
-        modelProviders.add(new AliChatModelProvider(this));
+        modelProviders.add(new QwenChatModelProvider(this));
     }
 
     /**

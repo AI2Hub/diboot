@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models.ali.params;
+package com.diboot.ai.models.qwen;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -32,14 +32,14 @@ import java.util.List;
  * @Date 2024/4/25
  */
 @Getter@Setter@Accessors(chain = true)
-public class AliChatRequest implements Serializable {
+public class QwenChatRequest implements Serializable {
     @Serial
     private static final long serialVersionUID = 4779276706100882299L;
 
     /**
      * 指定用于对话的通义千问模型名:默认使用qwen-turbo
      */
-    private String model = AliEnum.Model.ALI_QWEN_TURBO.getCode();
+    private String model = QwenEnum.Model.ALI_QWEN_TURBO.getCode();
 
     /**
      * 输入模型的信息
@@ -111,7 +111,6 @@ public class AliChatRequest implements Serializable {
         private List tools;
     }
 
-
     /**
      * 通义千问 输入模型的信息
      *
@@ -123,7 +122,7 @@ public class AliChatRequest implements Serializable {
         /**
          * 表示用户与模型的对话历史
          */
-        private List<AliMessage> messages;
+        private List<QwenMessage> messages;
 
     }
 }

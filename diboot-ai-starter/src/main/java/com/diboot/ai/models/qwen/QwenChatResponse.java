@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models.ali.params;
+package com.diboot.ai.models.qwen;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -35,7 +35,7 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AliChatResponse implements Serializable {
+public class QwenChatResponse implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 3484634300435327268L;
@@ -121,6 +121,6 @@ public class AliChatResponse implements Serializable {
         /**
          * 内容
          */
-        private AliMessage message;
+        private QwenMessage message;
     }
 }

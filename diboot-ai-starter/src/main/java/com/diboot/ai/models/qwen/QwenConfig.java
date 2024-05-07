@@ -13,25 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models.ali;
+package com.diboot.ai.models.qwen;
 
+import com.diboot.ai.models.AiConfig;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 阿里 ai 配置
+ * 阿里千问 ai 配置
  *
  * @author : uu
  * @version : v3.4
  * @Date 2024/4/25
  */
-@Getter@Setter
-public class AliConfig {
+@Getter @Setter
+public class QwenConfig extends AiConfig {
 
     /**
-     * api key
+     * 对话APi
      */
-    private String apikey;
-
+    private String chatApi = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
 
 }

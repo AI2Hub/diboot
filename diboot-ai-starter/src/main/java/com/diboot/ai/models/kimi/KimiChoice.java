@@ -15,6 +15,7 @@
  */
 package com.diboot.ai.models.kimi;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -35,6 +36,7 @@ public class KimiChoice implements Serializable {
 
     private KimiMessage message;
 
-    private String finish_reason;
+    @JsonProperty("finish_reason")
+    private String finishReason;
 
 }
