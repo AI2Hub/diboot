@@ -516,7 +516,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		List<Serializable> delIds = new ArrayList<>();
 		for (R entity : oldEntityList) {
 			Object followerId = BeanUtils.getProperty(entity, followerFieldName);
-			if (V.notEmpty(followerIdList) && followerIdList.contains(followerId)) {
+			if (followerId != null && V.notEmpty(followerIdList) && followerIdList.contains(followerId)) {
 				followerIdList.remove(followerId);
 				continue;
 			}
