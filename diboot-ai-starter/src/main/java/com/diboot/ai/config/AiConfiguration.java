@@ -19,6 +19,8 @@ import com.diboot.ai.models.ModelProvider;
 import com.diboot.ai.models.qwen.QwenChatModelProvider;
 import com.diboot.ai.models.qwen.QwenConfig;
 import com.diboot.ai.models.kimi.KimiConfig;
+import com.diboot.ai.models.wenxin.WenXinChatModelProvider;
+import com.diboot.ai.models.wenxin.WenXinConfig;
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.OkHttpClient;
@@ -47,6 +49,10 @@ public class AiConfiguration {
      * 阿里云 通义千问配置
      */
     private QwenConfig qwen;
+    /**
+     * 百度 千帆模型配置
+     */
+    private WenXinConfig wenxin;
     /**
      * Kimi 配置
      */
@@ -104,6 +110,7 @@ public class AiConfiguration {
      */
     private void initDefaultModelProvider() {
         modelProviders.add(new QwenChatModelProvider(this));
+        modelProviders.add(new WenXinChatModelProvider(this));
     }
 
     /**

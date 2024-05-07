@@ -17,6 +17,7 @@ package com.diboot.ai.config;
 
 import com.diboot.ai.models.kimi.KimiConfig;
 import com.diboot.ai.models.qwen.QwenConfig;
+import com.diboot.ai.models.wenxin.WenXinConfig;
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -56,5 +57,11 @@ public class AiProperties {
      */
     @NestedConfigurationProperty
     private KimiConfig kimi;
+
+    /**
+     * 百度模型配置
+     */
+    @NestedConfigurationProperty
+    private WenXinConfig wenxin;
 
 }

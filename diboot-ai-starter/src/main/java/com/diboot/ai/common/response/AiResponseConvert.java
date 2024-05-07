@@ -34,8 +34,21 @@ import java.util.function.Function;
  */
 public interface AiResponseConvert<S, R extends AiResponse> {
 
+    /**
+     * 响应值转换
+     *
+     * @param response
+     * @return
+     */
     AiResponse convertResponse(S response);
 
+    /**
+     * 包装EventSourceListener 对流式响应部分统一处理
+     *
+     * @param listener
+     * @param dataConvertFunction
+     * @return
+     */
     default EventSourceListener wrapEventSourceListener(EventSourceListener listener, Function<String, S> dataConvertFunction) {
         return new EventSourceListener() {
             @Override

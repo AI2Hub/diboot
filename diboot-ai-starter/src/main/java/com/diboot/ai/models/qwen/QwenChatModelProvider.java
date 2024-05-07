@@ -65,10 +65,10 @@ public class QwenChatModelProvider extends AbstractModelProvider implements AiRe
         // 将通用参数 转化为 具体模型参数
         QwenChatRequest qwenChatRequest = convertRequest((AiChatRequest) aiRequest);
         // 构建请求对象
-        QwenConfig aliConfig = configuration.getQwen();
+        QwenConfig qwenConfig = configuration.getQwen();
         Request request = new Request.Builder()
-                .url(aliConfig.getChatApi())
-                .header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN_PREFIX + aliConfig.getApikey())
+                .url(qwenConfig.getChatApi())
+                .header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN_PREFIX + qwenConfig.getApiKey())
                 .header(HttpHeaders.ACCEPT, MediaType.TEXT_EVENT_STREAM_VALUE)
                 .post(RequestBody.Companion.create(JSON.toJSONString(qwenChatRequest), okhttp3.MediaType.parse(MediaType.APPLICATION_JSON_VALUE)))
                 .build();

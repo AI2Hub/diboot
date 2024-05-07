@@ -13,21 +13,30 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models;
+package com.diboot.ai.models.wenxin.params;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
- * @author JerryMa
- * @version v3.4.0
- * @date 2024/5/7
+ * 百度千帆请求消息
+ *
+ * @author : uu
+ * @version : v3.4
+ * @Date 2024/5/7
  */
-@Getter @Setter
-public class AiConfig {
+@Getter
+@Setter
+@Accessors(chain = true)
+public class WenXinMessage {
     /**
-     * api key
+     * 角色：user、assistant
      */
-    private String apiKey;
+    private String role;
 
+    /**
+     * 内容
+     */
+    private String content;
 }

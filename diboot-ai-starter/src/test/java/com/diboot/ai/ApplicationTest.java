@@ -19,7 +19,8 @@ import com.diboot.ai.client.AiClient;
 import com.diboot.ai.common.AiMessage;
 import com.diboot.ai.common.request.AiChatRequest;
 import com.diboot.ai.common.request.AiEnum;
-import com.diboot.ai.models.ali.params.AliEnum;
+import com.diboot.ai.models.qwen.QwenEnum;
+import com.diboot.ai.models.wenxin.params.WenXinEnum;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
@@ -46,7 +47,36 @@ public class ApplicationTest {
     @Test
     public void testChat() throws Exception {
         AiChatRequest aiRequest = new AiChatRequest();
-        aiRequest.setModel(AliEnum.Model.ALI_QWEN_MAX.getCode());
+        aiRequest.setModel(QwenEnum.Model.ALI_QWEN_MAX.getCode());
+        aiRequest.setMessages(
+                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
+        );
+        // 保持长链接
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        aiClient.executeStream(aiRequest, new EventSourceListener() {
+            @Override
+            public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type, @NotNull String data) {
+                log.debug("---------> {}, {}, {}", id, type);
+                log.debug(data);
+            }
+
+            @Override
+            public void onClosed(@NotNull EventSource eventSource) {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onFailure(@NotNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
+                countDownLatch.countDown();
+            }
+        });
+        countDownLatch.await();
+    }
+
+    @Test
+    public void testWenXinChat() throws Exception {
+        AiChatRequest aiRequest = new AiChatRequest();
+        aiRequest.setModel(WenXinEnum.Model.YI_34B_CHAT.getCode());
         aiRequest.setMessages(
                 Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
         );
