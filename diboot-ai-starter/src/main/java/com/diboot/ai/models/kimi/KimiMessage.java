@@ -15,11 +15,10 @@
  */
 package com.diboot.ai.models.kimi;
 
+import com.diboot.ai.common.AiMessage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
 
 /**
  * Kimi 返回内容
@@ -30,11 +29,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class KimiMessage implements Serializable {
+public class KimiMessage extends AiMessage {
     private static final long serialVersionUID = -6055435216196837027L;
-
-    private String role;
-
-    private String content;
 
 }

@@ -49,17 +49,17 @@ public class QwenChatResponse implements Serializable {
     /**
      * 结果
      */
-    private AliOutput output;
+    private QwenOutput output;
 
     /**
      * 本次调用使用的token信息
      */
-    private AliUsage usage;
+    private QwenUsage usage;
 
     @Getter
     @Setter
     @Accessors(chain = true)
-    public static class AliOutput {
+    public static class QwenOutput {
         /**
          * 模型输出的内容。当result_format设置为text时返回该字段。
          */
@@ -79,13 +79,13 @@ public class QwenChatResponse implements Serializable {
         /**
          * 当result_format设置为message时返回该字段。
          */
-        private List<AliChoice> choices;
+        private List<QwenChoice> choices;
     }
 
     @Getter
     @Setter
     @Accessors(chain = true)
-    public static class AliUsage {
+    public static class QwenUsage {
         /**
          * 模型输出内容的 token 个数。
          */
@@ -104,23 +104,4 @@ public class QwenChatResponse implements Serializable {
         private String totalTokens;
     }
 
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    public static class AliChoice {
-        /**
-         * 停止原因，null：生成过程中
-         *
-         * stop：stop token导致结束
-         *
-         * length：生成长度导致结束
-         */
-        @JsonProperty("finish_reason")
-        private String finishReason;
-
-        /**
-         * 内容
-         */
-        private QwenMessage message;
-    }
 }

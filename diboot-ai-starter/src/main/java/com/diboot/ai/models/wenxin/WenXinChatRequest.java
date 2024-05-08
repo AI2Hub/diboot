@@ -15,6 +15,7 @@
  */
 package com.diboot.ai.models.wenxin;
 
+import com.diboot.ai.common.AiMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,7 +42,7 @@ public class WenXinChatRequest implements Serializable {
     /**
      * 聊天上下文信息
      */
-    private List<WenXinMessage> messages;
+    private List<AiMessage> messages;
 
     /**
      * 用于控制随机性和多样性的程度。

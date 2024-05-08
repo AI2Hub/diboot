@@ -32,7 +32,7 @@ import java.util.function.Function;
  * @version : v3.4
  * @Date 2024/4/26
  */
-public interface AiResponseConvert<S, R extends AiResponse> {
+public interface AiResponseConvert<R extends AiResponse, S> {
 
     /**
      * 响应值转换

@@ -44,27 +44,12 @@ public class AiChatResponse implements AiResponse, Serializable {
     /**
      * 对话信息
      */
-    private List<AiChoice> choices;
+    private List<? extends AiChoice> choices;
 
     /**
      * 结果模式
      */
     private ResultPattern pattern = ResultPattern.REPLACE;
-
-    @Getter
-    @Setter
-    @Accessors(chain = true)
-    public static class AiChoice {
-        /**
-         * 完成原因
-         */
-        private String finishReason;
-
-        /**
-         * 内容
-         */
-        private AiMessage message;
-    }
 
     /**
      * 结果模式

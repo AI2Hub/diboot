@@ -1,0 +1,90 @@
+/*
+ * Copyright (c) 2015-2029, www.dibo.ltd (service@dibo.ltd).
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package com.diboot.ai.models.kimi;
+
+import com.diboot.ai.common.request.AiChatRequest;
+import com.diboot.ai.common.request.AiRequest;
+import com.diboot.ai.common.request.AiRequestConvert;
+import com.diboot.ai.common.response.AiChatResponse;
+import com.diboot.ai.common.response.AiResponse;
+import com.diboot.ai.common.response.AiResponseConvert;
+import com.diboot.ai.config.AiConfiguration;
+import com.diboot.ai.models.AbstractModelProvider;
+import com.diboot.core.util.JSON;
+import com.diboot.core.util.V;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.sse.EventSourceListener;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Kimi 模型提供
+ * @author JerryMa
+ * @version v3.4.0
+ * @date 2024/5/7
+ */
+public class KimiChatModelProvider extends AbstractModelProvider implements AiRequestConvert<AiChatRequest, KimiChatRequest>,
+        AiResponseConvert<AiChatResponse, KimiChatResponse> {
+
+    public KimiChatModelProvider(AiConfiguration configuration) {
+        super(configuration, Arrays.asList(
+                KimiEnum.Model.MOONSHOT_V1_8K.getCode(),
+                KimiEnum.Model.MOONSHOT_V1_32K.getCode(),
+                KimiEnum.Model.MOONSHOT_V1_128K.getCode()
+        ));
+    }
+
+    @Override
+    public KimiChatRequest convertRequest(AiChatRequest source) {
+        // 转换请求
+        return new KimiChatRequest().setModel(source.getModel()).setMessages(source.getMessages());
+    }
+
+    @Override
+    public AiResponse convertResponse(KimiChatResponse response) {
+        if (V.isEmpty(response.getChoices())) {
+            return null;
+        }
+        return new AiChatResponse().setChoices(response.getChoices());
+    }
+
+    @Override
+    public void executeStream(AiRequest aiRequest, EventSourceListener listener) {
+        // 将通用参数 转化为 具体模型参数
+        KimiChatRequest aiChatRequest = convertRequest((AiChatRequest) aiRequest);
+        // 构建请求对象
+        KimiConfig kimiConfig = configuration.getKimi();
+        Request request = new Request.Builder()
+                .url(kimiConfig.getChatApi())
+                .header(HttpHeaders.AUTHORIZATION, BEARER_TOKEN_PREFIX + kimiConfig.getApiKey())
+                .header(HttpHeaders.ACCEPT, MediaType.TEXT_EVENT_STREAM_VALUE)
+                .post(RequestBody.Companion.create(JSON.toJSONString(aiChatRequest), okhttp3.MediaType.parse(MediaType.APPLICATION_JSON_VALUE)))
+                .build();
+        // 实例化EventSource，注册EventSource监听器，包装外部监听器，对响应数据进行处理
+        factory.newEventSource(request, wrapEventSourceListener(listener, (result) -> JSON.parseObject(result, KimiChatResponse.class)));
+    }
+
+    @Override
+    public boolean supports(String model) {
+        return supportModels.contains(model);
+    }
+
+}

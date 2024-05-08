@@ -21,6 +21,7 @@ import com.diboot.ai.common.request.AiEnum;
 import com.diboot.ai.common.request.AiRequest;
 import com.diboot.ai.common.request.AiRequestConvert;
 import com.diboot.ai.common.response.AiChatResponse;
+import com.diboot.ai.common.response.AiChoice;
 import com.diboot.ai.common.response.AiResponse;
 import com.diboot.ai.common.response.AiResponseConvert;
 import com.diboot.ai.config.AiConfiguration;
@@ -34,6 +35,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +48,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class WenXinChatModelProvider extends AbstractModelProvider implements AiRequestConvert<AiChatRequest, WenXinChatRequest>,
-        AiResponseConvert<WenXinChatResponse, AiChatResponse> {
+        AiResponseConvert<AiChatResponse, WenXinChatResponse> {
 
     public WenXinChatModelProvider(AiConfiguration configuration) {
         super(configuration,
@@ -82,18 +84,13 @@ public class WenXinChatModelProvider extends AbstractModelProvider implements Ai
     @Override
     public WenXinChatRequest convertRequest(AiChatRequest source) {
         // 将通用消息体构建成模型消息体
-        List<WenXinMessage> wenXinMessages = source.getMessages().stream()
-                .map(message -> new WenXinMessage().setRole(message.getRole()).setContent(message.getContent())
-                )
-                .collect(Collectors.toList());
-        return new WenXinChatRequest()
-                .setMessages(wenXinMessages);
+        return new WenXinChatRequest().setMessages(source.getMessages());
     }
 
     @Override
     public AiResponse convertResponse(WenXinChatResponse response) {
         return new AiChatResponse()
-                .setChoices(Arrays.asList(new AiChatResponse.AiChoice()
+                .setChoices(Collections.singletonList(new AiChoice()
                         .setFinishReason(response.getIsEnd() ? WenXinEnum.FinishReason.STOP.getCode() : null)
                         .setMessage(new AiMessage().setRole(AiEnum.Role.ASSISTANT.getCode())
                                 .setContent(response.getResult()))

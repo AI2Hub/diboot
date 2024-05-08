@@ -15,7 +15,7 @@
  */
 package com.diboot.ai.models.kimi;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.diboot.ai.common.response.AiChoice;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -29,14 +29,9 @@ import java.io.Serializable;
  * @date 2024-04-28
  */
 @Getter @Setter @Accessors(chain = true)
-public class KimiChoice implements Serializable {
+public class KimiChoice extends AiChoice implements Serializable {
     private static final long serialVersionUID = -6133725684226421453L;
 
     private int index;
-
-    private KimiMessage message;
-
-    @JsonProperty("finish_reason")
-    private String finishReason;
 
 }

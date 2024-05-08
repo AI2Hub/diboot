@@ -36,6 +36,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class QwenChatModelProvider extends AbstractModelProvider implements AiRequestConvert<AiChatRequest, QwenChatRequest>,
-        AiResponseConvert<QwenChatResponse, AiChatResponse> {
+        AiResponseConvert<AiChatResponse, QwenChatResponse> {
 
     public QwenChatModelProvider(AiConfiguration configuration) {
         super(configuration,
@@ -84,14 +85,9 @@ public class QwenChatModelProvider extends AbstractModelProvider implements AiRe
     @Override
     public QwenChatRequest convertRequest(AiChatRequest source) {
         // 将通用消息体构建成模型消息体
-        List<QwenMessage> qwenMessages = source.getMessages().stream()
-                .map(message -> new QwenMessage().setRole(message.getRole())
-                        .setName(message.getName()).setContent(message.getContent())
-                )
-                .collect(Collectors.toList());
         return new QwenChatRequest()
                 .setModel(source.getModel())
-                .setInput(new QwenChatRequest.Input().setMessages(qwenMessages));
+                .setInput(new QwenChatRequest.Input().setMessages(source.getMessages()));
     }
 
     @Override
@@ -100,10 +96,10 @@ public class QwenChatModelProvider extends AbstractModelProvider implements AiRe
             return null;
         }
         String finishReason = response.getOutput().getFinishReason();
-        List<QwenChatResponse.AliChoice> choices = response.getOutput().getChoices();
+        List<QwenChoice> choices = response.getOutput().getChoices();
         if (V.notEmpty(finishReason)) {
             return new AiChatResponse()
-                    .setChoices(Arrays.asList(new AiChatResponse.AiChoice()
+                    .setChoices(Collections.singletonList(new QwenChoice()
                             .setFinishReason(finishReason)
                             .setMessage(new AiMessage().setRole(AiEnum.Role.SYSTEM.getCode())
                                     .setContent(response.getOutput().getText()))
@@ -111,11 +107,7 @@ public class QwenChatModelProvider extends AbstractModelProvider implements AiRe
         }
 //       入参 result_format = message
         else if (V.notEmpty(choices)) {
-            return new AiChatResponse()
-                    .setChoices(Arrays.asList(new AiChatResponse.AiChoice()
-                            .setFinishReason(choices.get(0).getFinishReason())
-                            .setMessage(BeanUtils.convert(choices.get(0).getMessage(), AiMessage.class))
-                    ));
+            return new AiChatResponse().setChoices(choices);
         }
         return null;
     }

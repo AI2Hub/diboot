@@ -15,9 +15,12 @@
  */
 package com.diboot.ai.models.wenxin;
 
+import com.diboot.ai.common.AiMessage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.io.Serial;
 
 /**
  * 百度千帆请求消息
@@ -29,14 +32,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class WenXinMessage {
-    /**
-     * 角色：user、assistant
-     */
-    private String role;
+public class WenXinMessage extends AiMessage {
+    @Serial
+    private static final long serialVersionUID = -6440157096680213398L;
 
-    /**
-     * 内容
-     */
-    private String content;
 }

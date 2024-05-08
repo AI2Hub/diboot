@@ -15,6 +15,7 @@
  */
 package com.diboot.ai.models.qwen;
 
+import com.diboot.ai.common.AiMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -122,7 +123,7 @@ public class QwenChatRequest implements Serializable {
         /**
          * 表示用户与模型的对话历史
          */
-        private List<QwenMessage> messages;
+        private List<AiMessage> messages;
 
     }
 }

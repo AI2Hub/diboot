@@ -30,7 +30,7 @@ import java.util.List;
  * @date 2024-04-28
  */
 @Getter @Setter @Accessors(chain = true)
-public class KimiResponse implements Serializable {
+public class KimiChatResponse implements Serializable {
     private static final long serialVersionUID = 2438290388456986212L;
 
     /* 返回结果样例:

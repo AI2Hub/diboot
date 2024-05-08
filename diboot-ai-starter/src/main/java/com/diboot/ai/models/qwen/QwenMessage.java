@@ -15,9 +15,13 @@
  */
 package com.diboot.ai.models.qwen;
 
+import com.diboot.ai.common.AiMessage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * 通义千问请求消息
@@ -29,17 +33,9 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class QwenMessage {
-    /**
-     * 角色
-     */
-    // system、user、assistant和tool。
-    private String role;
-
-    /**
-     * 内容
-     */
-    private String content;
+public class QwenMessage extends AiMessage {
+    @Serial
+    private static final long serialVersionUID = 7159471227978789423L;
 
     /**
      * role为tool时不能省略

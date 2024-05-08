@@ -19,6 +19,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * 请求消息体
  *
@@ -29,7 +32,10 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AiMessage {
+public class AiMessage implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 3755505405381183422L;
+
     // system、user、assistant和tool。
     private String role;
 
