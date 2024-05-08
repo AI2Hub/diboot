@@ -19,6 +19,7 @@ import com.diboot.ai.client.AiClient;
 import com.diboot.ai.common.AiMessage;
 import com.diboot.ai.common.request.AiChatRequest;
 import com.diboot.ai.common.request.AiEnum;
+import com.diboot.ai.models.kimi.KimiEnum;
 import com.diboot.ai.models.qwen.QwenEnum;
 import com.diboot.ai.models.wenxin.WenXinEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,35 @@ public class ApplicationTest {
     public void testWenXinChat() throws Exception {
         AiChatRequest aiRequest = new AiChatRequest();
         aiRequest.setModel(WenXinEnum.Model.YI_34B_CHAT.getCode());
+        aiRequest.setMessages(
+                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
+        );
+        // 保持长链接
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        aiClient.executeStream(aiRequest, new EventSourceListener() {
+            @Override
+            public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type, @NotNull String data) {
+                log.debug("---------> {}, {}, {}", id, type);
+                log.debug(data);
+            }
+
+            @Override
+            public void onClosed(@NotNull EventSource eventSource) {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onFailure(@NotNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
+                countDownLatch.countDown();
+            }
+        });
+        countDownLatch.await();
+    }
+
+    @Test
+    public void testKimiChat() throws Exception {
+        AiChatRequest aiRequest = new AiChatRequest();
+        aiRequest.setModel(KimiEnum.Model.MOONSHOT_V1_8K.getCode());
         aiRequest.setMessages(
                 Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
         );

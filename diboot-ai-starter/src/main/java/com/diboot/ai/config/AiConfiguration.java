@@ -16,6 +16,7 @@
 package com.diboot.ai.config;
 
 import com.diboot.ai.models.ModelProvider;
+import com.diboot.ai.models.kimi.KimiChatModelProvider;
 import com.diboot.ai.models.qwen.QwenChatModelProvider;
 import com.diboot.ai.models.qwen.QwenConfig;
 import com.diboot.ai.models.kimi.KimiConfig;
@@ -111,6 +112,7 @@ public class AiConfiguration {
     private void initDefaultModelProvider() {
         modelProviders.add(new QwenChatModelProvider(this));
         modelProviders.add(new WenXinChatModelProvider(this));
+        modelProviders.add(new KimiChatModelProvider(this));
     }
 
     /**
