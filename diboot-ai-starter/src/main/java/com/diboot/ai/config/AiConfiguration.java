@@ -17,9 +17,9 @@ package com.diboot.ai.config;
 
 import com.diboot.ai.models.ModelProvider;
 import com.diboot.ai.models.kimi.KimiChatModelProvider;
+import com.diboot.ai.models.kimi.KimiConfig;
 import com.diboot.ai.models.qwen.QwenChatModelProvider;
 import com.diboot.ai.models.qwen.QwenConfig;
-import com.diboot.ai.models.kimi.KimiConfig;
 import com.diboot.ai.models.wenxin.WenXinChatModelProvider;
 import com.diboot.ai.models.wenxin.WenXinConfig;
 import lombok.Getter;

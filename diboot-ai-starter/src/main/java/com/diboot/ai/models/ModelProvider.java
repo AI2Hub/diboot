@@ -19,7 +19,7 @@ import com.diboot.ai.common.request.AiRequest;
 import okhttp3.sse.EventSourceListener;
 
 /**
- * 模型拦截器
+ * 模型Provider
  *
  * @author : uu
  * @version : v3.4
@@ -37,7 +37,7 @@ public interface ModelProvider {
     void executeStream(AiRequest aiRequest, EventSourceListener listener);
 
     /**
-     * 当前拦截器是否支持模型
+     * 当前provider是否支持模型
      *
      * @param model 模型名称
      * @return

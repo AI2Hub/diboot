@@ -26,9 +26,12 @@ import com.diboot.ai.common.response.AiResponse;
 import com.diboot.ai.common.response.AiResponseConvert;
 import com.diboot.ai.config.AiConfiguration;
 import com.diboot.ai.models.AbstractModelProvider;
+import com.diboot.ai.models.wenxin.WenXinConfig;
 import com.diboot.ai.models.wenxin.WenXinEnum;
+import com.diboot.core.exception.BusinessException;
 import com.diboot.core.util.JSON;
 import com.diboot.core.util.V;
+import com.diboot.core.vo.Status;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -99,6 +102,12 @@ public class KimiChatModelProvider extends AbstractModelProvider implements AiRe
 
     @Override
     public boolean supports(String model) {
+        // 检查配置是否完整
+        KimiConfig kimiConfig = configuration.getKimi();
+        if (V.isEmpty(kimiConfig) || V.isEmpty(kimiConfig.getApiKey()) ) {
+            log.error("未配置 {} 模型key", model);
+            throw new BusinessException(Status.FAIL_OPERATION, "未配置模型key");
+        }
         return supportModels.contains(model);
     }
 
