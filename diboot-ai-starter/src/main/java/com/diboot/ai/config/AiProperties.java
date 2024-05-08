@@ -46,6 +46,20 @@ public class AiProperties {
      */
     private HttpLoggingInterceptor.Level httpLoggingLevel = HttpLoggingInterceptor.Level.BASIC;
 
+    // http 超时配置
+    /**
+     * 连接超时 默认100s
+     */
+    private Long connectTimeout = 100L;
+    /**
+     * 读超时 默认100s
+     */
+    private Long readTimeout = 100L;
+    /**
+     * 写超时 默认100s
+     */
+    private Long writeTimeout = 100L;
+
     /**
      * 阿里模型配置
      */

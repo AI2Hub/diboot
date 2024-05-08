@@ -90,6 +90,7 @@ public class WenXinChatModelProvider extends AbstractModelProvider implements Ai
     @Override
     public AiResponse convertResponse(WenXinChatResponse response) {
         return new AiChatResponse()
+                .setPattern(AiChatResponse.ResultPattern.INCREASE)
                 .setChoices(Collections.singletonList(new AiChoice()
                         .setFinishReason(response.getIsEnd() ? WenXinEnum.FinishReason.STOP.getCode() : null)
                         .setMessage(new AiMessage().setRole(AiEnum.Role.ASSISTANT.getCode())

@@ -32,6 +32,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Diboot Ai 自动配置类
  *
@@ -63,6 +65,9 @@ public class AiAutoConfig implements WebMvcConfigurer {
     @ConditionalOnMissingBean
     public AiClient aiClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(aiProperties.getConnectTimeout(), TimeUnit.SECONDS)
+                .readTimeout(aiProperties.getReadTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(aiProperties.getWriteTimeout(), TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(aiProperties.getHttpLoggingLevel()))
                 .build();
         // 构建 AiConfiguration
