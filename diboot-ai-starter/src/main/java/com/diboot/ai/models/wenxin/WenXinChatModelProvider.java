@@ -81,13 +81,16 @@ public class WenXinChatModelProvider extends AbstractModelProvider implements Ai
 
     @Override
     public boolean supports(String model) {
-        // 检查配置是否完整
-        WenXinConfig wenXinConfig = configuration.getWenxin();
-        if (V.isEmpty(wenXinConfig) || V.isEmpty(wenXinConfig.getApiKey()) || V.isEmpty(wenXinConfig.getSecretKey())) {
-            log.error("未配置 {} 模型key 或 secret", model);
-            throw new BusinessException(Status.FAIL_OPERATION, "未配置模型key 或 secret");
+        if (supportModels.contains(model)) {
+            // 检查配置是否完整
+            WenXinConfig wenXinConfig = configuration.getWenxin();
+            if (V.isEmpty(wenXinConfig) || V.isEmpty(wenXinConfig.getApiKey()) || V.isEmpty(wenXinConfig.getSecretKey())) {
+                log.error("未配置 {} 模型key 或 secret", model);
+                throw new BusinessException(Status.FAIL_OPERATION, "未配置模型key 或 secret");
+            }
+            return true;
         }
-        return supportModels.contains(model);
+        return false;
     }
 
     @Override
