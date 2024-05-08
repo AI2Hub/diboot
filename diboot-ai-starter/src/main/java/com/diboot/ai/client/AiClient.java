@@ -74,5 +74,4 @@ public class AiClient {
         throw new BusinessException(Status.FAIL_OPERATION, aiRequest.getModel() + "无对应模型服务，请选择其他模型");
     }
 
-
 }

@@ -58,6 +58,10 @@ public interface AiResponseConvert<R extends AiResponse, S> {
 
             @Override
             public void onEvent(@NotNull EventSource eventSource, @Nullable String id, @Nullable String type, @NotNull String data) {
+                // 忽略 kimi 等返回结果结束标记
+                if("[DONE]".equals(data)) {
+                    return;
+                }
                 // 将data转化成具体模型的响应数据
                 S response = dataConvertFunction.apply(data);
                 // 将模型数据转化为统一封装的响应值

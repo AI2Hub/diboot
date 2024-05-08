@@ -33,7 +33,6 @@ import java.util.List;
 @Setter
 public class AiChatRequest implements AiRequest {
 
-
     /**
      * 对话消息
      */
@@ -42,5 +41,6 @@ public class AiChatRequest implements AiRequest {
     /**
      * 对话模型
      */
-    String model = QwenEnum.Model.ALI_QWEN_TURBO.getCode();
+    String model;
+
 }

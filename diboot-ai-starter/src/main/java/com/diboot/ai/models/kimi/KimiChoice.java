@@ -15,6 +15,7 @@
  */
 package com.diboot.ai.models.kimi;
 
+import com.diboot.ai.common.AiMessage;
 import com.diboot.ai.common.response.AiChoice;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,5 +34,7 @@ public class KimiChoice extends AiChoice implements Serializable {
     private static final long serialVersionUID = -6133725684226421453L;
 
     private int index;
+
+    private AiMessage delta;
 
 }

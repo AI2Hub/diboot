@@ -15,16 +15,21 @@
  */
 package com.diboot.ai.models.kimi;
 
+import com.diboot.ai.common.AiMessage;
 import com.diboot.ai.common.request.AiChatRequest;
+import com.diboot.ai.common.request.AiEnum;
 import com.diboot.ai.common.request.AiRequest;
 import com.diboot.ai.common.request.AiRequestConvert;
 import com.diboot.ai.common.response.AiChatResponse;
+import com.diboot.ai.common.response.AiChoice;
 import com.diboot.ai.common.response.AiResponse;
 import com.diboot.ai.common.response.AiResponseConvert;
 import com.diboot.ai.config.AiConfiguration;
 import com.diboot.ai.models.AbstractModelProvider;
+import com.diboot.ai.models.wenxin.WenXinEnum;
 import com.diboot.core.util.JSON;
 import com.diboot.core.util.V;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.sse.EventSourceListener;
@@ -32,6 +37,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +47,7 @@ import java.util.stream.Collectors;
  * @version v3.4.0
  * @date 2024/5/7
  */
+@Slf4j
 public class KimiChatModelProvider extends AbstractModelProvider implements AiRequestConvert<AiChatRequest, KimiChatRequest>,
         AiResponseConvert<AiChatResponse, KimiChatResponse> {
 
@@ -63,7 +70,13 @@ public class KimiChatModelProvider extends AbstractModelProvider implements AiRe
         if (V.isEmpty(response.getChoices())) {
             return null;
         }
-        return new AiChatResponse().setChoices(response.getChoices());
+        AiMessage aiMessage = response.getChoices().get(0).getDelta();
+        return new AiChatResponse()
+                .setChoices(Collections.singletonList(new AiChoice()
+                        .setFinishReason(V.equals("[DONE]", aiMessage.getContent()) ? WenXinEnum.FinishReason.STOP.getCode() : null)
+                        .setMessage(new AiMessage().setRole(AiEnum.Role.ASSISTANT.getCode())
+                                .setContent(aiMessage.getContent()))
+                ));
     }
 
     @Override
