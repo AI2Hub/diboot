@@ -109,20 +109,7 @@ public class IamPluginInitializer implements ApplicationRunner {
                 log.error("初始化资源权限数据出错: {}，请手动配置前端资源初始的权限数据", e.getMessage());
             }
         }
-        // 初始化chat ai相关资源
-        if (resourcePermissionService != null && !resourcePermissionService.exists(IamResource::getResourceCode, "ChatAI")) {
-            List<IamResourceListVO> permissionListVOs = new ArrayList<>();
-            IamResourceListVO chatAIPermission = (IamResourceListVO) new IamResourceListVO().setChildren(new ArrayList<>()).setParentId("0").setDisplayType("MENU").setDisplayName("ChatAI").setRoutePath("chat-ai").setResourceCode("ChatAI").setPermissionCode("").setMeta("{\"icon\":\"Element:Cpu\",\"componentPath\":\"@/views/chat-ai/index.vue\",\"keepAlive\":false,\"hidden\":true}").setSortId(90L);
-            permissionListVOs.add(chatAIPermission);
-            // 插入多层级资源权限初始数据
-            try {
-                for (IamResourceListVO iamResourceListVO : permissionListVOs) {
-                    resourcePermissionService.deepCreateResourceAndChildren(iamResourceListVO);
-                }
-            } catch (BusinessException e) {
-                log.error("初始化资源权限数据出错: {}，请手动配置前端资源初始的权限数据", e.getMessage());
-            }
-        }
+
         // 插入公司根节点
         IamOrgService iamOrgService = ContextHolder.getBean(IamOrgService.class);
         IamOrg iamOrg = new IamOrg();

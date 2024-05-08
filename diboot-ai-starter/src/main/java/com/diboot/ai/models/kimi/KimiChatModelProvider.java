@@ -70,10 +70,12 @@ public class KimiChatModelProvider extends AbstractModelProvider implements AiRe
         if (V.isEmpty(response.getChoices())) {
             return null;
         }
-        AiMessage aiMessage = response.getChoices().get(0).getDelta();
+        KimiChoice kimiChoice = response.getChoices().get(0);
+        AiMessage aiMessage = kimiChoice.getDelta();
         return new AiChatResponse()
+                .setPattern(AiChatResponse.ResultPattern.INCREASE)
                 .setChoices(Collections.singletonList(new AiChoice()
-                        .setFinishReason(V.equals("[DONE]", aiMessage.getContent()) ? WenXinEnum.FinishReason.STOP.getCode() : null)
+                        .setFinishReason(kimiChoice.getFinishReason())
                         .setMessage(new AiMessage().setRole(AiEnum.Role.ASSISTANT.getCode())
                                 .setContent(aiMessage.getContent()))
                 ));

@@ -15,18 +15,21 @@
  */
 package com.diboot.ai.init;
 
-import com.diboot.core.entity.Dictionary;
-import com.diboot.core.service.DictionaryService;
+import com.diboot.core.exception.BusinessException;
 import com.diboot.core.util.ContextHolder;
-import com.diboot.core.util.JSON;
 import com.diboot.core.util.SqlFileInitializer;
-import com.diboot.core.vo.DictionaryVO;
+import com.diboot.iam.entity.IamResource;
+import com.diboot.iam.service.IamResourceService;
+import com.diboot.iam.vo.IamResourceListVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 组件初始化
@@ -47,6 +50,29 @@ public class AiPluginInitializer implements ApplicationRunner {
         String initDetectSql = "SELECT id FROM dbt_ai_session";
         if (!SqlFileInitializer.checkSqlExecutable(initDetectSql)) {
             SqlFileInitializer.initBootstrapSql(this.getClass(), "ai");
+            // 插入相关数据：Dict，Role等
+            insertInitData();
         }
     }
+
+
+    private synchronized void insertInitData() {
+        // 插入iam组件所需的初始权限数据
+        IamResourceService resourcePermissionService = ContextHolder.getBean(IamResourceService.class);
+        // 初始化chat ai相关资源
+        if (resourcePermissionService != null && !resourcePermissionService.exists(IamResource::getResourceCode, "ChatAI")) {
+            List<IamResourceListVO> permissionListVOs = new ArrayList<>();
+            IamResourceListVO chatAIPermission = (IamResourceListVO) new IamResourceListVO().setChildren(new ArrayList<>()).setParentId("0").setDisplayType("MENU").setDisplayName("ChatAI").setRoutePath("chat-ai").setResourceCode("ChatAI").setPermissionCode("").setMeta("{\"icon\":\"Element:Cpu\",\"componentPath\":\"@/views/chat-ai/index.vue\",\"keepAlive\":false,\"hidden\":true}").setSortId(90L);
+            permissionListVOs.add(chatAIPermission);
+            // 插入多层级资源权限初始数据
+            try {
+                for (IamResourceListVO iamResourceListVO : permissionListVOs) {
+                    resourcePermissionService.deepCreateResourceAndChildren(iamResourceListVO);
+                }
+            } catch (BusinessException e) {
+                log.error("初始化资源权限数据出错: {}，请手动配置前端资源初始的权限数据", e.getMessage());
+            }
+        }
+    }
+
 }
