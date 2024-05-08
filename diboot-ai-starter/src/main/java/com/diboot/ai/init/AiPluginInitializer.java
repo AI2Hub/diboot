@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
  * @version : v3.4
  * @Date 2024/5/1
  */
-@Order(901)
+@Order(961)
 @Slf4j
 @Component
 @ConditionalOnProperty(prefix = "diboot", name = "init-sql", havingValue = "true")
