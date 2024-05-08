@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models.wenxin.utils;
+package com.diboot.ai.models.wenxin;
 
 import com.diboot.ai.models.wenxin.WenXinConfig;
 import com.diboot.core.exception.BusinessException;
@@ -37,14 +37,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * token 工具类
+ * token 工具
  *
  * @author : uu
  * @version : v3.4
  * @Date 2024/5/7
  */
 @Slf4j
-public class TokenUtils {
+public class WenXinToken {
     private final static Map<String, TokenWrapper> TOKEN_CACHE = new ConcurrentHashMap<>(8);
 
     // token key

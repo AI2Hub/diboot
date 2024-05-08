@@ -83,13 +83,12 @@ public class QwenChatModelProvider extends AbstractModelProvider implements AiRe
 
     @Override
     public QwenChatRequest convertRequest(AiChatRequest source) {
-        // 将消息转换aliMessage
+        // 将通用消息体构建成模型消息体
         List<QwenMessage> qwenMessages = source.getMessages().stream()
                 .map(message -> new QwenMessage().setRole(message.getRole())
                         .setName(message.getName()).setContent(message.getContent())
                 )
                 .collect(Collectors.toList());
-        // 转换请求
         return new QwenChatRequest()
                 .setModel(source.getModel())
                 .setInput(new QwenChatRequest.Input().setMessages(qwenMessages));

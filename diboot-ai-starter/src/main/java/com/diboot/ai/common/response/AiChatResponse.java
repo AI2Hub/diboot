@@ -16,6 +16,7 @@
 package com.diboot.ai.common.response;
 
 import com.diboot.ai.common.AiMessage;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -45,6 +46,11 @@ public class AiChatResponse implements AiResponse, Serializable {
      */
     private List<AiChoice> choices;
 
+    /**
+     * 结果模式
+     */
+    private ResultPattern pattern = ResultPattern.REPLACE;
+
     @Getter
     @Setter
     @Accessors(chain = true)
@@ -58,5 +64,19 @@ public class AiChatResponse implements AiResponse, Serializable {
          * 内容
          */
         private AiMessage message;
+    }
+
+    /**
+     * 结果模式
+     */
+    @Getter
+    @AllArgsConstructor
+    public enum ResultPattern {
+        // 结果追加 （每次返回剩余部分）
+        INCREASE("increase"),
+        // 结果替换 （每次返回都是完整的结果）
+        REPLACE("replace");
+
+        private String code;
     }
 }

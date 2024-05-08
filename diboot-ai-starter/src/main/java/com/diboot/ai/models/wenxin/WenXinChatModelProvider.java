@@ -25,11 +25,6 @@ import com.diboot.ai.common.response.AiResponse;
 import com.diboot.ai.common.response.AiResponseConvert;
 import com.diboot.ai.config.AiConfiguration;
 import com.diboot.ai.models.AbstractModelProvider;
-import com.diboot.ai.models.wenxin.params.WenXinChatRequest;
-import com.diboot.ai.models.wenxin.params.WenXinChatResponse;
-import com.diboot.ai.models.wenxin.params.WenXinEnum;
-import com.diboot.ai.models.wenxin.params.WenXinMessage;
-import com.diboot.ai.models.wenxin.utils.TokenUtils;
 import com.diboot.core.util.JSON;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
@@ -66,12 +61,12 @@ public class WenXinChatModelProvider extends AbstractModelProvider implements Ai
     public void executeStream(AiRequest aiRequest, EventSourceListener listener) {
         // 将通用参数 转化为 具体模型参数
         WenXinChatRequest baiduChatRequest = convertRequest((AiChatRequest) aiRequest);
-        // 构建请求对象
         WenXinConfig wenXinConfig = configuration.getWenxin();
         // 获取token
-        String accessToken = TokenUtils.getAccessToken(configuration.getOkhttpClient(), wenXinConfig);
+        String accessToken = WenXinToken.getAccessToken(configuration.getOkhttpClient(), wenXinConfig);
+        // 构建请求对象
         Request request = new Request.Builder()
-                .url(wenXinConfig.getChatApi().concat("?").concat(TokenUtils.TOKEN_KEY).concat("=").concat(accessToken))
+                .url(wenXinConfig.getChatApi().concat("?").concat(WenXinToken.TOKEN_KEY).concat("=").concat(accessToken))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .post(RequestBody.Companion.create(JSON.toJSONString(baiduChatRequest), okhttp3.MediaType.parse(MediaType.APPLICATION_JSON_VALUE)))
                 .build();
@@ -86,12 +81,11 @@ public class WenXinChatModelProvider extends AbstractModelProvider implements Ai
 
     @Override
     public WenXinChatRequest convertRequest(AiChatRequest source) {
-        // 将消息转换aliMessage
+        // 将通用消息体构建成模型消息体
         List<WenXinMessage> wenXinMessages = source.getMessages().stream()
                 .map(message -> new WenXinMessage().setRole(message.getRole()).setContent(message.getContent())
                 )
                 .collect(Collectors.toList());
-        // 转换请求
         return new WenXinChatRequest()
                 .setMessages(wenXinMessages);
     }

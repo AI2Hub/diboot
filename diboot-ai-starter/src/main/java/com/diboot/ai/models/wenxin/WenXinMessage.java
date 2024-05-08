@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.diboot.ai.models.wenxin.params;
+package com.diboot.ai.models.wenxin;
 
 import lombok.Getter;
 import lombok.Setter;

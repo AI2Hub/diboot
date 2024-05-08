@@ -20,7 +20,7 @@ import com.diboot.ai.common.AiMessage;
 import com.diboot.ai.common.request.AiChatRequest;
 import com.diboot.ai.common.request.AiEnum;
 import com.diboot.ai.models.qwen.QwenEnum;
-import com.diboot.ai.models.wenxin.params.WenXinEnum;
+import com.diboot.ai.models.wenxin.WenXinEnum;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
