@@ -150,9 +150,8 @@ public abstract class BaseAuthServiceImpl implements AuthService {
         IamLoginTrace loginTrace = new IamLoginTrace();
         loginTrace.setAuthType(getAuthType()).setAuthAccount(authToken.getAuthAccount()).setUserType(authToken.getUserType()).setIsSuccess(isSuccess);
         BaseLoginUser currentUser = IamSecurityUtils.getCurrentUser();
-        if(currentUser != null){
-            loginTrace.setUserId(currentUser.getId());
-        }
+        String currentUserId = currentUser == null ? Cons.ID_PREVENT_NULL : currentUser.getId();
+        loginTrace.setUserId(currentUserId);
         // 记录客户端信息
         String userAgent = HttpHelper.getUserAgent(request);
         String ipAddress = HttpHelper.getRequestIp(request);
