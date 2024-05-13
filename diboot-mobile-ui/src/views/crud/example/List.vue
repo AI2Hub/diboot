@@ -1,15 +1,7 @@
 <script setup lang='ts'>
+import type { CustomerInfo } from './type'
 
-interface CustomInfo {
-  title: string,
-  name: string,
-  contacts: string,
-  telephone: string,
-  department: string,
-  date: string,
-}
-
-const list = ref<CustomInfo[]>([])
+const list = ref<CustomerInfo[]>([])
 const loading = ref(false)
 const finished = ref(false)
 const error = ref(false)
