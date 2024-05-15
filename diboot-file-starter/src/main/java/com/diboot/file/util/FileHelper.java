@@ -178,7 +178,7 @@ public class FileHelper{
 		if(fileName.lastIndexOf(POINT) > 0){
 			return fileName.substring(fileName.lastIndexOf(POINT)+1).toLowerCase();
 		}
-		log.warn("检测到没有后缀的文件名:" + fileName);
+		log.debug("检测到没有后缀的文件名:" + fileName);
 		return "";
 	}
 

@@ -60,6 +60,7 @@ public class HttpHelper {
      * 文件扩展名-ContentType的对应关系
      */
     private static final Map<String, String> EXT_CONTENT_TYPE_MAP = new HashMap(){{
+        put("", "text/plain"); //无后缀，默认为文本
         put("xls", "application/x-msdownload");
         put("xlsx", "application/x-msdownload");
         put("doc", "application/x-msdownload");
@@ -328,7 +329,7 @@ public class HttpHelper {
      * @return
      */
     public static String getContextType(String fileName){
-        String ext = S.substringAfterLast(fileName, ".");
+        String ext = FileHelper.getFileExtByName(fileName);
         String contentType = EXT_CONTENT_TYPE_MAP.get(ext);
         if(contentType == null){
             contentType = DEFAULT_CONTEXT_TYPE;

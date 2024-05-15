@@ -44,7 +44,7 @@ public class LocalFileStorageServiceImpl implements FileStorageService {
     public FileRecord save(MultipartFile file) throws Exception {
         String fileUid = S.newUuid();
         String ext = FileHelper.getFileExtByName(file.getOriginalFilename());
-        String newFileName = fileUid + "." + ext;
+        String newFileName = V.notEmpty(ext)? fileUid + "." + ext : fileUid;
         String fileFullPath = FileHelper.saveFile(file, newFileName);
        return new FileRecord(fileUid)
                .setFileName(file.getOriginalFilename())
@@ -59,7 +59,7 @@ public class LocalFileStorageServiceImpl implements FileStorageService {
         // 文件后缀
         String fileUid = S.newUuid();
         String ext = FileHelper.getFileExtByName(fileName);
-        String newFileName = fileUid + "." + ext;
+        String newFileName = V.notEmpty(ext)? fileUid + "." + ext : fileUid;
         String fileFullPath = FileHelper.saveFile(inputStream, newFileName);
         return new FileRecord(fileUid)
                 .setFileName(fileName)
