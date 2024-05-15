@@ -56,7 +56,10 @@ watch(
 )
 watch(
   () => props.modelValue,
-  val => (value.value = props.config.type === 'input-number' && val ? Number(val as string) : val)
+  val => {
+    value.value = val && ['input-number', 'boolean'].includes(props.config.type) ? JSON.parse(`${val}`) : val
+    if (!val) fileList.value.length = 0
+  }
 )
 
 const requiredRule = {
