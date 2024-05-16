@@ -50,7 +50,7 @@ public class ApplicationTest {
         AiChatRequest aiRequest = new AiChatRequest();
         aiRequest.setModel(QwenEnum.Model.ALI_QWEN_MAX.getCode());
         aiRequest.setMessages(
-                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
+                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("Diboot开发框架的优势有哪些？"))
         );
         // 保持长链接
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -79,7 +79,7 @@ public class ApplicationTest {
         AiChatRequest aiRequest = new AiChatRequest();
         aiRequest.setModel(WenXinEnum.Model.YI_34B_CHAT.getCode());
         aiRequest.setMessages(
-                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
+                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("Diboot开发框架的优势有哪些？"))
         );
         // 保持长链接
         CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -108,7 +108,7 @@ public class ApplicationTest {
         AiChatRequest aiRequest = new AiChatRequest();
         aiRequest.setModel(KimiEnum.Model.MOONSHOT_V1_8K.getCode());
         aiRequest.setMessages(
-                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("什么是Diboot？"))
+                Arrays.asList(new AiMessage().setRole(AiEnum.Role.USER.getCode()).setContent("Diboot开发框架的优势有哪些？"))
         );
         // 保持长链接
         CountDownLatch countDownLatch = new CountDownLatch(1);
