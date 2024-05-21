@@ -1,5 +1,5 @@
 <script setup lang="ts" name="MessageTemplate">
-import { Search, ArrowDown, ArrowUp, Plus } from '@element-plus/icons-vue'
+import { Search, ArrowDown, Plus } from '@element-plus/icons-vue'
 import type { MessageTemplate } from './type'
 import Detail from '@/views/system/message-template/Detail.vue'
 import Form from './Form.vue'
@@ -8,9 +8,6 @@ const { queryParam, loading, dataList, pagination, getList, onSearch, resetFilte
   baseApi: '/message-template'
 })
 getList()
-
-// 搜索区折叠
-const searchState = ref(false)
 
 const detailRef = ref()
 const openDetail = (id: string) => {

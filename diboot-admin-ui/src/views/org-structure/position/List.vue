@@ -1,5 +1,5 @@
 <script setup lang="ts" name="Position">
-import { Search, ArrowDown, ArrowUp, Plus } from '@element-plus/icons-vue'
+import { Search, ArrowDown, Plus } from '@element-plus/icons-vue'
 import type { Position } from './type'
 import Detail from './Detail.vue'
 import Form from './Form.vue'
@@ -13,9 +13,6 @@ const { queryParam, onSearch, getList, loading, dataList, pagination, remove, re
 >({
   baseApi: '/iam/position'
 })
-
-// 搜索区折叠
-const searchState = ref(false)
 
 getList()
 

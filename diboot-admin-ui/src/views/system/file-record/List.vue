@@ -1,5 +1,5 @@
 <script setup lang="ts" name="FileRecord">
-import { Search, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue'
 import Detail from './Detail.vue'
 import Form from './Form.vue'
 
@@ -11,9 +11,6 @@ const { queryParam, onSearch, resetFilter, getList, loading, dataList, paginatio
 })
 
 getList()
-
-// 搜索区折叠
-const searchState = ref(false)
 
 const { relatedData, asyncLoading, remoteRelatedDataFilter } = useOption({
   asyncLoad: { userOptions: { type: 'IamUser', label: 'realname' } }
