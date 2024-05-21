@@ -1,5 +1,5 @@
 <script setup lang="ts" name="UserList">
-import { Search, ArrowUp, ArrowDown, Plus } from '@element-plus/icons-vue'
+import { Search, Plus } from '@element-plus/icons-vue'
 import type { UserPosition } from '../position/type'
 import type { UserModel } from './type'
 import Detail from './Detail.vue'
@@ -32,9 +32,6 @@ const { queryParam, loading, dataList, pagination, getList, buildQueryParam, onS
 >({ baseApi })
 getList()
 
-// 搜索区折叠
-const searchState = ref(false)
-
 const detailRef = ref()
 const openDetail = (id: string) => {
   detailRef.value?.open(id)
@@ -60,46 +57,23 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
 
 <template>
   <div class="list-page">
-    <el-form v-show="searchState" label-width="80px" class="list-search" @submit.prevent>
-      <el-row :gutter="18">
-        <el-col :lg="8" :sm="12">
-          <el-form-item label="姓名">
-            <el-input v-model="queryParam.realname" clearable placeholder="" @change="onSearch" />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="8" :sm="12">
-          <el-form-item label="员工编号">
-            <el-input v-model="queryParam.userNum" clearable placeholder="" @change="onSearch" />
-          </el-form-item>
-        </el-col>
-        <el-col :lg="8" :sm="12">
-          <el-form-item label="电话">
-            <el-input v-model="queryParam.mobilePhone" clearable placeholder="" @change="onSearch" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-
     <el-space wrap class="list-operation">
       <el-button v-has-permission="'create'" :icon="Plus" type="primary" @click="openForm()">
         {{ $t('operation.create') }}
       </el-button>
       <excel-import :excel-base-api="`${baseApi}/excel`" :attach="() => ({ orgId })" @complete="onSearch" />
       <excel-export
-        v-has-permission="'export'"
-        :build-param="buildQueryParam"
-        :export-url="`${baseApi}/excel/export`"
-        :table-head-url="`${baseApi}/excel/export-table-head`"
+          v-has-permission="'export'"
+          :build-param="buildQueryParam"
+          :export-url="`${baseApi}/excel/export`"
+          :table-head-url="`${baseApi}/excel/export-table-head`"
       />
       <el-space>
-        <el-input v-show="!searchState" v-model="queryParam.realname" clearable placeholder="姓名" @change="onSearch" />
+        <el-input v-model="queryParam.realname" clearable placeholder="姓名" @change="onSearch" />
+        <el-input v-model="queryParam.userNum" clearable placeholder="员工编号" @change="onSearch" />
+        <el-input v-model="queryParam.mobilePhone" clearable placeholder="电话" @change="onSearch" />
         <el-button :icon="Search" type="primary" @click="onSearch">查询</el-button>
         <el-button title="重置查询条件" @click="resetFilter">重置</el-button>
-        <el-button
-          :icon="searchState ? ArrowUp : ArrowDown"
-          :title="searchState ? '收起' : '展开'"
-          @click="searchState = !searchState"
-        />
       </el-space>
     </el-space>
 
