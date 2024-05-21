@@ -49,7 +49,7 @@ public class JoinConditionManager extends BaseConditionManager {
             throw new InvalidUsageException("无法解析注解条件: " + joiner.getCondition());
         }
         // 解析中间表关联
-        String tableName = extractMiddleTableName(expressionList);
+        String tableName = extractMiddleTableName(expressionList, joiner.getJoin());
         if(tableName != null){
             joiner.setMiddleTable(tableName);
         }
