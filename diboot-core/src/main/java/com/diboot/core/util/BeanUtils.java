@@ -992,6 +992,15 @@ public class BeanUtils {
         }
         else {
             resolvableType = resolvableType.getSuperType();
+            ResolvableType[] types = resolvableType.getGenerics();
+            // 逐级向上找父类
+            if (V.isEmpty(types) || index >= types.length) {
+                resolvableType = resolvableType.getSuperType();
+                types = resolvableType.getGenerics();
+                if (V.isEmpty(types) || index >= types.length) {
+                    resolvableType = resolvableType.getSuperType();
+                }
+            }
         }
         ResolvableType[] types = resolvableType.getGenerics();
         if(V.isEmpty(types) || index >= types.length){
@@ -1000,7 +1009,7 @@ public class BeanUtils {
         if(V.notEmpty(types) && types.length > index){
             return types[index].resolve();
         }
-        log.debug("无法从 {} 类定义中获取泛型类{}", hostClass.getName(), index);
+        log.debug("无法从 {} 类定义中获取第 {} 个泛型类", hostClass.getName(), index);
         return null;
     }
 
