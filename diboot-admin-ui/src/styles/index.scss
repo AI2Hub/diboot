@@ -26,7 +26,7 @@
 .el-input-number,
 .el-cascader {
   width: 100% !important;
-  min-width: 100px;
+  min-width: 90px;
 
   .el-input__wrapper {
     width: -moz-available;
@@ -45,6 +45,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+
 
   .el-header {
     height: auto;
@@ -76,13 +77,13 @@
       margin-left: auto;
     }
 
+    .el-select {
+      min-width: 160px !important;
+    }
+
     .search-input {
       width: 200px;
     }
-  }
-
-  .el-pagination {
-    margin: 7px;
   }
 }
 
@@ -121,4 +122,33 @@
 
 .el-tag {
   border-width: 0 !important;
+}
+
+
+.el-dropdown {
+  .el-button:focus-visible {
+    outline: none !important;
+  }
+}
+
+.el-table th {
+  background-color: var(--el-fill-color-light) !important;
+}
+
+.el-dialog {
+  padding: unset !important;
+  .el-dialog__header ,.el-dialog__footer{
+    padding: 10px;
+    background-color: var(--el-fill-color-light);
+  }
+
+  .el-dialog__body {
+    padding: 10px ;
+  }
+}
+
+.el-pagination {
+  margin: 7px;
+  display: flex;
+  justify-content: flex-end;
 }

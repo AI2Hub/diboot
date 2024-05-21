@@ -167,7 +167,7 @@ const clickNode = (id?: string) => (parent.value = id ?? props.rootId)
   <el-dialog v-model="visible" top="3vh" :width="config.tree ? '75%' : ''" append-to-body @close="cancel">
     <template #header>
       <div style="display: flex">
-        <strong style="margin: 0 8px; zoom: 1.1">选择</strong>
+        <div style="zoom: 1.1; margin-right: 10px">选择</div>
         <el-space
           wrap
           :style="config.tree ? { width: 'calc(100% - 260px)', marginLeft: '200px' } : { width: 'calc(100% - 60px)' }"

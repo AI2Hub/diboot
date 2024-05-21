@@ -104,6 +104,7 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
     </el-space>
 
     <el-table ref="tableRef" v-loading="loading" row-key="id" :data="dataList" stripe height="100%">
+      <el-table-column prop="userNum" label="员工编号" />
       <el-table-column prop="realname" label="姓名">
         <template #default="{ row }">
           <span v-if="isPrimaryPosition(row.userPositionList)">
@@ -116,7 +117,7 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column prop="userNum" label="员工编号" />
+
       <el-table-column prop="genderLabel" label="性别" width="80">
         <template #default="{ row }">
           <el-tag :color="row.genderLabel?.ext?.color" effect="dark">
@@ -143,7 +144,7 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
         </template>
       </el-table-column>
       <el-table-column prop="sortId" label="排序号" width="90" />
-      <el-table-column prop="updateTime" label="更新时间" width="150" />
+      <el-table-column prop="updateTime" label="更新时间" width="160" />
       <el-table-column label="操作" width="160" fixed="right">
         <template #default="{ row }">
           <el-space>
