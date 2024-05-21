@@ -500,6 +500,10 @@ public abstract class BaseBinder<T> {
         WrapperHelper.buildOrderBy(queryWrapper, this.orderBy, this::toRefObjColumn);
     }
 
+    public Class<T> getReferencedEntityClass() {
+        return referencedEntityClass;
+    }
+
     /**
      * 通过Entity获取对应的Service实现类
      * @param entityClass

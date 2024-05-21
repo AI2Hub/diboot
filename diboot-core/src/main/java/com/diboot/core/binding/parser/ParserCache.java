@@ -140,6 +140,10 @@ public class ParserCache {
      * @return
      */
     public static String getEntityTableName(Class<?> entityClass){
+        if(entityClass == null) {
+            log.warn("entityClass 未指定！");
+            return null;
+        }
         EntityInfoCache entityInfoCache = BindingCacheManager.getEntityInfoByClass(entityClass);
         if(entityInfoCache != null){
             return entityInfoCache.getTableName();
