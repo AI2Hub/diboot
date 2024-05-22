@@ -143,6 +143,15 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		return getterFn.apply(entity);
 	}
 
+	@Override
+	public <FT> List<FT> getValuesOfField(String fieldKey, Object fieldVal, SFunction<T, FT> getterFn) {
+		PropInfo propInfo = BindingCacheManager.getPropInfoByClass(entityClass);
+		String fetchCol = propInfo.getColumnByField(BeanUtils.convertSFunctionToFieldName(getterFn));
+		String conditionCol = propInfo.getColumnByField(fieldKey);
+		QueryWrapper<T> queryWrapper = new QueryWrapper<T>().select(fetchCol).eq(conditionCol, fieldVal);
+		return getValuesOfField(queryWrapper, getterFn);
+	}
+
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public boolean createEntity(T entity) {
