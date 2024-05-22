@@ -244,7 +244,7 @@ public class IamAutoConfig {
     @Bean(name = "iamCacheManager")
     @ConditionalOnMissingBean
     public BaseCacheManager iamCacheManager() {
-        log.info("初始化IAM本地缓存: DynamicMemoryCacheManager");
+        log.info("初始化 IAM 内存缓存: DynamicMemoryCacheManager");
         Map<String, Integer> cacheName2ExpireMap = new HashMap<String, Integer>() {{
             put(Cons.CACHE_TOKEN_USERINFO, iamProperties.getTokenExpiresMinutes());
             put(Cons.CACHE_CAPTCHA, 5);
