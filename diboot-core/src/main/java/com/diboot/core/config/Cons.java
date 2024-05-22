@@ -298,4 +298,9 @@ public class Cons {
         ALL
     }
 
+    /**
+     * 字典的缓存key
+     */
+    public static String CACHE_NAME_DICTIONARY = "diboot:dictionary";
+
 }
