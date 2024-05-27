@@ -19,9 +19,11 @@ const props = defineProps<{ formValue?: Resource }>()
 
 const model = ref<Resource>()
 
+const reloadFormItem = ref(false)
 watch(
   () => props.formValue,
   value => {
+    reloadFormItem.value = !reloadFormItem.value
     model.value = _.clone(value)
     configResource.value = model.value ?? {}
   }
@@ -230,9 +232,9 @@ const toggleBtnResourceCodeSelect = (permission: Resource) => {
                     </el-tooltip>
                   </div>
                 </template>
-                <el-checkbox v-model="model.status" true-label="A" false-label="I" label="可用" />
-                <el-checkbox v-model="model.routeMeta.hidden" label="隐藏" />
-                <el-checkbox v-model="model.routeMeta.keepAlive" label="缓存" />
+                <el-checkbox :key="reloadFormItem" v-model="model.status" true-label="A" false-label="I" label="可用" />
+                <el-checkbox :key="reloadFormItem" v-model="model.routeMeta.hidden" label="隐藏" />
+                <el-checkbox :key="reloadFormItem" v-model="model.routeMeta.keepAlive" label="缓存" />
                 <!-- <el-checkbox v-model="model.routeMeta.ignoreAuth" label="忽略认证" /> -->
               </el-form-item>
 
