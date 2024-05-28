@@ -18,6 +18,7 @@ package com.diboot.iam.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.diboot.core.binding.annotation.BindI18n;
 import com.diboot.core.binding.query.BindQuery;
 import com.diboot.core.binding.query.Comparison;
 import com.diboot.core.entity.BaseEntity;
@@ -77,7 +78,7 @@ public class IamResource extends BaseEntity<String> {
     @NotNull(message = "显示名称不能为空")
     @Length(max = 100, message = "显示名称长度应小于100")
     @BindQuery(comparison = Comparison.LIKE)
-    // @BindI18n("displayNameI18n")
+    @BindI18n("displayNameI18n")
     private String displayName;
 
     /**

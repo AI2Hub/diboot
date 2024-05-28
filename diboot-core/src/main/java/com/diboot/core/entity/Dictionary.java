@@ -18,6 +18,7 @@ package com.diboot.core.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import com.diboot.core.binding.annotation.BindI18n;
 import com.diboot.core.binding.query.BindQuery;
 import com.diboot.core.binding.query.Comparison;
 import com.diboot.core.vo.LabelValue;
@@ -77,7 +78,7 @@ public class Dictionary extends BaseEntity<String> {
     @NotNull(message = "数据字典项名称不能为空！")
     @Length(max = 100, message = "数据字典项名称长度超长！")
     @BindQuery(comparison = Comparison.LIKE)
-    // @BindI18n("itemNameI18n")
+    @BindI18n("itemNameI18n")
     private String itemName;
 
     /**

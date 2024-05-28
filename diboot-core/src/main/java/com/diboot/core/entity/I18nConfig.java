@@ -31,7 +31,6 @@ import jakarta.validation.constraints.NotNull;
  * @version v3.0.0
  * @date 2022-10-12
  */
-@Deprecated
 @Getter
 @Setter
 @Accessors(chain = true)
