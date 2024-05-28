@@ -183,6 +183,7 @@ const clickNode = (id?: string) => (parent.value = id ?? props.rootId)
 
       <di-list
         v-if="config.list"
+        hidden-action-column
         :base-api="config.list.baseApi as string"
         :primary-key="config.list.primaryKey"
         :related-key="config.list.relatedKey"
