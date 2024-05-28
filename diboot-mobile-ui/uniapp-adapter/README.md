@@ -1,5 +1,5 @@
 # Diboot V3.0 Uniapp 适配Mobile UI
-> 该项目采用cli构建，拥有与常规的vue项目一致的开发体验
+> 该项目采用cli构建，提供了与diboot-mobile-ui关联的示例，拥有与常规的vue项目一致的开发体验
 
 ## 依赖安装
 
