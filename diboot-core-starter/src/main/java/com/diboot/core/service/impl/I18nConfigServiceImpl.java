@@ -113,7 +113,7 @@ public class I18nConfigServiceImpl extends BaseServiceImpl<I18nConfigMapper, I18
         for (Object item : voList) {
             Object i18nCode = BeanUtils.getProperty(item, getI18nCodeField);
             if (V.notEmpty(i18nCode)) {
-                if (codes.contains(i18nCode)) {
+                if (!codes.contains(i18nCode)) {
                     continue;
                 }
                 String content = i18nMap.get(S.valueOf(i18nCode));

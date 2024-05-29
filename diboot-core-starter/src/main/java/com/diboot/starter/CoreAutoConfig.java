@@ -48,8 +48,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -58,7 +60,10 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.web.filter.RequestContextFilter;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -67,10 +72,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Diboot Core自动配置类
@@ -253,6 +255,24 @@ public class CoreAutoConfig implements WebMvcConfigurer {
         }};
         DynamicMemoryCacheManager memoryCacheManager = new DynamicMemoryCacheManager(cacheName2ExpireMap);
         return new I18nCacheManager(memoryCacheManager);
+    }
+
+
+
+    @Bean
+    @ConditionalOnProperty(prefix = "diboot.core", name = "i18n", havingValue = "true")
+    public LocaleResolver localeResolver() {
+        AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
+        return localeResolver;
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "diboot.core", name = "i18n", havingValue = "true")
+    public static RequestContextFilter requestContextFilter() {
+        OrderedRequestContextFilter orderedRequestContextFilter = new OrderedRequestContextFilter();
+        orderedRequestContextFilter.setThreadContextInheritable(true);
+        return orderedRequestContextFilter;
     }
 
 }
