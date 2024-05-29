@@ -12,8 +12,8 @@ interface TenantSearch extends Tenant {
 
 const baseApi = '/iam/tenant'
 const { queryParam, onSearch, getList, loading, dataList, buildQueryParam, pagination, remove, resetFilter } = useList<
-    Tenant,
-    TenantSearch
+  Tenant,
+  TenantSearch
 >({
   baseApi
 })
@@ -52,10 +52,10 @@ const deletePermission = checkPermission('delete')
         {{ $t('operation.create') }}
       </el-button>
       <excel-export
-          v-has-permission="'export'"
-          :build-param="buildQueryParam"
-          :export-url="`${baseApi}/excel/export`"
-          :table-head-url="`${baseApi}/excel/export-table-head`"
+        v-has-permission="'export'"
+        :build-param="buildQueryParam"
+        :export-url="`${baseApi}/excel/export`"
+        :table-head-url="`${baseApi}/excel/export-table-head`"
       />
       <excel-import v-has-permission="'import'" :excel-base-api="`${baseApi}/excel`" @complete="onSearch" />
       <el-space>
@@ -63,10 +63,10 @@ const deletePermission = checkPermission('delete')
         <el-input v-model="queryParam.code" clearable placeholder="租户编码" @change="onSearch" />
         <el-select v-model="queryParam.status" filterable placeholder="请选择租户状态" clearable @change="onSearch">
           <el-option
-              v-for="item in relatedData.tenantStatusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+            v-for="item in relatedData.tenantStatusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           />
         </el-select>
         <el-button :icon="Search" type="primary" @click="onSearch">搜索</el-button>
@@ -84,10 +84,10 @@ const deletePermission = checkPermission('delete')
       <el-table-column prop="statusLabel" label="租户状态">
         <template #default="{ row }">
           <el-tag
-              v-if="(row.statusLabel as LabelValue)?.value"
-              :color="(row.statusLabel as LabelValue<{ color: string }>).ext?.color"
-              effect="dark"
-              type="info"
+            v-if="(row.statusLabel as LabelValue)?.value"
+            :color="(row.statusLabel as LabelValue<{ color: string }>).ext?.color"
+            effect="dark"
+            type="info"
           >
             {{ (row.statusLabel as LabelValue)?.label }}
           </el-tag>
@@ -104,12 +104,12 @@ const deletePermission = checkPermission('delete')
               {{ $t('operation.createTenantAdmin') }}
             </el-button>
             <el-button
-                v-has-permission="'create'"
-                text
-                bg
-                type="primary"
-                size="small"
-                @click="openResourceForm(row.id)"
+              v-has-permission="'create'"
+              text
+              bg
+              type="primary"
+              size="small"
+              @click="openResourceForm(row.id)"
             >
               {{ $t('operation.createTenantResource') }}
             </el-button>
@@ -136,16 +136,16 @@ const deletePermission = checkPermission('delete')
       </el-table-column>
     </el-table>
     <el-pagination
-        v-if="pagination.total"
-        v-model:current-page="pagination.current"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="[10, 15, 20, 30, 50, 100]"
-        small
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="getList()"
-        @current-change="getList()"
+      v-if="pagination.total"
+      v-model:current-page="pagination.current"
+      v-model:page-size="pagination.pageSize"
+      :page-sizes="[10, 15, 20, 30, 50, 100]"
+      small
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pagination.total"
+      @size-change="getList()"
+      @current-change="getList()"
     />
 
     <Detail ref="detailRef" />

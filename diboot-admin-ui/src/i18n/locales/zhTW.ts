@@ -12,7 +12,9 @@ const zhTW: Locale = {
     batchDelete: '批量刪除',
     import: '導入',
     export: '導出',
-    more: '更多'
+    more: '更多',
+    search: '查询',
+    reset: '重置'
   }
 }
 

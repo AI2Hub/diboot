@@ -27,6 +27,7 @@ import com.diboot.iam.shiro.IamAuthorizingRealm;
 import com.diboot.iam.shiro.StatelessAccessControlFilter;
 import com.diboot.iam.shiro.StatelessSubjectFactory;
 import jakarta.servlet.Filter;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
@@ -54,6 +55,8 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
+import org.springframework.context.i18n.LocaleContext;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -270,6 +273,23 @@ public class IamAutoConfig {
         }
     }
 
+
+    @AllArgsConstructor
+    private class DelegatingRunnable implements Runnable {
+        private Runnable runnable;
+
+        @Override
+        public void run() {
+            try {
+                LocaleContext localeContext = LocaleContextHolder.getLocaleContext();
+                LocaleContextHolder.setLocaleContext(localeContext);
+                runnable.run();
+            } finally {
+                LocaleContextHolder.resetLocaleContext();
+            }
+        }
+    }
+
     /**
      * shiro上下文装饰器，传递shiro上下文
      */
@@ -279,10 +299,10 @@ public class IamAutoConfig {
         public Runnable decorate(Runnable runnable) {
             try {
                 // 向下传递当前线程的用户信息
-                return SecurityUtils.getSubject().associateWith(runnable);
+                return SecurityUtils.getSubject().associateWith(new DelegatingRunnable(runnable));
             } catch (UnavailableSecurityManagerException e) {
                 // 用户信息不存在，直接执行
-                return runnable;
+                return new DelegatingRunnable(runnable);
             }
         }
     }

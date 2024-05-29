@@ -4,8 +4,8 @@ import type { I18nConfig } from './type'
 import Form from './Form.vue'
 
 const { queryParam, loading, dataList, pagination, getList, onSearch, resetFilter, batchRemove } = useList<
-    I18nConfig[],
-    I18nConfig
+  I18nConfig[],
+  I18nConfig
 >({ baseApi: '/i18n-config' })
 pagination.orderBy = 'code:ASC'
 getList()
@@ -24,8 +24,8 @@ const emits = defineEmits<{
 const single = ref(props.modelValue)
 if (props.select) {
   watch(
-      () => props.modelValue,
-      value => (single.value = value)
+    () => props.modelValue,
+    value => (single.value = value)
   )
 }
 const singleRow = (row: Array<I18nConfig>) => {
@@ -68,37 +68,37 @@ const singleRow = (row: Array<I18nConfig>) => {
         </template>
       </el-table-column>
       <el-table-column
-          v-for="locale in $i18n.availableLocales.map(e => e.replace(/-/g, '_'))"
-          :key="locale"
-          :prop="locale"
-          :label="$t('language', {}, { locale: locale.replace(/_/g, '-') })"
-          show-overflow-tooltip
-          min-width="180px"
+        v-for="locale in $i18n.availableLocales.map(e => e.replace(/-/g, '_'))"
+        :key="locale"
+        :prop="locale"
+        :label="$t('language', {}, { locale: locale.replace(/_/g, '-') })"
+        show-overflow-tooltip
+        min-width="180px"
       >
         <template #default="{ row }">
           <span>{{ row.find((e: I18nConfig) => e.language === locale)?.content }}</span>
         </template>
       </el-table-column>
       <el-table-column
-          v-if="!select"
-          v-has-permission="['update', 'delete']"
-          label="操作"
-          width="160px"
-          header-align="center"
-          fixed="right"
+        v-if="!select"
+        v-has-permission="['update', 'delete']"
+        label="操作"
+        width="160px"
+        header-align="center"
+        fixed="right"
       >
         <template #default="{ row }">
           <el-button v-has-permission="'update'" text bg type="primary" size="small" @click="openForm(row[0].code)">
             {{ $t('operation.update') }}
           </el-button>
           <el-button
-              v-if="!row.some((e: I18nConfig) => e.type === 'SYSTEM')"
-              v-has-permission="'delete'"
-              text
-              bg
-              type="danger"
-              size="small"
-              @click="batchRemove(row.map((e: I18nConfig) => e.id))"
+            v-if="!row.some((e: I18nConfig) => e.type === 'SYSTEM')"
+            v-has-permission="'delete'"
+            text
+            bg
+            type="danger"
+            size="small"
+            @click="batchRemove(row.map((e: I18nConfig) => e.id))"
           >
             {{ $t('operation.delete') }}
           </el-button>
@@ -106,16 +106,16 @@ const singleRow = (row: Array<I18nConfig>) => {
       </el-table-column>
     </el-table>
     <el-pagination
-        v-if="pagination.total"
-        v-model:current-page="pagination.current"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="[10, 15, 20, 30, 50, 100]"
-        small
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="getList()"
-        @current-change="getList()"
+      v-if="pagination.total"
+      v-model:current-page="pagination.current"
+      v-model:page-size="pagination.pageSize"
+      :page-sizes="[10, 15, 20, 30, 50, 100]"
+      small
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pagination.total"
+      @size-change="getList()"
+      @current-change="getList()"
     />
 
     <Form ref="formRef" @complete="getList()" />

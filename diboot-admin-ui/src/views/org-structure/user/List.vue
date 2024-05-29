@@ -63,10 +63,10 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
       </el-button>
       <excel-import :excel-base-api="`${baseApi}/excel`" :attach="() => ({ orgId })" @complete="onSearch" />
       <excel-export
-          v-has-permission="'export'"
-          :build-param="buildQueryParam"
-          :export-url="`${baseApi}/excel/export`"
-          :table-head-url="`${baseApi}/excel/export-table-head`"
+        v-has-permission="'export'"
+        :build-param="buildQueryParam"
+        :export-url="`${baseApi}/excel/export`"
+        :table-head-url="`${baseApi}/excel/export-table-head`"
       />
       <el-space>
         <el-input v-model="queryParam.realname" clearable placeholder="姓名" @change="onSearch" />

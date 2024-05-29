@@ -12,7 +12,9 @@ const en: Locale = {
     batchDelete: 'Batch delete',
     import: 'Import',
     export: 'Export',
-    more: 'More'
+    more: 'More',
+    search: 'Search',
+    reset: 'Reset'
   }
 }
 

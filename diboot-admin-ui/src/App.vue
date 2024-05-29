@@ -16,6 +16,7 @@ const i18n = useI18n()
 
 const locale = ref()
 
+const isRouterActive = ref(true)
 watch(
   i18n.locale,
   value => {
@@ -28,6 +29,8 @@ watch(
     if (locale.value == null) {
       locale.value = Object.values(locales).find(e => e.name === i18n.fallbackLocale.value)
     }
+    isRouterActive.value = false
+    nextTick(() => (isRouterActive.value = true))
   },
   {
     immediate: true
@@ -37,7 +40,7 @@ watch(
 
 <template>
   <el-config-provider :locale="locale" :size="appStore.globalSize">
-    <router-view />
+    <router-view v-if="isRouterActive" />
   </el-config-provider>
 </template>
 

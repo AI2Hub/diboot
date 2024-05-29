@@ -84,8 +84,6 @@ watch(
 
 <style scoped lang="scss">
 .i18n-list {
-  margin: -30px 0 -20px;
-
   :deep(.el-row) {
     margin: 0 !important;
 

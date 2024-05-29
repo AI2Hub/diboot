@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ArrowDown, UserFilled } from '@element-plus/icons-vue'
 import { isDark, isSmall } from '@/utils/theme'
+import i18n from '@/utils/i18n'
 import MessageBell from './message-bell/index.vue'
 import MenuSearch from './MenuSearch.vue'
 import useAuthStore from '@/store/auth'
@@ -46,31 +47,38 @@ const openChatAi = () => router.push('/chat-ai')
       </div>
       <el-tooltip effect="dark" :content="isDark ? '深色模式' : '浅色模式'" placement="bottom" :show-after="300">
         <el-switch
-            v-model="isDark"
-            class="dark-switch item"
-            :active-action-icon="DarkIcon"
-            :inactive-action-icon="LightIcon"
+          v-model="isDark"
+          class="dark-switch item"
+          :active-action-icon="DarkIcon"
+          :inactive-action-icon="LightIcon"
         />
       </el-tooltip>
-      <!--      <el-dropdown @command="(command: string) => $i18n.locale = command">-->
-      <!--        <div class="item">-->
-      <!--          <el-icon :size="22">-->
-      <!--            <icon name="Local:Language" />-->
-      <!--          </el-icon>-->
-      <!--        </div>-->
-      <!--        <template #dropdown>-->
-      <!--          <el-dropdown-menu>-->
-      <!--            <el-dropdown-item-->
-      <!--              v-for="item in $i18n.availableLocales"-->
-      <!--              :key="item"-->
-      <!--              :command="item"-->
-      <!--              :disabled="$i18n.locale === item"-->
-      <!--            >-->
-      <!--              {{ $t('language', {}, { locale: item }) }}-->
-      <!--            </el-dropdown-item>-->
-      <!--          </el-dropdown-menu>-->
-      <!--        </template>-->
-      <!--      </el-dropdown>-->
+      <el-dropdown
+        @command="
+          (command: string) => {
+            i18n.set(command)
+            $i18n.locale = command
+          }
+        "
+      >
+        <div class="item">
+          <el-icon :size="22">
+            <icon name="Local:Language" />
+          </el-icon>
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item
+              v-for="item in $i18n.availableLocales"
+              :key="item"
+              :command="item"
+              :disabled="$i18n.locale === item"
+            >
+              {{ $t('language', {}, { locale: item }) }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
       <message-bell class="item" />
       <el-dropdown
         @command="

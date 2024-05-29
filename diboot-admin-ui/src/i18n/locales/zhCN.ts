@@ -10,7 +10,9 @@ const zhCN = {
     batchDelete: '批量删除',
     import: '导入',
     export: '导出',
-    more: '更多'
+    more: '更多',
+    search: '搜索',
+    reset: '重置'
   }
 }
 
