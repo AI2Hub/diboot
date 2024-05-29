@@ -3,9 +3,9 @@ import { Search } from '@element-plus/icons-vue'
 import type { LoginTrace } from './type'
 
 const { queryParam, dateRangeQuery, loading, dataList, pagination, getList, onSearch, resetFilter } =
-    useList<LoginTrace>({
-      baseApi: '/iam/login-trace'
-    })
+  useList<LoginTrace>({
+    baseApi: '/iam/login-trace'
+  })
 
 getList()
 </script>
@@ -20,11 +20,11 @@ getList()
           <el-option label="失败" :value="false" />
         </el-select>
         <date-range
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            :model-value="dateRangeQuery.createTime as [string, string]"
-            @update:model-value="dateRangeQuery.createTime = $event as [string, string]"
-            @change="onSearch"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          :model-value="dateRangeQuery.createTime as [string, string]"
+          @update:model-value="dateRangeQuery.createTime = $event as [string, string]"
+          @change="onSearch"
         />
         <el-button :icon="Search" type="primary" @click="onSearch">查询</el-button>
         <el-button title="重置搜索条件" @click="resetFilter">重置</el-button>
@@ -50,16 +50,16 @@ getList()
       <el-table-column prop="logoutTime" label="退出时间" />
     </el-table>
     <el-pagination
-        v-if="pagination.total"
-        v-model:current-page="pagination.current"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="[10, 15, 20, 30, 50, 100]"
-        small
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="getList()"
-        @current-change="getList()"
+      v-if="pagination.total"
+      v-model:current-page="pagination.current"
+      v-model:page-size="pagination.pageSize"
+      :page-sizes="[10, 15, 20, 30, 50, 100]"
+      small
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="pagination.total"
+      @size-change="getList()"
+      @current-change="getList()"
     />
   </div>
 </template>

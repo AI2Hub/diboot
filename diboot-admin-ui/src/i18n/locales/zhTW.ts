@@ -13,7 +13,7 @@ const zhTW: Locale = {
     import: '導入',
     export: '導出',
     more: '更多',
-    search: '查询',
+    search: '查詢',
     reset: '重置'
   }
 }

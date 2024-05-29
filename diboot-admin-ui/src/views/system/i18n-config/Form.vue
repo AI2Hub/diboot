@@ -95,7 +95,7 @@ const checkCodeDuplicate = (rule: unknown, value: unknown, callback: (error?: st
 
 <template>
   <el-dialog v-model="visible" title="国际化翻译">
-    <el-form ref="formRef" v-loading="loading" :model="modle" label-width="80px">
+    <el-form ref="formRef" v-loading="loading" :model="modle" label-width="100px">
       <el-form-item
         prop="i18nCode"
         label="资源标识"
