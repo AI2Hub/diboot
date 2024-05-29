@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.diboot.core.cache.DictionaryCacheManager;
 import com.diboot.core.cache.DynamicMemoryCacheManager;
+import com.diboot.core.cache.I18nCacheManager;
 import com.diboot.core.config.Cons;
 import com.diboot.core.converter.*;
 import com.diboot.core.data.protect.DataEncryptHandler;
@@ -237,6 +238,21 @@ public class CoreAutoConfig implements WebMvcConfigurer {
         }};
         DynamicMemoryCacheManager memoryCacheManager = new DynamicMemoryCacheManager(cacheName2ExpireMap);
         return new DictionaryCacheManager(memoryCacheManager);
+    }
+
+    /**
+     * 国际化等基础数据缓存管理器
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public I18nCacheManager i18nCacheManager() {
+        log.info("初始化 I18n 内存缓存: DynamicMemoryCacheManager");
+        Map<String, Integer> cacheName2ExpireMap = new HashMap<>() {{
+            put(Cons.CACHE_NAME_I18N, 24*60);
+        }};
+        DynamicMemoryCacheManager memoryCacheManager = new DynamicMemoryCacheManager(cacheName2ExpireMap);
+        return new I18nCacheManager(memoryCacheManager);
     }
 
 }

@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -55,8 +56,7 @@ public class ParallelBindingManager {
      * @param fieldAnno
      * @return
      */
-    @Async
-    public CompletableFuture<Boolean> doBindingDict(List voList, FieldAnnotation fieldAnno){
+    public void doBindingDict(List voList, FieldAnnotation fieldAnno){
         if(dictionaryServiceExtProvider != null){
             BindDict annotation = (BindDict) fieldAnno.getAnnotation();
             String dictValueField = annotation.field();
@@ -70,7 +70,6 @@ public class ParallelBindingManager {
         else{
             log.warn("BindDictService未实现，无法使用BindDict注解！");
         }
-        return CompletableFuture.completedFuture(true);
     }
 
     /***
@@ -160,8 +159,7 @@ public class ParallelBindingManager {
      * @param voList
      * @param fieldAnnotation
      */
-    @Async
-    public CompletableFuture<Boolean> doBindingI18n(List voList, FieldAnnotation fieldAnnotation) {
+    public void doBindingI18n(List voList, FieldAnnotation fieldAnnotation) {
         BindI18n annotation = (BindI18n) fieldAnnotation.getAnnotation();
         String i18nCodeField = annotation.value();
         if (i18nConfigService != null) {
@@ -170,7 +168,6 @@ public class ParallelBindingManager {
         } else {
             log.warn("I18nConfigService未实现，无法翻译I18n注解: {}", i18nCodeField);
         }
-        return CompletableFuture.completedFuture(true);
     }
 
     /**

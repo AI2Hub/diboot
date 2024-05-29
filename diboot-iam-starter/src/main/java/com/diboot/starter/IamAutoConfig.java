@@ -273,23 +273,6 @@ public class IamAutoConfig {
         }
     }
 
-
-    @AllArgsConstructor
-    private class DelegatingRunnable implements Runnable {
-        private Runnable runnable;
-
-        @Override
-        public void run() {
-            try {
-                LocaleContext localeContext = LocaleContextHolder.getLocaleContext();
-                LocaleContextHolder.setLocaleContext(localeContext);
-                runnable.run();
-            } finally {
-                LocaleContextHolder.resetLocaleContext();
-            }
-        }
-    }
-
     /**
      * shiro上下文装饰器，传递shiro上下文
      */
@@ -298,11 +281,12 @@ public class IamAutoConfig {
         @Override
         public Runnable decorate(Runnable runnable) {
             try {
+                LocaleContextHolder.setLocale(LocaleContextHolder.getLocale(), true);
                 // 向下传递当前线程的用户信息
-                return SecurityUtils.getSubject().associateWith(new DelegatingRunnable(runnable));
+                return SecurityUtils.getSubject().associateWith(runnable);
             } catch (UnavailableSecurityManagerException e) {
                 // 用户信息不存在，直接执行
-                return new DelegatingRunnable(runnable);
+                return runnable;
             }
         }
     }

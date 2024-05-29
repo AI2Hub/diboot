@@ -303,4 +303,9 @@ public class Cons {
      */
     public static String CACHE_NAME_DICTIONARY = "diboot:dictionary";
 
+    /**
+     * 国际化缓存
+     */
+    public static String CACHE_NAME_I18N = "diboot:i18n";
+
 }
