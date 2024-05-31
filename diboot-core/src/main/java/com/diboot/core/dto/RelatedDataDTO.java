@@ -34,13 +34,13 @@ public class RelatedDataDTO implements Serializable {
      * <h3>需要查询的目标对象类型</h3>
      * 其value自动取该对象ID值
      */
-    @NotNull(message = "类型不能为空！")
+    @NotNull(message = "{validation.label.NotNull.message}")
     private String type;
 
     /**
      * <h3>需要查询的label字段</h3>
      */
-    @NotNull(message = "label不能为空！")
+    @NotNull(message = "{validation.type.NotNull.message}")
     private String label;
 
     /**

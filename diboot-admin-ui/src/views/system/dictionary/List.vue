@@ -48,8 +48,8 @@ function rowClick(row: DictionaryTableExpand) {
         {{ $t('operation.create') }}
       </el-button>
       <el-space>
-        <el-input v-model="queryParam.itemName" clearable placeholder="名称" @change="onSearch" />
-        <el-input v-model="queryParam.type" clearable placeholder="编码" @change="onSearch" />
+        <el-input v-model="queryParam.itemName" clearable :placeholder="$t('dictionary.itemName')" @change="onSearch" />
+        <el-input v-model="queryParam.type" clearable :placeholder="$t('dictionary.type')" @change="onSearch" />
         <el-button :icon="Search" type="primary" @click="onSearch">查询</el-button>
         <el-button title="重置搜索条件" @click="resetFilter">重置</el-button>
       </el-space>
@@ -84,8 +84,8 @@ function rowClick(row: DictionaryTableExpand) {
           </template>
         </template>
       </el-table-column>
-      <el-table-column prop="itemName" label="名称" />
-      <el-table-column label="编码">
+      <el-table-column prop="itemName" :label="$t('dictionary.itemName')" />
+      <el-table-column :label="$t('dictionary.type')">
         <template #default="{ row }">
           <template v-if="row.parentId && row.parentId !== '0'"> {{ row.itemValue }} </template>
           <template v-else>
@@ -93,9 +93,9 @@ function rowClick(row: DictionaryTableExpand) {
           </template>
         </template>
       </el-table-column>
-      <el-table-column prop="description" label="备注" />
-      <el-table-column prop="createTime" label="创建时间" width="185" />
-      <el-table-column label="操作" width="160" fixed="right">
+      <el-table-column prop="description" :label="$t('dictionary.description')" />
+      <el-table-column prop="createTime" :label="$t('dictionary.createTime')" width="185" />
+      <el-table-column :label="$t('dictionary.operate')" width="160" fixed="right">
         <template #default="{ row }">
           <template v-if="!row.parentId || row.parentId === '0'">
             <el-space>
