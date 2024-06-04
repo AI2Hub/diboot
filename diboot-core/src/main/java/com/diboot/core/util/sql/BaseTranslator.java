@@ -58,7 +58,7 @@ public abstract class BaseTranslator {
                 otherStatements.addAll(this.translateInsertValues(stmt));
             }
             else if(V.notEmpty(stmt)){
-                throw new InvalidUsageException("暂不支持该SQL翻译：{}", stmt);
+                throw new InvalidUsageException("exception.invalidUsage.baseTranslator.notSupportTranslator", stmt);
             }
         });
         log.debug("转换初始化SQL：{}", otherStatements);
@@ -171,7 +171,7 @@ public abstract class BaseTranslator {
 
         Map<String, String> col2TypeMap = table2ColumnTypeMap.get(table);
         if(col2TypeMap == null) {
-            throw new BusinessException(table +" 无缓存信息！");
+            throw new BusinessException("exception.business.baseTranslator.translateInsertValues.noCache", table);
         }
         String suffix = S.substringAfter(insertSql, "VALUES");
         while (S.contains(suffix, "(")) {

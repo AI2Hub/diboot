@@ -421,7 +421,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		}
 		// 上级设置为自身，抛出异常
 		if(V.equals(treeEntity.getParentId(), treeEntity.getId())) {
-			throw new BusinessException(Status.FAIL_VALIDATION, "不可设置上级节点为自身！");
+			throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.baseServiceImpl.fillTreeNodeParentPath.message");
 		}
 		BaseTreeEntity parentNode = (BaseTreeEntity) getEntity(treeEntity.getParentId());
 		if(parentNode != null) {
@@ -486,7 +486,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
                                                   SFunction<R, ?> followerIdGetter, Collection<? extends Serializable> followerIdList,
                                                   Consumer<QueryWrapper<R>> queryConsumer, Consumer<R> setConsumer) {
 		if (driverId == null) {
-			throw new InvalidUsageException("主动ID值不能为空！");
+			throw new InvalidUsageException("exception.invalidUsage.baseService.nullDriverId");
 		}
 		if (followerIdList == null) {
 			log.debug("从动对象ID集合为null，不做关联关系更新处理");
@@ -497,7 +497,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		Class<R> middleTableClass = (Class<R>) lambdaMeta.getInstantiatedClass();
 		EntityInfoCache entityInfo = BindingCacheManager.getEntityInfoByClass(middleTableClass);
 		if (entityInfo == null) {
-			throw new InvalidUsageException("未找到 " + middleTableClass.getName() + " 的 Service 或 Mapper 定义！");
+			throw new InvalidUsageException("exception.invalidUsage.baseService.nonServiceOrMapper", middleTableClass.getName());
 		}
 		boolean isExistPk = entityInfo.getIdColumn() != null;
 
@@ -570,7 +570,8 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
                     n2nRelations.add(relation);
                 }
             } catch (Exception e) {
-                throw new BusinessException(Status.FAIL_EXCEPTION, e);
+				log.error("新增关联异常：", e);
+                throw new BusinessException(Status.FAIL_EXCEPTION);
             }
             if (iService != null) {
                 if (iService instanceof BaseService) {
@@ -746,7 +747,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		if(BaseTreeEntity.class.isAssignableFrom(entityClass)) {
 			QueryWrapper<T> wrapper = new QueryWrapper<T>().eq(Cons.ColumnName.parent_id.name(), id);
 			if(exists(wrapper)) {
-				throw new BusinessException(Status.FAIL_VALIDATION, "当前节点下存在下级节点，不允许被删除！");
+				throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.baseServiceImpl.deleteEntity.message");
 			}
 		}
 		this.beforeDelete(id);
@@ -882,7 +883,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 			query = ((LambdaQueryWrapper) queryWrapper);
 		}
 		else {
-			throw new InvalidUsageException("不支持的Wrapper类型：" + (queryWrapper == null ? "null" : queryWrapper.getClass()));
+			throw new InvalidUsageException("exception.invalidUsage.baseService.notSupportWrapper", (queryWrapper == null ? "null" : queryWrapper.getClass().getSimpleName()));
 		}
 		// 如果是动态join，则调用JoinsBinder
 		query.select(getterFn);
@@ -967,7 +968,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 	@Override
 	public boolean isValueUnique(String field, Object value, Serializable id) {
 		if (V.isEmpty(value)) {
-			throw new BusinessException(Status.FAIL_VALIDATION, "待检查字段值不能为空");
+			throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.baseServiceImpl.isValueUnique.message");
 		}
 		String column = getColumnByField(field);
 		QueryWrapper<Object> wrapper = Wrappers.query().eq(column, value);
@@ -1019,7 +1020,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		String sqlSelect = queryWrapper.getSqlSelect();
 		// 最少2个属性：label, value , (ext , parentId)
 		if(V.isEmpty(sqlSelect) || S.countMatches(sqlSelect, Cons.SEPARATOR_COMMA) < 1){
-			throw new InvalidUsageException("调用错误: getLabelValueList必须用select依次指定返回的 label,value(,ext)键值字段，如: new QueryWrapper<Dictionary>().lambda().select(Dictionary::getItemName, Dictionary::getItemValue)");
+			throw new InvalidUsageException("exception.invalidUsage.baseService.callGetLabelValueListFailed");
 		}
 		List<T> entityList = getEntityList(queryWrapper);
 		if(entityList == null){
@@ -1213,13 +1214,13 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 
 		boolean isTree = parentIdField != null;
 		if (isTree && newParentId == null) {
-			throw new BusinessException("Tree 结构数据排序需指定 newParentId ，parentId 不应为 null");
+			throw new BusinessException("exception.business.baseServiceImpl.sort.nullParentId");
 		}
 		// tree 数据层级变化（层级变化 oldSortId 应为 null）
 		boolean levelChange = oldSortId == null;
 		if (!isTree && levelChange) {
 			// 非 tree 结构数据，无层级变化，必须指定 oldSortId
-			throw new BusinessException("未指定 oldSortId");
+			throw new BusinessException("exception.business.baseServiceImpl.sort.nullOldSortId");
 		}
 		// 上移（层级变化同为上移）
 		boolean moveUp = levelChange || oldSortId > newSortId;

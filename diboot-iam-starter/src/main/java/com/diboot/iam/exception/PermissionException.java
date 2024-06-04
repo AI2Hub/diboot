@@ -16,6 +16,7 @@
 package com.diboot.iam.exception;
 
 import com.diboot.core.exception.BusinessException;
+import com.diboot.core.util.I18n;
 import com.diboot.core.util.S;
 import com.diboot.core.vo.Status;
 
@@ -40,11 +41,11 @@ public class PermissionException extends BusinessException {
     }
 
     public PermissionException(String msg, Object... args) {
-        super(Status.FAIL_NO_PERMISSION, S.format(msg, args));
+        super(Status.FAIL_NO_PERMISSION, S.format(I18n.message(msg, args), args));
     }
 
     public PermissionException(Throwable ex, String msg, Object... args) {
-        super(Status.FAIL_NO_PERMISSION, ex, S.format(msg, args));
+        super(Status.FAIL_NO_PERMISSION, ex, S.format(I18n.message(msg, args), args));
     }
 
 }

@@ -55,8 +55,8 @@ public class AiSession extends BaseEntity<String> {
     @JsonIgnore
     private String tenantId;
 
-    @NotNull(message = "会话标题不能为空")
-    @Length(max = 100, message = "会话标题长度应小于100")
+    @NotNull(message = "{validation.aiSession.title.NotNull.message}")
+    @Length(max = 100, message = "{validation.aiSession.title.Length.message}")
     @NotNull
     private String title;
 

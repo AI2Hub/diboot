@@ -376,7 +376,7 @@ public class V {
         }
         for (String param : paramValues) {
             if (!V.isValidSqlParam(param)) {
-                throw new BusinessException(Status.FAIL_VALIDATION, "非法的参数: " + param);
+                throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.v.securityCheck.param", param);
             }
         }
     }
@@ -390,7 +390,7 @@ public class V {
         }
         for (Object param : paramValues) {
             if (!V.isValidSqlParam(param)) {
-                throw new BusinessException(Status.FAIL_VALIDATION, "非法的参数: " + param);
+                throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.v.securityCheck.param", param);
             }
         }
     }
@@ -414,7 +414,7 @@ public class V {
                 String value = (String)entry.getValue();
                 if(SQL_INJECT_PATTERN.matcher(value.toLowerCase()).find()){
                     log.warn("非法的参数值: {}", entry.getValue());
-                    throw new BusinessException(Status.FAIL_VALIDATION, "非法的参数值: {}", entry.getValue());
+                    throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.v.securityCheck.paramValue", entry.getValue());
                 }
             }
         }

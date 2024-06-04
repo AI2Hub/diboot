@@ -87,7 +87,7 @@ public abstract class BaseBinder<T> {
      */
     protected PropInfo refObjPropInfo;
 
-    public static final String NOT_SUPPORT_MSG = "中间表关联暂不支持涉及目标表多列的情况!";
+    public static final String NOT_SUPPORT_MSG = "exception.invalidUsage.baseBinder.notSupport";
 
     /**
      * ,拼接的多个id值
@@ -197,7 +197,7 @@ public abstract class BaseBinder<T> {
                 fieldName = annoObjectFieldKey;
             }
             if(fieldName == null) {
-                throw new InvalidUsageException("字段/列 "+ annoObjectFieldKey +" 不存在");
+                throw new InvalidUsageException("exception.invalidUsage.baseBinder.joinOnFieldComparison.message", annoObjectFieldKey);
             }
             annoObjJoinFieldComparisons.add(new FieldComparison(fieldName, comparison, eqFilterConsVal));
         }
@@ -515,7 +515,7 @@ public abstract class BaseBinder<T> {
         if(iService == null){
             // 本地绑定需确保有Service实现类
             if(moduleAnno == null){
-                throw new InvalidUsageException(entityClass.getSimpleName() + " 无 BaseService/IService实现类，无法执行注解绑定！");
+                throw new InvalidUsageException("exception.invalidUsage.baseBinder.getService.message", entityClass.getSimpleName());
             }
         }
         return iService;

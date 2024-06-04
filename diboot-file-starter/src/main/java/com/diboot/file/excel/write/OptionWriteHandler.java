@@ -99,7 +99,7 @@ public class OptionWriteHandler implements CellWriteHandler {
     protected String[] getDictOptions(String dictType) {
         DictionaryServiceExtProvider bindDictService = ContextHolder.getBean(DictionaryServiceExtProvider.class);
         if (bindDictService == null) {
-            throw new InvalidUsageException("DictionaryService未实现，@ExcelOption无法关联字典！");
+            throw new InvalidUsageException("exception.invalidUsage.optionWriteHandler.getDictOptions.message");
         }
         String[] options = bindDictService.getLabelValueList(dictType).stream().map(LabelValue::getLabel).toArray(String[]::new);
         if (V.isEmpty(options)) {

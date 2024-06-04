@@ -176,7 +176,7 @@ public class ParserCache {
     public static BaseMapper getMapperInstance(Class<?> entityClass){
         BaseMapper mapper = BindingCacheManager.getMapperByClass(entityClass);
         if(mapper == null){
-            throw new InvalidUsageException("未找到 "+entityClass.getName()+" 的Mapper定义！");
+            throw new InvalidUsageException("exception.invalidUsage.parserCache.getMapperInstance.message", entityClass.getName());
         }
         return mapper;
     }
@@ -315,7 +315,7 @@ public class ParserCache {
             List<String> maskFieldList = new ArrayList<>(4);
             for (Field field : BeanUtils.extractFields(clazz, DataMask.class)) {
                 if (!field.getType().isAssignableFrom(String.class)) {
-                    throw new InvalidUsageException("`@DataMask` 仅支持 String 类型字段。");
+                    throw new InvalidUsageException("exception.invalidUsage.parserCache.getDataMaskFieldList.message");
                 }
                 maskFieldList.add(field.getName());
             }

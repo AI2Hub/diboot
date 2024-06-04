@@ -86,7 +86,7 @@ public class WenXinChatModelProvider extends AbstractModelProvider implements Ai
             WenXinConfig wenXinConfig = configuration.getWenxin();
             if (V.isEmpty(wenXinConfig) || V.isEmpty(wenXinConfig.getApiKey()) || V.isEmpty(wenXinConfig.getSecretKey())) {
                 log.error("未配置 {} 模型key 或 secret", model);
-                throw new BusinessException(Status.FAIL_OPERATION, "未配置模型key 或 secret");
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.modelProvider.unsettingModelKeyOrSecret");
             }
             return true;
         }

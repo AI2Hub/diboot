@@ -19,6 +19,7 @@ import com.diboot.ai.config.AiConfiguration;
 import com.diboot.ai.common.request.AiRequest;
 import com.diboot.ai.models.ModelProvider;
 import com.diboot.core.exception.BusinessException;
+import com.diboot.core.exception.InvalidUsageException;
 import com.diboot.core.util.V;
 import com.diboot.core.vo.Status;
 import lombok.Getter;
@@ -62,7 +63,7 @@ public class AiClient {
      */
     public void executeStream(AiRequest aiRequest, EventSourceListener listener) throws Exception {
         if (V.isEmpty(this.modelProviders)) {
-            throw new BusinessException(Status.FAIL_OPERATION, "尚未启用模型服务");
+            throw new InvalidUsageException("exception.invalidUsage.aiClient.executeStream.unenabledModelService");
         }
         for (ModelProvider modelProvider : this.modelProviders) {
             if (!modelProvider.supports(aiRequest.getModel())) {
@@ -71,7 +72,7 @@ public class AiClient {
             modelProvider.executeStream(aiRequest, listener);
             return;
         }
-        throw new BusinessException(Status.FAIL_OPERATION, aiRequest.getModel() + "无对应模型服务，请选择其他模型");
+        throw new InvalidUsageException("exception.invalidUsage.aiClient.executeStream.noModelService", aiRequest.getModel());
     }
 
 }

@@ -81,14 +81,14 @@ public class WenXinToken {
             // 响应失败时返回该字段，成功时不返回
             if (V.notEmpty(result.get("error"))) {
                 log.debug("请求token失败：{}", responseBody);
-                throw new BusinessException(Status.FAIL_OPERATION, "请求模型token失败");
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.modelProvider.fetchTokenFailed");
             }
             token = String.valueOf(result.get(TOKEN_KEY));
             TOKEN_CACHE.put(TOKEN_KEY, new TokenWrapper(token, System.currentTimeMillis() + TOKEN_EXPIRE_MILLIS));
             return token;
         } catch (IOException e) {
             log.debug("请求token异常 ：{}", e);
-            throw new BusinessException(Status.FAIL_OPERATION, "请求模型token异常");
+            throw new BusinessException(Status.FAIL_OPERATION, "exception.business.modelProvider.fetchTokenFailed");
         }
     }
 

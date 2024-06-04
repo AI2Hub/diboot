@@ -54,18 +54,18 @@ public class AiSessionRecord extends BaseEntity<String> {
     @JsonIgnore
     private String tenantId;
 
-    @NotNull(message = "会话id不能为空")
-    @Length(max = 32, message = "会话id长度应小于32")
+    @NotNull(message = "{validation.aiSessionRecord.sessionId.NotNull.message}")
+    @Length(max = 32, message = "{validation.aiSessionRecord.sessionId.Length.message}")
     private String sessionId;
 
-    @NotNull(message = "问答模型不能为空")
-    @Length(max = 32, message = "问答模型长度应小于32")
+    @NotNull(message = "{validation.aiSessionRecord.model.NotNull.message}")
+    @Length(max = 32, message = "{validation.aiSessionRecord.model.Length.message}")
     private String model;
 
-    @NotNull(message = "请求内容不能为空")
+    @NotNull(message = "{validation.aiSessionRecord.requestBody.NotNull.message}")
     private String requestBody;
 
-    @NotNull(message = "响应内容不能为空")
+    @NotNull(message = "{validation.aiSessionRecord.responseBody.NotNull.message}")
     private String responseBody;
 
     /**

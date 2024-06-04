@@ -108,7 +108,7 @@ public class KimiChatModelProvider extends AbstractModelProvider implements AiRe
             KimiConfig kimiConfig = configuration.getKimi();
             if (V.isEmpty(kimiConfig) || V.isEmpty(kimiConfig.getApiKey()) ) {
                 log.error("未配置 {} 模型key", model);
-                throw new BusinessException(Status.FAIL_OPERATION, "未配置模型key");
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.modelProvider.unsettingModelKey");
             }
             return true;
         }

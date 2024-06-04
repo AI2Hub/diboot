@@ -51,7 +51,7 @@ public class JSON {
         }
         objectMapper = ContextHolder.getBean(ObjectMapper.class);
         if(objectMapper == null){
-            throw new InvalidUsageException("未找到 ObjectMapper实例，请检查配置类！");
+            throw new InvalidUsageException("exception.invalidUsage.JSON.getObjectMapper.message");
         }
         return objectMapper;
     }
@@ -77,8 +77,8 @@ public class JSON {
             String json = getObjectMapper().writeValueAsString(model);
             return json;
         } catch (Exception e) {
-            log.error("Java转Json异常: {}", e.getMessage());
-            throw new BusinessException("Java转Json异常", e);
+            log.error("Java转Json异常: {}", e);
+            throw new BusinessException("exception.business.JSON.toJSONString.message");
         }
     }
 
@@ -93,8 +93,8 @@ public class JSON {
             T model = getObjectMapper().readValue(jsonStr, clazz);
             return model;
         } catch (Exception e) {
-            log.error("Json: {} 转Java异常: {}", jsonStr, e.getMessage());
-            throw new BusinessException("Json: {} 转Java异常：{}", jsonStr, e.getMessage());
+            log.error("Json: {} 转Java异常: {}", jsonStr, e);
+            throw new BusinessException("exception.business.JSON.toJavaObject.message");
         }
     }
 
@@ -109,7 +109,7 @@ public class JSON {
             return getObjectMapper().readValue(jsonStr, javaType);
         } catch (Exception e) {
             log.error("Json: {} 转Map异常: {}", jsonStr, e.getMessage());
-            throw new BusinessException("Json: {} 转Map异常: {}", jsonStr, e.getMessage());
+            throw new BusinessException("exception.business.JSON.parseMap.message");
         }
     }
 
@@ -135,7 +135,7 @@ public class JSON {
             return model;
         } catch (Exception e) {
             log.error("Json: {} 转Java异常: {}", jsonStr, e.getMessage());
-            throw new BusinessException("Json: {} 转Java异常: {}", jsonStr, e.getMessage());
+            throw new BusinessException("exception.business.JSON.parseObject.message");
         }
     }
 
@@ -151,8 +151,8 @@ public class JSON {
             JavaType javaType = getObjectMapper().getTypeFactory().constructParametricType(List.class, clazz);
             return getObjectMapper().readValue(jsonStr, javaType);
         } catch (Exception e) {
-            log.error("Json: {} 转List异常: {}", jsonStr, e.getMessage());
-            throw new BusinessException("Json: {} 转List异常", jsonStr, e.getMessage());
+            log.error("Json: {} 转List异常: {}", jsonStr, e);
+            throw new BusinessException("exception.business.JSON.parseArray.message");
         }
     }
 
@@ -166,8 +166,8 @@ public class JSON {
         try {
             return getObjectMapper().readValue(jsonStr, typeReference);
         } catch (Exception e) {
-            log.error("Json: {} 转List异常: {}", jsonStr, e.getMessage());
-            throw new BusinessException("Json: {} 转List异常: {}", jsonStr, e.getMessage());
+            log.error("Json: {} 转List异常: {}", jsonStr, e);
+            throw new BusinessException("exception.business.JSON.parseArray.message");
         }
     }
 

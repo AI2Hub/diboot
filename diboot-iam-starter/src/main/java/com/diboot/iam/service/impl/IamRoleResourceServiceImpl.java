@@ -80,7 +80,7 @@ public class IamRoleResourceServiceImpl extends BaseServiceImpl<IamRoleResourceM
     public List<RouteRecord> getRouteRecords() {
         BaseLoginUser currentUser = IamSecurityUtils.getCurrentUser();
         if (currentUser == null) {
-            throw new BusinessException(Status.FAIL_NO_PERMISSION, "请登录后获取菜单授权！");
+            throw new BusinessException(Status.FAIL_NO_PERMISSION, "exception.business.roleResourceService.fetchMenuAfterLogin");
         }
         // 获取当前用户的角色
         LabelValue extensionObj = currentUser.getExtensionObj();
@@ -111,7 +111,7 @@ public class IamRoleResourceServiceImpl extends BaseServiceImpl<IamRoleResourceM
         if (isTenantAdmin) {
             IamTenantPermission iamTenantPermission = ContextHolder.getBean(IamTenantPermission.class);
             if (V.isEmpty(iamTenantPermission)) {
-                throw new BusinessException(Status.FAIL_OPERATION, "当前租户未配置权限");
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.roleResourceService.tenantNonConfigPermission");
             }
             permissionIds = iamTenantPermission.findAllPermissions(currentUser.getTenantId());
         }

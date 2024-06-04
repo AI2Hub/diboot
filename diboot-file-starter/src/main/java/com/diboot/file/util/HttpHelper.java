@@ -346,12 +346,12 @@ public class HttpHelper {
     public static List<MultipartFile> getFilesFromRequest(HttpServletRequest request, String fileInputName){
         // 获取附件文件名
         if(fileInputName == null){
-            throw new BusinessException(Status.FAIL_VALIDATION, "未指定文件名！");
+            throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.httpHelper.noFilename");
         }
         // 解析上传文件
         boolean isMultipart = request.getContentType() != null && request.getContentType().contains("multipart");
         if(!isMultipart){
-            throw new BusinessException(Status.FAIL_VALIDATION, "无有效的上传文件！");
+            throw new BusinessException(Status.FAIL_VALIDATION, "exception.business.httpHelper.invalidFiles");
         }
         // 解析上传文件
         List<MultipartFile> files = ((MultipartHttpServletRequest)request).getFiles(fileInputName);

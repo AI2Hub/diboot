@@ -88,7 +88,7 @@ public class QwenChatModelProvider extends AbstractModelProvider implements AiRe
             QwenConfig qwenConfig = configuration.getQwen();
             if (V.isEmpty(qwenConfig) || V.isEmpty(qwenConfig.getApiKey()) ) {
                 log.error("未配置 {} 模型key", model);
-                throw new BusinessException(Status.FAIL_OPERATION, "未配置模型key");
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.modelProvider.unsettingModelKey");
             }
             return true;
         }

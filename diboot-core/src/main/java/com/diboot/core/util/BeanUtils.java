@@ -544,7 +544,7 @@ public class BeanUtils {
         if (parentId2ListMap.size() == 1) {
             return parentId2ListMap.values().iterator().next();
         }
-        throw new BusinessException("buildTree根节点ParentId不唯一");
+        throw new BusinessException("exception.business.beanUtils.buildTree.rootParentIdNotUnique");
     }
 
     /**
@@ -604,7 +604,7 @@ public class BeanUtils {
             Object nodeId = getId.apply(node);
             Object parentId = getParentId.apply(node);
             if (V.equals(nodeId, parentId)) {
-                throw new BusinessException(Status.WARN_PERFORMANCE_ISSUE, "parentId关联自身，请检查！" + node.getClass().getSimpleName() + ":" + nodeId);
+                throw new BusinessException(Status.WARN_PERFORMANCE_ISSUE, "exception.business.beanUtils.buildTree.bindSelf", node.getClass().getSimpleName(), nodeId);
             }
             parentId2ListMap.computeIfAbsent(parentId, k -> new ArrayList<>()).add(node);
         }
@@ -621,7 +621,7 @@ public class BeanUtils {
         if (parentId2ListMap.size() == 1) {
             return parentId2ListMap.values().iterator().next();
         }
-        throw new BusinessException("buildTree根节点ParentId不唯一");
+        throw new BusinessException("exception.business.beanUtils.buildTree.rootParentIdNotUnique");
     }
 
     /**

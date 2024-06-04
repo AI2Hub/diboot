@@ -169,9 +169,8 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
             // 批量保存
             boolean success = super.createEntities(children);
             if(!success){
-                String errorMsg = "新建数据字典子项失败，type="+dictVO.getType();
-                log.warn(errorMsg);
-                throw new BusinessException(Status.FAIL_OPERATION, errorMsg);
+                log.warn("新建数据字典子项失败， type= {}", dictVO.getType());
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.dictionaryService.createDictAndChildren.message", dictVO.getType());
             }
         }
         return true;
@@ -227,13 +226,13 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
                     dictItemIds.add(dict.getId());
                     if(!super.updateEntity(dict)){
                         log.warn("更新字典子项失败，itemName=" + dict.getItemName());
-                        throw new BusinessException(Status.FAIL_EXCEPTION, "更新字典子项异常");
+                        throw new BusinessException(Status.FAIL_EXCEPTION, "exception.business.dictionaryService.updateItem");
                     }
                 }
                 else{
                     if(!super.createEntity(dict)){
                         log.warn("新建字典子项失败，itemName=" + dict.getItemName());
-                        throw new BusinessException(Status.FAIL_EXCEPTION, "新建字典子项异常");
+                        throw new BusinessException(Status.FAIL_EXCEPTION, "exception.business.dictionaryService.createItem");
                     }
                 }
             }
@@ -243,7 +242,7 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
                 if(!dictItemIds.contains(dict.getId())){
                     if(!super.deleteEntity(dict.getId())){
                         log.warn("删除子数据字典失败，itemName="+dict.getItemName());
-                        throw new BusinessException(Status.FAIL_EXCEPTION, "删除字典子项异常");
+                        throw new BusinessException(Status.FAIL_EXCEPTION, "exception.business.dictionaryService.deleteItem");
                     }
                 }
             }
@@ -259,9 +258,9 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
         Set<String> itemNames = new HashSet<>(), itemValues = new HashSet<>();
         dictList.forEach(dict -> {
             if (itemValues.contains(dict.getItemValue())) {
-                throw new BusinessException(Status.FAIL_OPERATION, "字典选项值: {} 重复", dict.getItemValue());
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.dictionaryService.repeatItemValue", dict.getItemValue());
             } else if (itemNames.contains(dict.getItemName())) {
-                throw new BusinessException(Status.FAIL_OPERATION, "字典选项名: {} 重复", dict.getItemName());
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.dictionaryService.repeatItemName", dict.getItemName());
             }
             itemNames.add(dict.getItemName());
             itemValues.add(dict.getItemValue());

@@ -81,7 +81,7 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> 
         MessageChannel channel = typeToChannelMap.get(message.getChannel());
         if (V.isEmpty(channel)) {
             log.error("[获取发送通道失败]，当前发送通道为：{}", message.getChannel());
-            throw new InvalidUsageException("获取发送通道失败! " + message.getChannel());
+            throw new InvalidUsageException("exception.invalidUsage.messageService.fetchChannelFailed", message.getChannel());
         }
         String content = message.getContent();
         if (message.hasTemplate()) {
@@ -99,7 +99,7 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> 
                     } else {
                         log.error("[获取模版失败] 模版id为：{} ，模版code为：{}", message.getTemplateId(), message.getTemplateCode());
                     }
-                    throw new BusinessException(Status.FAIL_OPERATION, "获取模版失败!");
+                    throw new BusinessException(Status.FAIL_OPERATION, "exception.business.messageService.fetchTempFailed");
                 }
                 message.setTemplateId(messageTemplate.getId());
                 content = messageTemplate.getContent();
@@ -119,10 +119,10 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> 
                 }
             } catch (Exception e) {
                 log.error("[消息解析失败]，消息体为：{}", message);
-                throw new BusinessException(Status.FAIL_OPERATION, "消息解析失败!");
+                throw new BusinessException(Status.FAIL_OPERATION, "exception.business.messageService.parseFailed");
             }
         } else {
-            throw new BusinessException("消息内容不能为 null");
+            throw new BusinessException("exception.business.messageService.contentNotNull");
         }
         // 设置定时发送，则等待定时任务发送
         if (V.notEmpty(message.getScheduleTime())) {
@@ -138,7 +138,7 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> 
         }
         if (!success) {
             log.error("[消息创建失败]，消息体为：{}", message);
-            throw new BusinessException(Status.FAIL_OPERATION, "消息发送失败！");
+            throw new BusinessException(Status.FAIL_OPERATION, "exception.business.messageService.sendFailed");
         }
         // 异步发送消息
         channel.send(message);
