@@ -1,5 +1,5 @@
 <script setup lang="ts" name="UserList">
-import { Search, Plus } from '@element-plus/icons-vue'
+import { Search, ArrowUp, ArrowDown, Plus } from '@element-plus/icons-vue'
 import type { UserPosition } from '../position/type'
 import type { UserModel } from './type'
 import Detail from './Detail.vue'
@@ -30,7 +30,11 @@ const { queryParam, loading, dataList, pagination, getList, buildQueryParam, onS
   UserModel,
   UserSearch
 >({ baseApi })
+queryParam.status = 'A'
 getList()
+
+// 搜索区折叠
+const searchState = ref(false)
 
 const detailRef = ref()
 const openDetail = (id: string) => {
@@ -57,28 +61,59 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
 
 <template>
   <div class="list-page">
+    <el-form v-show="searchState" label-width="80px" class="list-search" @submit.prevent>
+      <el-row :gutter="18">
+        <el-col :lg="8" :sm="12">
+          <el-form-item label="姓名">
+            <el-input v-model="queryParam.realname" clearable placeholder="" @change="onSearch" />
+          </el-form-item>
+        </el-col>
+        <el-col :lg="8" :sm="12">
+          <el-form-item label="编号">
+            <el-input v-model="queryParam.userNum" clearable placeholder="" @change="onSearch" />
+          </el-form-item>
+        </el-col>
+        <el-col :lg="8" :sm="12">
+          <el-form-item label="电话">
+            <el-input v-model="queryParam.mobilePhone" clearable placeholder="" @change="onSearch" />
+          </el-form-item>
+        </el-col>
+        <el-col :lg="8" :sm="12">
+          <el-form-item label="状态：">
+            <el-radio-group v-model="queryParam.status" @change="onSearch">
+              <el-radio label="A">在职</el-radio>
+              <el-radio label="I">离职</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+
     <el-space wrap class="list-operation">
       <el-button v-has-permission="'create'" :icon="Plus" type="primary" @click="openForm()">
         {{ $t('operation.create') }}
       </el-button>
       <excel-import :excel-base-api="`${baseApi}/excel`" :attach="() => ({ orgId })" @complete="onSearch" />
       <excel-export
-          v-has-permission="'export'"
-          :build-param="buildQueryParam"
-          :export-url="`${baseApi}/excel/export`"
-          :table-head-url="`${baseApi}/excel/export-table-head`"
+        v-has-permission="'export'"
+        :build-param="buildQueryParam"
+        :export-url="`${baseApi}/excel/export`"
+        :table-head-url="`${baseApi}/excel/export-table-head`"
       />
       <el-space>
-        <el-input v-model="queryParam.realname" clearable placeholder="姓名" @change="onSearch" />
-        <el-input v-model="queryParam.userNum" clearable placeholder="员工编号" @change="onSearch" />
-        <el-input v-model="queryParam.mobilePhone" clearable placeholder="电话" @change="onSearch" />
+        <el-input v-show="!searchState" v-model="queryParam.realname" clearable placeholder="姓名" @change="onSearch" />
         <el-button :icon="Search" type="primary" @click="onSearch">查询</el-button>
         <el-button title="重置查询条件" @click="resetFilter">重置</el-button>
+        <el-button
+          :icon="searchState ? ArrowUp : ArrowDown"
+          :title="searchState ? '收起' : '展开'"
+          @click="searchState = !searchState"
+        />
       </el-space>
     </el-space>
 
     <el-table ref="tableRef" v-loading="loading" row-key="id" :data="dataList" stripe height="100%">
-      <el-table-column prop="userNum" label="员工编号" />
+      <el-table-column prop="userNum" label="编号" />
       <el-table-column prop="realname" label="姓名">
         <template #default="{ row }">
           <span v-if="isPrimaryPosition(row.userPositionList)">
@@ -91,7 +126,6 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
           </el-tooltip>
         </template>
       </el-table-column>
-
       <el-table-column prop="genderLabel" label="性别" width="80">
         <template #default="{ row }">
           <el-tag :color="row.genderLabel?.ext?.color" effect="dark">
@@ -100,6 +134,7 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
         </template>
       </el-table-column>
       <el-table-column prop="mobilePhone" label="电话" show-overflow-tooltip />
+      <el-table-column prop="sortId" label="排序号" width="90" />
       <el-table-column prop="genderLabel" label="状态">
         <template #default="{ row }">
           <el-tag :color="row.statusLabel?.ext?.color" effect="dark">
@@ -117,8 +152,7 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
           <span>{{ row.accountStatusLabel || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="sortId" label="排序号" width="90" />
-      <el-table-column prop="updateTime" label="更新时间" width="160" />
+      <el-table-column prop="updateTime" label="更新时间" width="150" />
       <el-table-column label="操作" width="160" fixed="right">
         <template #default="{ row }">
           <el-space>
