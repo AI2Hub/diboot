@@ -42,10 +42,10 @@ const singleRow = (row: Array<I18nConfig>) => {
         {{ $t('operation.create') }}
       </el-button>
       <el-space>
-        <el-input v-model="queryParam.code" placeholder="资源标识" clearable @change="onSearch" />
-        <el-input v-model="queryParam.content" placeholder="翻译内容" clearable @change="onSearch" />
-        <el-button :icon="Search" type="primary" @click="onSearch">查询</el-button>
-        <el-button title="重置搜索条件" @click="resetFilter">重置</el-button>
+        <el-input v-model="queryParam.code" :placeholder="$t('i18nConfig.i18nCode')" clearable @change="onSearch" />
+        <el-input v-model="queryParam.content" :placeholder="$t('i18nConfig.content')" clearable @change="onSearch" />
+        <el-button :icon="Search" type="primary" @click="onSearch">{{ $t('operation.search') }}</el-button>
+        <el-button :title="$t('title.reset')" @click="resetFilter">{{ $t('operation.reset') }}</el-button>
       </el-space>
     </el-space>
 
@@ -55,12 +55,19 @@ const singleRow = (row: Array<I18nConfig>) => {
           <el-radio v-model="single" :label="row[0].code" @change="singleRow(row)">{{ '' }}</el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="code" label="资源标识" fixed show-overflow-tooltip min-width="180px">
+      <el-table-column prop="code" :label="$t('i18nConfig.i18nCode')" fixed show-overflow-tooltip min-width="180px">
         <template #default="{ row }">
           <span>{{ row[0].code }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="!select" prop="typeLabel" label="类型" fixed show-overflow-tooltip width="90px">
+      <el-table-column
+        v-if="!select"
+        prop="typeLabel"
+        :label="$t('i18nConfig.type')"
+        fixed
+        show-overflow-tooltip
+        width="90px"
+      >
         <template #default="{ row }">
           <el-tag :color="row[0].typeLabel?.ext?.color" effect="dark" type="info">
             {{ row[0].typeLabel?.label }}
@@ -82,7 +89,7 @@ const singleRow = (row: Array<I18nConfig>) => {
       <el-table-column
         v-if="!select"
         v-has-permission="['update', 'delete']"
-        label="操作"
+        :label="$t('operation.label')"
         width="160px"
         header-align="center"
         fixed="right"

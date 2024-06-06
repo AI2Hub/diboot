@@ -67,7 +67,7 @@ const resetFilter = () => {
     v-model='searchName'
     show-action
     shape='round'
-    placeholder='请输入搜索关键词'
+    placeholder="`${$t('placeholder.input')} ${搜索关键词'
     @search='onSearch'
     @blur='onSearch'
     @clear='resetFilter'

@@ -18,6 +18,7 @@ package com.diboot.iam.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.diboot.core.binding.Binder;
+import com.diboot.core.binding.RelationsBinder;
 import com.diboot.core.event.OperationEvent;
 import com.diboot.core.exception.BusinessException;
 import com.diboot.core.service.impl.BaseServiceImpl;
@@ -130,6 +131,7 @@ public class IamRoleResourceServiceImpl extends BaseServiceImpl<IamRoleResourceM
         if (V.isEmpty(menuPermissionList)) {
             return Collections.emptyList();
         }
+        RelationsBinder.bind(menuPermissionList);
         // 绑定菜单下按钮权限，进行菜单权限分组
         Map<String, List<IamResource>> listMap = menuPermissionList.stream().collect(Collectors.groupingBy(e ->
                 Cons.RESOURCE_PERMISSION_DISPLAY_TYPE.PERMISSION.name().equals(e.getDisplayType()) ? e.getParentId() : Cons.TREE_ROOT_ID));

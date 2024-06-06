@@ -260,7 +260,6 @@ public class CoreAutoConfig implements WebMvcConfigurer {
 
 
     @Bean
-    @ConditionalOnProperty(prefix = "diboot.core", name = "i18n", havingValue = "true")
     public LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
         localeResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
@@ -268,7 +267,6 @@ public class CoreAutoConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "diboot.core", name = "i18n", havingValue = "true")
     public static RequestContextFilter requestContextFilter() {
         OrderedRequestContextFilter orderedRequestContextFilter = new OrderedRequestContextFilter();
         orderedRequestContextFilter.setThreadContextInheritable(true);

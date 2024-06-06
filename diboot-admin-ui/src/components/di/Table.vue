@@ -1,5 +1,5 @@
 <script setup lang="ts" name="DiTable">
-import { SetUp, Sort } from '@element-plus/icons-vue'
+import { Search, SetUp, Sort } from '@element-plus/icons-vue'
 import Draggable from 'vuedraggable'
 import type { TableColumn } from './type'
 import type { Ref } from 'vue'
@@ -210,7 +210,7 @@ const headerDragend = (newWidth: number, oldWidth: number, column: { property: s
         <template v-if="item.number" #header>
           <el-tooltip v-if="item.number" placement="bottom">
             <template #content>
-              当前页总和：{{
+              {{ $t('components.di.table.total') }}：{{
                 Number(
                   (dataList ?? [])
                     .map(e => Number(e[item.prop] ?? 0))
@@ -218,7 +218,7 @@ const headerDragend = (newWidth: number, oldWidth: number, column: { property: s
                     .toFixed(item.number)
                 )
               }}<br />
-              当前页平均：{{
+              {{ $t('components.di.table.avg') }}：{{
                 Number(
                   (
                     (dataList ?? []).map(e => Number(e[item.prop] ?? 0)).reduce((e1, e2) => e1 + e2, 0) /
@@ -244,8 +244,8 @@ const headerDragend = (newWidth: number, oldWidth: number, column: { property: s
               {{ scope.row[item.prop].label }}
             </el-tag>
             <template v-else-if="typeof scope.row[item.prop] === 'boolean'">
-              <template v-if="scope.row[item.prop]"> 是 </template>
-              <template v-else> 否 </template>
+              <template v-if="scope.row[item.prop]"> {{ $t('bool.yes') }} </template>
+              <template v-else> {{ $t('bool.no') }} </template>
             </template>
             <span v-else>
               {{ scope.row[item.prop] }}
@@ -270,11 +270,11 @@ const headerDragend = (newWidth: number, oldWidth: number, column: { property: s
           <thead>
             <tr>
               <th />
-              <th style="width: 60px">显示</th>
-              <th style="width: 160px">名称</th>
-              <th style="width: 100px">宽度</th>
-              <th style="width: 60px">排序</th>
-              <th style="width: 60px">固定</th>
+              <th style="width: 60px">{{ $t('components.di.table.config.show') }}</th>
+              <th style="width: 160px">{{ $t('components.di.table.config.name') }}</th>
+              <th style="width: 100px">{{ $t('components.di.table.config.width') }}</th>
+              <th style="width: 60px">{{ $t('components.di.table.config.sort') }}</th>
+              <th style="width: 60px">{{ $t('components.di.table.config.fixed') }}</th>
             </tr>
           </thead>
           <draggable
@@ -310,12 +310,12 @@ const headerDragend = (newWidth: number, oldWidth: number, column: { property: s
         </table>
         <div style="display: flex; align-items: center; justify-content: space-between">
           <div>
-            <el-checkbox v-model="config.border" label="纵向边框" size="small" />
-            <el-checkbox v-model="config.stripe" label="斑马纹" size="small" />
+            <el-checkbox v-model="config.border" :label="$t('components.di.table.border')" size="small" />
+            <el-checkbox v-model="config.stripe" :label="$t('components.di.table.stripe')" size="small" />
           </div>
           <div>
-            <el-button size="small" @click="resetTableConfig">重置</el-button>
-            <el-button size="small" type="primary" @click="saveColumnChange"> 保存 </el-button>
+            <el-button size="small" @click="resetTableConfig">{{ $t('operation.reset') }}</el-button>
+            <el-button size="small" type="primary" @click="saveColumnChange"> {{ $t('button.save') }} </el-button>
           </div>
         </div>
       </el-popover>

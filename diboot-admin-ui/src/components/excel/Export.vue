@@ -2,7 +2,8 @@
 import { Loading, Download } from '@element-plus/icons-vue'
 import type { TableHead } from './type'
 import { fileDownload } from '@/utils/file'
-
+import { useI18n } from 'vue-i18n'
+const i18n = useI18n()
 const props = defineProps<{
   // 导出数据接口
   exportUrl: string
@@ -62,7 +63,7 @@ const checkedList = ref<string[]>([])
 
 // 自定义表头确认导出
 const confirm = () => {
-  if (!checkedList.value.length) return ElMessage.warning('导出列不应为空')
+  if (!checkedList.value.length) return ElMessage.warning(i18n.t('components.excel.exportColumnNull'))
   localStorage.setItem(props.tableHeadUrl, JSON.stringify(checkedList.value))
   handleCommand(checkedList.value)
   dialogVisible.value = false
@@ -82,10 +83,12 @@ const confirm = () => {
       <el-icon style="margin-right: 5px">
         <component :is="exportLoadingData ? Loading : Download" />
       </el-icon>
-      {{ title ?? '导出' }}
+      {{ title ?? $t('operation.export') }}
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item v-if="tableHeadUrl" command="select">选择列导出</el-dropdown-item>
+          <el-dropdown-item v-if="tableHeadUrl" command="select">{{
+            $t('components.excel.selectColumnExport')
+          }}</el-dropdown-item>
           <el-dropdown-item v-for="(value, key, index) in options" :key="index" :divided="index === 0" :command="value">
             {{ key }}
           </el-dropdown-item>
@@ -95,20 +98,20 @@ const confirm = () => {
 
     <!-- 固定模板导出 -->
     <el-button v-else :icon="exportLoadingData ? Loading : Download" :type="type" @click="exportData()">
-      {{ title ?? '导出' }}
+      {{ title ?? $t('operation.export') }}
     </el-button>
 
     <!-- 导出列选择 -->
-    <el-dialog v-model="dialogVisible" :width="width ?? '600px'" title="选择导出列">
+    <el-dialog v-model="dialogVisible" :width="width ?? '600px'" :title="$t('components.excel.selectExportColumn')">
       <el-transfer
         v-model="checkedList"
         :data="tableHeadList"
-        :titles="['忽略列', '导出列']"
+        :titles="[$t('components.excel.ignoreColumn'), $t('components.excel.exportColumn')]"
         :props="{ key: 'key', label: 'title' }"
       />
       <template #footer>
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirm">确 定</el-button>
+        <el-button @click="dialogVisible = false">{{ $t('button.cancel') }}</el-button>
+        <el-button type="primary" @click="confirm">{{ $t('button.confirm') }}</el-button>
       </template>
     </el-dialog>
   </span>

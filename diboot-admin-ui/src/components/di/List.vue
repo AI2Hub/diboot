@@ -135,7 +135,7 @@ const multiple = inject<boolean | undefined>(
 
     <el-space wrap class="list-operation">
       <el-button v-if="createPermission && operation?.create" type="primary" :icon="Plus" @click="openForm()">
-        新建
+        {{ $t('operation.create') }}
       </el-button>
       <excel-import
         v-if="operation?.importData && importPermission"
@@ -157,7 +157,7 @@ const multiple = inject<boolean | undefined>(
         :disabled="!selectedKeys.length"
         @click="batchRemove(selectedKeys)"
       >
-        批量删除
+        {{ $t('operation.batchDelete') }}
       </el-button>
       <el-space>
         <span v-if="searchArea?.propList?.length" v-show="!searchState" class="search">
@@ -183,13 +183,13 @@ const multiple = inject<boolean | undefined>(
           </template>
         </span>
         <template v-if="searchArea?.propList?.length">
-          <el-button :icon="Search" type="primary" @click="onSearch">搜索</el-button>
-          <el-button title="重置搜索条件" @click="resetFilter">重置</el-button>
+          <el-button :icon="Search" type="primary" @click="onSearch">{{ $t('operation.search') }}</el-button>
+          <el-button :title="$t('title.reset')" @click="resetFilter">{{ $t('operation.reset') }}</el-button>
         </template>
         <el-button
           v-if="(searchArea?.propList?.length ?? 0) > 1"
           :icon="searchState ? ArrowUp : ArrowDown"
-          :title="searchState ? '收起' : '展开'"
+          :title="searchState ? $t('searchState.up') : $t('searchState.down')"
           @click="searchState = !searchState"
         />
       </el-space>
@@ -207,7 +207,7 @@ const multiple = inject<boolean | undefined>(
     >
       <el-table-column
         v-if="operation?.detail || operation?.update || operation?.remove"
-        label="操作"
+        :label="$t('operation.label')"
         width="160"
         fixed="right"
       >
@@ -221,11 +221,11 @@ const multiple = inject<boolean | undefined>(
               size="small"
               @click="openDetail(row.id)"
             >
-              详情
+              {{ $t('title.detail') }}
             </el-button>
             <el-dropdown v-if="(operation?.update || operation?.remove) && updateOrDeletePermission">
               <el-button text bg type="primary" size="small">
-                更多
+                {{ $t('operation.more') }}
                 <el-icon :size="16" style="margin-left: 5px">
                   <ArrowDown />
                 </el-icon>
@@ -233,10 +233,10 @@ const multiple = inject<boolean | undefined>(
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item v-if="operation?.update && updatePermission" @click="openForm(row.id)">
-                    编辑
+                    {{ $t('operation.update') }}
                   </el-dropdown-item>
                   <el-dropdown-item v-if="operation?.remove && deletePermission" @click="remove(row.id)">
-                    删除
+                    {{ $t('operation.delete') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>

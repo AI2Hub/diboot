@@ -50,8 +50,8 @@ function rowClick(row: DictionaryTableExpand) {
       <el-space>
         <el-input v-model="queryParam.itemName" clearable :placeholder="$t('dictionary.itemName')" @change="onSearch" />
         <el-input v-model="queryParam.type" clearable :placeholder="$t('dictionary.type')" @change="onSearch" />
-        <el-button :icon="Search" type="primary" @click="onSearch">查询</el-button>
-        <el-button title="重置搜索条件" @click="resetFilter">重置</el-button>
+        <el-button :icon="Search" type="primary" @click="onSearch">{{ $t('operation.search') }}</el-button>
+        <el-button :title="$t('title.reset')" @click="resetFilter">{{ $t('operation.reset') }}</el-button>
       </el-space>
     </el-space>
 
@@ -94,8 +94,8 @@ function rowClick(row: DictionaryTableExpand) {
         </template>
       </el-table-column>
       <el-table-column prop="description" :label="$t('dictionary.description')" />
-      <el-table-column prop="createTime" :label="$t('dictionary.createTime')" width="185" />
-      <el-table-column :label="$t('dictionary.operate')" width="160" fixed="right">
+      <el-table-column prop="createTime" :label="$t('baseField.createTime')" width="185" />
+      <el-table-column :label="$t('operation.label')" width="160" fixed="right">
         <template #default="{ row }">
           <template v-if="!row.parentId || row.parentId === '0'">
             <el-space>

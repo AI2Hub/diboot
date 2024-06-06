@@ -43,7 +43,7 @@ defineExpose({
         })
         .catch(err => {
           ElNotification.error({
-            title: '获取列表数据失败',
+            title: i18n.t('i18nConfig.fetchDataListError'),
             message: err.msg || err.message || err
           })
         })
@@ -94,34 +94,36 @@ const checkCodeDuplicate = (rule: unknown, value: unknown, callback: (error?: st
 </script>
 
 <template>
-  <el-dialog v-model="visible" title="国际化翻译">
-    <el-form ref="formRef" v-loading="loading" :model="modle" label-width="100px">
+  <el-dialog v-model="visible" :title="$t('i18nConfig.internationalTranslation')">
+    <el-form ref="formRef" v-loading="loading" :model="modle" :label-width="$i18n.locale === 'en' ? '150px' : '100px'">
       <el-form-item
         prop="i18nCode"
-        label="资源标识"
+        :label="$t('i18nConfig.i18nCode')"
         :rules="[
-          { required: true, message: '不能为空', whitespace: true },
-          { pattern: /^\w+$/, message: '只可以输入字母数字下划线', trigger: 'blur' },
+          { required: true, message: i18n.t('rules.notnull'), whitespace: true },
+          { pattern: /^\w+$/, message: $t('i18nConfig.rules.i18nCode'), trigger: 'blur' },
           { validator: checkCodeDuplicate, trigger: 'blur' }
         ]"
       >
         <el-input v-model="modle.i18nCode" :disabled="modle.list.some(e => e.type === 'SYSTEM')" />
       </el-form-item>
-      <el-divider>翻译</el-divider>
+      <el-divider>{{ $t('i18nConfig.translate') }}</el-divider>
       <el-form-item
         v-for="(item, index) in modle.list"
         :key="index"
         :prop="`list.${index}.content`"
         :label="$t('language', {}, { locale: item?.language?.replace(/_/g, '-') })"
-        :rules="{ required: true, message: '不能为空', whitespace: true }"
+        :rules="{ required: true, message: i18n.t('rules.notnull'), whitespace: true }"
       >
         <el-input v-model="item.content" />
       </el-form-item>
     </el-form>
 
     <template #footer>
-      <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" :loading="submitting" @click="submitPost(modle.list, formRef)">保存</el-button>
+      <el-button @click="visible = false">{{ $t('button.cancel') }}</el-button>
+      <el-button type="primary" :loading="submitting" @click="submitPost(modle.list, formRef)">{{
+        $t('button.save')
+      }}</el-button>
     </template>
   </el-dialog>
 </template>

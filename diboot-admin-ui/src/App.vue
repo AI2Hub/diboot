@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import * as locales from 'element-plus/es/locale/index'
 import { colorPrimary, isSmall } from '@/utils/theme'
+import i18nUtils from '@/utils/i18n'
 import useAppStore from './store/app'
 import { useI18n } from 'vue-i18n'
 
 const appStore = useAppStore()
+const i18n = useI18n()
 
+const locale = ref()
 // 初始化自定义主题色
 onMounted(() => {
   appStore.colorPrimary && (colorPrimary.value = appStore.colorPrimary)
   isSmall.value = appStore.globalSize === 'small'
 })
 
-const i18n = useI18n()
-
-const locale = ref()
-
-const isRouterActive = ref(true)
 watch(
   i18n.locale,
   value => {
@@ -29,8 +27,6 @@ watch(
     if (locale.value == null) {
       locale.value = Object.values(locales).find(e => e.name === i18n.fallbackLocale.value)
     }
-    isRouterActive.value = false
-    nextTick(() => (isRouterActive.value = true))
   },
   {
     immediate: true
@@ -40,7 +36,7 @@ watch(
 
 <template>
   <el-config-provider :locale="locale" :size="appStore.globalSize">
-    <router-view v-if="isRouterActive" />
+    <router-view />
   </el-config-provider>
 </template>
 
