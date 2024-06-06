@@ -544,6 +544,7 @@ public class BeanUtils {
         if (parentId2ListMap.size() == 1) {
             return parentId2ListMap.values().iterator().next();
         }
+        log.warn("buildTree根节点ParentId不唯一: {}", parentId2ListMap.values());
         throw new BusinessException("buildTree根节点ParentId不唯一");
     }
 
