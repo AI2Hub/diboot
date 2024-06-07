@@ -20,12 +20,12 @@
         <dependency>
             <groupId>com.diboot</groupId>
             <artifactId>diboot-core-spring-boot-starter</artifactId>
-            <version>3.4.0-beta1</version>
+            <version>${diboot.version}</version>
         </dependency>
         <dependency>
             <groupId>com.diboot</groupId>
             <artifactId>diboot-iam-spring-boot-starter</artifactId>
-            <version>3.4.0-beta1</version>
+            <version>${diboot.version}</version>
         </dependency>
 
         <dependency>
