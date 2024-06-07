@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@ConditionalOnProperty(prefix = "diboot.core", name = "i18n", havingValue = "true")
+@ConditionalOnProperty(prefix = "diboot", name = "i18n", havingValue = "true")
 public class I18nConfigServiceImpl extends BaseServiceImpl<I18nConfigMapper, I18nConfig> implements I18nConfigService {
 
     @Autowired
