@@ -148,7 +148,7 @@ public class MiddleTable {
                 return ResultAssembler.convertToOneToOneResult(resultSetMapList, trunkObjColMapping, branchObjColMapping);
             }
             catch (Exception e) {
-                log.error("中间表查询异常: " + sql, e);
+                log.error("中间表查询异常: {}", sql, e);
                 return Collections.emptyMap();
             }
         }
@@ -180,7 +180,7 @@ public class MiddleTable {
                 return ResultAssembler.convertToOneToManyCountResult(resultSetMapList, trunkObjColMapping, branchObjColMapping);
             }
             catch (Exception e) {
-                log.error("中间表查询异常: " + sql, e);
+                log.error("中间表查询异常: {}", sql, e);
                 return Collections.emptyMap();
             }
         }
@@ -212,7 +212,7 @@ public class MiddleTable {
                 return ResultAssembler.convertToOneToManyResult(resultSetMapList, trunkObjColMapping, branchObjColMapping);
             }
             catch (Exception e) {
-                log.error("中间表查询异常: " + sql, e);
+                log.error("中间表查询异常: {}", sql, e);
                 return Collections.emptyMap();
             }
         }

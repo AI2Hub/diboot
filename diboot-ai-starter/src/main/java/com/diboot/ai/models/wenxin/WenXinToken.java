@@ -87,7 +87,7 @@ public class WenXinToken {
             TOKEN_CACHE.put(TOKEN_KEY, new TokenWrapper(token, System.currentTimeMillis() + TOKEN_EXPIRE_MILLIS));
             return token;
         } catch (IOException e) {
-            log.debug("请求token异常 ：{}", e);
+            log.debug("请求token异常 ：{}", e.getMessage());
             throw new BusinessException(Status.FAIL_OPERATION, "请求模型token异常");
         }
     }

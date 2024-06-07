@@ -605,7 +605,7 @@ public class V {
         else if (source.getClass() != target.getClass() && !(source instanceof Map && target instanceof Map)) {
             // 根据equals设计原则，类型不一致，直接false（仅允许HashMap、LinkedHashMap的差异）
             // 避免子类与父类、子类与子类比较时可能出现的问题
-            log.warn("source和target类型不匹配：" + source.getClass() + " 和 " + target.getClass());
+            log.warn("source: {} 和 target: {} 类型不匹配", source.getClass(), target.getClass());
             return false;
         } else if (source instanceof Class) {
             return ((Class<?>) source).getName().equals(((Class<?>) target).getName());
@@ -656,7 +656,7 @@ public class V {
             }
             return true;
         } else {
-            log.warn("暂未实现类型 " + source.getClass().getName() + "-" + target.getClass().getName() + " 的比对！");
+            log.warn("暂未实现类型 {} - {} 的比对！", source.getClass().getName(), target.getClass().getName());
             return false;
         }
     }

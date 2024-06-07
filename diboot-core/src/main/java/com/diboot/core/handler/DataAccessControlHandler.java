@@ -115,7 +115,7 @@ public class DataAccessControlHandler implements MultiDataPermissionHandler {
                 try {
                     return CCJSqlParserUtil.parseCondExpression(conditionExpr);
                 } catch (JSQLParserException e) {
-                    log.warn("解析condition异常: " + conditionExpr, e);
+                    log.warn("解析condition异常: {}", conditionExpr, e);
                 }
             }
             return null;

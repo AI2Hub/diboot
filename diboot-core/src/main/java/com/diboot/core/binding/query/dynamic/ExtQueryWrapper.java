@@ -34,6 +34,8 @@ import java.util.List;
  * @date 2020/04/16
  */
 public class ExtQueryWrapper<T> extends QueryWrapper<T> {
+    private static final long serialVersionUID = -3690583300701726821L;
+
     /**
      * 主实体class
      */

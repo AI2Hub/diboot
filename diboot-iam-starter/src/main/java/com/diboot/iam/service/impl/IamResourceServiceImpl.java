@@ -57,7 +57,7 @@ public class IamResourceServiceImpl extends BaseServiceImpl<IamResourceMapper, I
             return;
         }
         if (!super.createEntity(iamResource)) {
-            log.warn("新建资源权限失败，displayType=" + iamResource.getDisplayType());
+            log.warn("新建资源权限失败，displayType={}", iamResource.getDisplayType());
             throw new BusinessException(Status.FAIL_OPERATION, "新建资源权限失败");
         }
         List<IamResourceListVO> children = iamResource.getChildren();

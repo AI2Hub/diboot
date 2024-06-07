@@ -29,6 +29,7 @@ import java.util.Map;
  * @Date 2019-07-11  11:10
  */
 public class BusinessException extends RuntimeException {
+    private static final long serialVersionUID = 6947618826898130771L;
 
     private Integer code;
 

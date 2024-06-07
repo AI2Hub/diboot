@@ -241,6 +241,7 @@ public class IamRoleResourceServiceImpl extends BaseServiceImpl<IamRoleResourceM
         return success;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean deleteRoleResourceRelations(String roleId) {
         if (roleId == null) {
@@ -284,7 +285,7 @@ public class IamRoleResourceServiceImpl extends BaseServiceImpl<IamRoleResourceM
      * @param iamResourceListVOList
      */
     private void buildRouteRecordList(List<RouteRecord> routeRecordList, List<IamResourceListVO> iamResourceListVOList) {
-        RouteRecord routeRecord = null;
+        RouteRecord routeRecord;
         for (IamResourceListVO resource : iamResourceListVOList) {
             routeRecord = new RouteRecord();
             RouteMeta routeMeta = resource.getRouteMeta();

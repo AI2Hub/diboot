@@ -71,7 +71,6 @@ public class NotificationPluginInitializer implements ApplicationRunner {
                 DictionaryVO dictVo = JSON.toJavaObject(dictJson, DictionaryVO.class);
                 dictionaryService.createDictAndChildren(dictVo);
             }
-            DICT_INIT_DATA = null;
         }
     }
 }

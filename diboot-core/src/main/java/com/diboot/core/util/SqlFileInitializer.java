@@ -198,7 +198,7 @@ public class SqlFileInitializer {
             try{
                 boolean success = SqlExecutor.executeUpdate(sqlStatement, null);
                 if(success){
-                    log.info("SQL执行完成: "+ S.substring(sqlStatement, 0, 60) + "...");
+                    log.info("SQL执行完成: {} ...", S.substring(sqlStatement, 0, 60));
                 }
             }
             catch (Exception e){

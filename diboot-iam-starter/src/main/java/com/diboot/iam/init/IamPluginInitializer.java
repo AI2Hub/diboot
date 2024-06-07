@@ -88,7 +88,6 @@ public class IamPluginInitializer implements ApplicationRunner {
                 dictVo.setParentId(Cons.ID_PREVENT_NULL);
                 dictionaryService.createDictAndChildren(dictVo);
             }
-            DICT_INIT_DATA = null;
         }
 
         // 插入iam组件所需的初始权限数据

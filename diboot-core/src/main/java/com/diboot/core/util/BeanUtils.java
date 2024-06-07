@@ -370,7 +370,7 @@ public class BeanUtils {
                     allListMap.put(key, model);
                 }
                 else{
-                    log.warn(model.getClass().getName() + " 的属性 "+fields[0]+" 值存在 null，转换结果需要确认!");
+                    log.warn("{} 的属性 {} 值存在 null，转换结果需要确认!", model.getClass().getName(), fields[0]);
                 }
             }
         }
@@ -414,7 +414,7 @@ public class BeanUtils {
                     list.add(model);
                 }
                 else{
-                    log.warn(model.getClass().getName() + " 的属性 "+fields[0]+" 值存在 null，转换结果需要确认!");
+                    log.warn("{} 的属性 {} 值存在 null，转换结果需要确认!", model.getClass().getName(), fields[0]);
                 }
             }
         } catch (Exception e){
@@ -878,7 +878,7 @@ public class BeanUtils {
             return cloneObj;
         }
         catch (Exception e){
-            log.warn("Clone Object "+ent.getClass().getSimpleName()+" error", e);
+            log.warn("Clone Object {}} error", ent.getClass().getSimpleName(), e);
             return ent;
         }
     }

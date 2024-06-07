@@ -148,7 +148,7 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
             dictVO.setIsDeletable(true);
         }
         if(!super.createEntity(dictVO)){
-            log.warn("新建数据字典定义失败，type="+dictVO.getType());
+            log.warn("新建数据字典定义失败，type={}", dictVO.getType());
             return false;
         }
         List<Dictionary> children = dictVO.getChildren();
@@ -201,7 +201,7 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
                 .setIsDeletable(oldDictionary.getIsDeletable())
                 .setIsEditable(oldDictionary.getIsEditable());
         if(!super.updateEntity(dictVO)){
-            log.warn("更新数据字典定义失败，type="+dictVO.getType());
+            log.warn("更新数据字典定义失败，type={}", dictVO.getType());
             return false;
         }
         //获取原 子数据字典list
@@ -222,13 +222,13 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
                 if(V.notEmpty(dict.getId())){
                     dictItemIds.add(dict.getId());
                     if(!super.updateEntity(dict)){
-                        log.warn("更新字典子项失败，itemName=" + dict.getItemName());
+                        log.warn("更新字典子项失败，itemName={}", dict.getItemName());
                         throw new BusinessException(Status.FAIL_EXCEPTION, "更新字典子项异常");
                     }
                 }
                 else{
                     if(!super.createEntity(dict)){
-                        log.warn("新建字典子项失败，itemName=" + dict.getItemName());
+                        log.warn("新建字典子项失败，itemName={}", dict.getItemName());
                         throw new BusinessException(Status.FAIL_EXCEPTION, "新建字典子项异常");
                     }
                 }
@@ -238,7 +238,7 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
             for(Dictionary dict : oldDictList){
                 if(!dictItemIds.contains(dict.getId())){
                     if(!super.deleteEntity(dict.getId())){
-                        log.warn("删除子数据字典失败，itemName="+dict.getItemName());
+                        log.warn("删除子数据字典失败，itemName={}", dict.getItemName());
                         throw new BusinessException(Status.FAIL_EXCEPTION, "删除字典子项异常");
                     }
                 }

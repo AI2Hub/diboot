@@ -1377,7 +1377,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 	 * @param message
 	 */
 	private void warning(String method, String message){
-		log.warn(this.getClass().getSimpleName() + ".{} 调用错误: {}, 请检查！", method, message);
+		log.warn("{}.{} 调用错误: {}, 请检查！", this.getClass().getSimpleName(), method, message);
 	}
 
 }

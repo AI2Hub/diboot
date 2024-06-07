@@ -132,7 +132,7 @@ public class WxMaMemberAuthServiceImpl implements WxMaAuthService {
      * @return
      */
     protected String sex2gender(Integer sex) {
-        String gender = null;
+        String gender;
         if (V.equals(sex, 1)) {
             gender = "M";
         } else if (V.equals(sex, 2)) {
