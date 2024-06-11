@@ -7,7 +7,7 @@ const en: Locale = {
     content: 'Translation Content',
     internationalTranslation: 'International Translation',
     rules: {
-      i18nCode: 'Can only input letters, numbers, and underscores'
+      i18nCode: 'Can only input letters, numbers, . , - , _'
     },
     fetchDataListError: 'Failed to retrieve list data'
   }

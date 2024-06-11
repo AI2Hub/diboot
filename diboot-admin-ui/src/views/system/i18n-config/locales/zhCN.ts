@@ -6,7 +6,7 @@ const zhCN = {
     content: '翻译内容',
     internationalTranslation: '国际化翻译',
     rules: {
-      i18nCode: '只可以输入字母数字下划线'
+      i18nCode: '只允许字，数字， . ， - ， _'
     },
     fetchDataListError: '获取列表数据失败'
   }

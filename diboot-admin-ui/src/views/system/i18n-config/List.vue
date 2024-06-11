@@ -2,6 +2,7 @@
 import { Search, Plus } from '@element-plus/icons-vue'
 import type { I18nConfig } from './type'
 import Form from './Form.vue'
+import { useI18n } from 'vue-i18n'
 
 const { queryParam, loading, dataList, pagination, getList, onSearch, resetFilter, batchRemove } = useList<
   I18nConfig[],
@@ -32,6 +33,22 @@ const singleRow = (row: Array<I18nConfig>) => {
   // single.value = row[0].code
   emits('update:modelValue', single.value as string)
   emits('change', row)
+}
+
+// 国际化
+const i18n = useI18n()
+const locales = i18n.availableLocales.map(e => e.replace(/-/g, '_'))
+
+const initI18nData = () => {
+  const initData: Partial<I18nConfig>[] = Array.of(...locales).map(locale => ({ language: locale }))
+  const zh = initData.filter(item => item.language === 'zh_CN')
+  const en = initData.filter(item => item.language === 'en')
+  const rest = initData.filter(item => item.language !== 'zh_CN' && item.language !== 'en')
+  const arr: Partial<I18nConfig>[] = []
+  if (zh && zh.length > 0) arr.push(zh[0])
+  if (en && en.length > 0) arr.push(en[0])
+  if (rest && rest.length > 0) rest.forEach(item => arr.push(item))
+  return arr
 }
 </script>
 
@@ -75,15 +92,15 @@ const singleRow = (row: Array<I18nConfig>) => {
         </template>
       </el-table-column>
       <el-table-column
-        v-for="locale in $i18n.availableLocales.map(e => e.replace(/-/g, '_'))"
-        :key="locale"
-        :prop="locale"
-        :label="$t('language', {}, { locale: locale.replace(/_/g, '-') })"
+        v-for="item in initI18nData()"
+        :key="item?.language"
+        :prop="item?.language"
+        :label="$t('language', {}, { locale: item?.language?.replace(/_/g, '-') })"
         show-overflow-tooltip
         min-width="180px"
       >
         <template #default="{ row }">
-          <span>{{ row.find((e: I18nConfig) => e.language === locale)?.content }}</span>
+          <span>{{ row.find((e: I18nConfig) => e.language === item?.language)?.content }}</span>
         </template>
       </el-table-column>
       <el-table-column

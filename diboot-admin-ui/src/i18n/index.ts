@@ -24,5 +24,4 @@ const i18n = createI18n({
   fallbackLocale: I18nUtils.get() || 'zh-CN',
   messages
 })
-console.log(messages)
 export default i18n
