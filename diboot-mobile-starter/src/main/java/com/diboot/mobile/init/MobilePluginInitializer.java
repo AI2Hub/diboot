@@ -78,7 +78,6 @@ public class MobilePluginInitializer implements ApplicationRunner {
                 DictionaryVO dictVo = JSON.toJavaObject(dictJson, DictionaryVO.class);
                 dictionaryService.createDictAndChildren(dictVo);
             }
-            DICT_INIT_DATA = null;
         }
         IamMemberService iamMemberService = ContextHolder.getBean(IamMemberService.class);
         if(iamMemberService != null && iamMemberService.getEntityListCount(null) == 0){

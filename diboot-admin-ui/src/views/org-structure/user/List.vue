@@ -30,7 +30,11 @@ const { queryParam, loading, dataList, pagination, getList, buildQueryParam, onS
   UserModel,
   UserSearch
 >({ baseApi })
+queryParam.status = 'A'
 getList()
+
+// 搜索区折叠
+const searchState = ref(false)
 
 const detailRef = ref()
 const openDetail = (id: string) => {
@@ -57,6 +61,34 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
 
 <template>
   <div class="list-page">
+    <el-form v-show="searchState" label-width="80px" class="list-search" @submit.prevent>
+      <el-row :gutter="18">
+        <el-col :lg="8" :sm="12">
+          <el-form-item :label="$t('user.realname')">
+            <el-input v-model="queryParam.realname" clearable placeholder="" @change="onSearch" />
+          </el-form-item>
+        </el-col>
+        <el-col :lg="8" :sm="12">
+          <el-form-item :label="$t('user.userNum')">
+            <el-input v-model="queryParam.userNum" clearable placeholder="" @change="onSearch" />
+          </el-form-item>
+        </el-col>
+        <el-col :lg="8" :sm="12">
+          <el-form-item :label="$t('user.mobilePhone')">
+            <el-input v-model="queryParam.mobilePhone" clearable placeholder="" @change="onSearch" />
+          </el-form-item>
+        </el-col>
+        <el-col :lg="8" :sm="12">
+          <el-form-item :label="$t('user.status')">
+            <el-radio-group v-model="queryParam.status" @change="onSearch">
+              <el-radio label="A">在职</el-radio>
+              <el-radio label="I">离职</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+
     <el-space wrap class="list-operation">
       <el-button v-has-permission="'create'" :icon="Plus" type="primary" @click="openForm()">
         {{ $t('operation.create') }}
@@ -69,11 +101,14 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
         :table-head-url="`${baseApi}/excel/export-table-head`"
       />
       <el-space>
-        <el-input v-model="queryParam.realname" clearable :placeholder="$t('user.realname')" @change="onSearch" />
-        <el-input v-model="queryParam.userNum" clearable :placeholder="$t('user.userNum')" @change="onSearch" />
-        <el-input v-model="queryParam.mobilePhone" clearable :placeholder="$t('user.mobilePhone')" @change="onSearch" />
+        <el-input v-show="!searchState" v-model="queryParam.realname" clearable :placeholder="$t('user.realname')" @change="onSearch" />
         <el-button :icon="Search" type="primary" @click="onSearch">{{ $t('operation.search') }}</el-button>
         <el-button :title="$t('title.reset')" @click="resetFilter">{{ $t('operation.reset') }}</el-button>
+        <el-button
+          :icon="searchState ? ArrowUp : ArrowDown"
+          :title="searchState ? '收起' : '展开'"
+          @click="searchState = !searchState"
+        />
       </el-space>
     </el-space>
 
@@ -100,7 +135,8 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
         </template>
       </el-table-column>
       <el-table-column prop="mobilePhone" :label="$t('user.mobilePhone')" show-overflow-tooltip />
-      <el-table-column prop="genderLabel" :label="$t('user.gender')">
+      <el-table-column prop="sortId" :label="$t('user.sortId')" show-overflow-tooltip />
+      <el-table-column prop="statusLabel" :label="$t('user.status')">
         <template #default="{ row }">
           <el-tag :color="row.statusLabel?.ext?.color" effect="dark">
             {{ row.statusLabel?.label }}
@@ -117,7 +153,6 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
           <span>{{ row.accountStatusLabel || '-' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="sortId" :label="$t('user.sortId')" width="90" />
       <el-table-column prop="updateTime" :label="$t('baseField.updateTime')" width="160" />
       <el-table-column :label="$t('operation.label')" width="160" fixed="right">
         <template #default="{ row }">

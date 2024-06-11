@@ -168,7 +168,7 @@ public class SqlExecutor {
      * @throws Exception
      */
     public static boolean executeUpdate(Connection conn, String sql, List params) throws Exception{
-        log.debug("==>  SQL: "+sql);
+        log.debug("==>  SQL: {}", sql);
         // 替换单个?参数为多个，用于拼接IN参数
         if(V.notEmpty(params)){
             log.debug("==>  Params: {}", JSON.stringify(params));

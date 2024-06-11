@@ -112,6 +112,7 @@ public class IamSecurityUtils extends SecurityUtils {
             log.warn("cacheManager 实例异常");
             return;
         }
+        IamLoginTraceService iamLoginTraceService = ContextHolder.getBean(IamLoginTraceService.class);
         Collection<Object> cacheVals = cacheManager.getCache(Cons.AUTHENTICATION_CAHCE_NAME).values();
         for (Object obj : cacheVals) {
             SimpleAuthenticationInfo authInfo = (SimpleAuthenticationInfo) obj;
@@ -122,7 +123,7 @@ public class IamSecurityUtils extends SecurityUtils {
                 TokenUtils.removeAccessTokens(principalCollection.toString());
                 log.info("强制退出用户: {}", userTypeAndId);
                 try {
-                    ContextHolder.getBean(IamLoginTraceService.class).updateLogoutInfo(user.getClass().getSimpleName(), user.getId());
+                    iamLoginTraceService.updateLogoutInfo(user.getClass().getSimpleName(), user.getId());
                 } catch (Exception e) {
                     log.warn("更新用户 {} 退出时间异常: {}", userTypeAndId, e.getMessage());
                 }

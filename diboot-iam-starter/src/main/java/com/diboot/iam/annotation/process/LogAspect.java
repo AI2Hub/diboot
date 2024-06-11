@@ -100,10 +100,10 @@ public class LogAspect {
                 errorMsg = jsonResult.getMsg();
             }
         }
-
         operationLog.setStatusCode(statusCode).setErrorMsg(errorMsg);
         // 异步保存操作日志
         iamAsyncWorker.saveOperationLog(operationLog, currentUser);
+        threadLocal.remove();
     }
 
     /**

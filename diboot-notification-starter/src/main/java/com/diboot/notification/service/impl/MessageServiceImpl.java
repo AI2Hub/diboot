@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.diboot.core.exception.BusinessException;
 import com.diboot.core.exception.InvalidUsageException;
 import com.diboot.core.service.impl.BaseServiceImpl;
+import com.diboot.core.util.ContextHolder;
 import com.diboot.core.util.V;
 import com.diboot.core.vo.Status;
 import com.diboot.notification.channel.MessageChannel;
@@ -49,10 +50,6 @@ import java.util.Map;
  */
 @Slf4j
 public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> implements MessageService {
-
-    @Lazy
-    @Autowired
-    private MessageTemplateService messageTemplateService;
 
     /**
      * 发送通道
@@ -85,6 +82,7 @@ public class MessageServiceImpl extends BaseServiceImpl<MessageMapper, Message> 
         }
         String content = message.getContent();
         if (message.hasTemplate()) {
+            MessageTemplateService messageTemplateService = ContextHolder.getBean(MessageTemplateService.class);
             // 是否根据模板构建邮件内容
             LambdaQueryWrapper<MessageTemplate> queryWrapper = Wrappers.<MessageTemplate>lambdaQuery()
                     .eq(V.notEmpty(message.getTemplateId()), MessageTemplate::getId, message.getTemplateId())

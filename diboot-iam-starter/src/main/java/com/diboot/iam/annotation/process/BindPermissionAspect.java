@@ -77,7 +77,7 @@ public class BindPermissionAspect {
         String permissionCode = methodAnno.code();
         Class<?> controllerClass = joinPoint.getTarget().getClass();
         ApiPermissionWrapper classAnno = IamPermissionCacheManager.getPermissionCodeWrapper(controllerClass);
-        if(classAnno != null && V.notEmpty(classAnno.getCode())){
+        if(V.notEmpty(classAnno.getCode())){
             permissionCode = classAnno.getCode() + ":" + permissionCode;
         }
         try{

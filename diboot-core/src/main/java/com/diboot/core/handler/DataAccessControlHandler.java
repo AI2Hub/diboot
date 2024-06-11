@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.handler.MultiDataPermissionHan
 import com.diboot.core.data.access.DataAccessAnnoCache;
 import com.diboot.core.data.access.DataScopeManager;
 import com.diboot.core.exception.InvalidUsageException;
+import com.diboot.core.holder.ThreadLocalHolder;
 import com.diboot.core.util.ContextHolder;
 import com.diboot.core.util.S;
 import net.sf.jsqlparser.JSQLParserException;
@@ -57,6 +58,10 @@ public class DataAccessControlHandler implements MultiDataPermissionHandler {
     @Override
     public Expression getSqlSegment(Table table, Expression where, String mappedStatementId) {
         if (noCheckpointCache.contains(mappedStatementId)) {
+            return null;
+        }
+        // 如果忽略此来源
+        if(ThreadLocalHolder.ignoreInterceptor()) {
             return null;
         }
         TableInfo tableInfo = TableInfoHelper.getTableInfo(S.removeEsc(table.getName()));
@@ -110,7 +115,7 @@ public class DataAccessControlHandler implements MultiDataPermissionHandler {
                 try {
                     return CCJSqlParserUtil.parseCondExpression(conditionExpr);
                 } catch (JSQLParserException e) {
-                    log.warn("解析condition异常: " + conditionExpr, e);
+                    log.warn("解析condition异常: {}", conditionExpr, e);
                 }
             }
             return null;

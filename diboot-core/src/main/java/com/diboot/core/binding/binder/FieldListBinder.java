@@ -81,7 +81,7 @@ public class FieldListBinder<T> extends FieldBinder<T> {
             // 查询entity列表: List<Role>
             if(V.isEmpty(this.module)){
                 // 本地查询获取匹配结果的entityList
-                entityList = getEntityList(queryWrapper);
+                entityList = getEntityList(queryWrapper, true);
             }
             else{
                 // 远程调用获取
@@ -122,7 +122,7 @@ public class FieldListBinder<T> extends FieldBinder<T> {
             if(V.isEmpty(this.module)){
                 // 本地查询获取匹配结果的entityList
                 queryWrapper.in(refObjJoinOnCol, entityIdList);
-                entityList = getEntityList(queryWrapper);
+                entityList = getEntityList(queryWrapper, true);
             }
             else{
                 // 远程调用获取

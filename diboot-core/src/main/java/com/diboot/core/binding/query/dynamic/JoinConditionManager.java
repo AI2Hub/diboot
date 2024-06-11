@@ -107,7 +107,7 @@ public class JoinConditionManager extends BaseConditionManager {
                     }
                 }
                 else{
-                    log.warn("暂不支持的条件: "+ expression.toString());
+                    log.warn("暂不支持的条件: {}", expression);
                 }
             }
             else if(operator instanceof IsNullExpression){
@@ -153,7 +153,7 @@ public class JoinConditionManager extends BaseConditionManager {
                 }
             }
             else{
-                log.warn("不支持的条件: "+operator.toString());
+                log.warn("不支持的条件: {}", operator.toString());
             }
         }
         if(segments.isEmpty() && middleTableOnSegments.isEmpty()){
@@ -182,6 +182,7 @@ public class JoinConditionManager extends BaseConditionManager {
                 annoColumn = "self." + S.substringAfter(annoColumn, "this.");
             }
             else if(tableName.equals("self")){
+                return annoColumn;
             }
             else if(tableName.equals(joiner.getMiddleTable())){
                 annoColumn = joiner.getMiddleTableAlias() + "." + S.substringAfter(annoColumn, ".");

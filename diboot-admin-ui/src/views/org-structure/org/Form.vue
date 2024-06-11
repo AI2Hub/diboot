@@ -157,13 +157,15 @@ defineExpose({ open })
                   ]
                 },
                 columns: [
+                    { prop: 'userNum', label: $t('user.userNum') },
                   { prop: 'realname', label: $t('user.realname') },
-                  { prop: 'userNum', label: $t('user.userNum') },
                   { prop: 'genderLabel', label: $t('user.gender') },
-                  { prop: 'email', label: $t('user.email') }
+                  { prop: 'mobilePhone', label: $t('user.mobilePhone') },
+                  { prop: 'sortId', label: $t('user.sortId') }
                 ]
               }"
               data-type="IamUser"
+              placeholder="选择负责人"
             />
           </el-form-item>
         </el-col>

@@ -27,6 +27,7 @@ import com.diboot.core.vo.Status;
  * @date 2019/12/30
  */
 public class PermissionException extends BusinessException {
+    private static final long serialVersionUID = 2051495756257285230L;
 
     public PermissionException() {
         super(Status.FAIL_NO_PERMISSION);

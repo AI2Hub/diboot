@@ -103,7 +103,7 @@ public class OptionWriteHandler implements CellWriteHandler {
         }
         String[] options = bindDictService.getLabelValueList(dictType).stream().map(LabelValue::getLabel).toArray(String[]::new);
         if (V.isEmpty(options)) {
-            log.warn(" @ExcelOption 关联字典: " + dictType + " 无值");
+            log.warn("@ExcelOption 关联字典: {} 无值", dictType);
         }
         return options;
     }

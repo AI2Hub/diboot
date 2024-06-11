@@ -106,9 +106,7 @@ public abstract class BaseTranslator {
             String comment = extractCommentLabel(col);
             col = S.substringBefore(col, "COMMENT").trim();
             String cleanCol = S.removeDuplicateBlank(S.removeDuplicateBlank(col)).replace("`", "");
-            if(S.containsIgnoreCase(cleanCol, "PRIMARY KEY (id)")) {
-            }
-            else {
+            if(!S.containsIgnoreCase(cleanCol, "PRIMARY KEY (id)")) {
                 String cleanColName = colName.replace("`", "");
                 if(cleanColName.equals("id") && !S.containsIgnoreCase(cleanCol, "PRIMARY KEY")) {
                     col += " PRIMARY KEY";

@@ -98,7 +98,7 @@ public class ExcelBindAnnoHandler {
     public static Map<String, List> convertToNameValueMap(Annotation annotation, List<String> nameList){
         // 字典
         if(annotation instanceof ExcelBindDict || annotation instanceof BindDict){
-            String dictType = null;
+            String dictType;
             if(annotation instanceof ExcelBindDict){
                 dictType = ((ExcelBindDict)annotation).type();
             }

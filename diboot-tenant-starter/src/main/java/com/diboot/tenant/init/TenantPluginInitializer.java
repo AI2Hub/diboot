@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Component;
  * @version : v3.2.0
  * @Date 2023/12/18
  */
+@Order(971)
 @Slf4j
 @Component
 @ConditionalOnProperty(prefix = "diboot", name = "init-sql", havingValue = "true")
@@ -103,7 +105,6 @@ public class TenantPluginInitializer implements ApplicationRunner {
                     IamResourceListVO permissionListVO = JSON.toJavaObject(resourcePermissionJson, IamResourceListVO.class);
                     resourcePermissionService.deepCreateResourceAndChildren(permissionListVO);
                 }
-                RESOURCE_PERMISSION_DATA = null;
             } catch (BusinessException e){
                 log.error("初始化资源权限数据出错: {}，请手动配置前端资源初始的权限数据", e.getMessage());
             }
