@@ -101,12 +101,18 @@ const buildRoleList = (roleList?: Role[]) => roleList?.map(e => e.name).join('�
         :table-head-url="`${baseApi}/excel/export-table-head`"
       />
       <el-space>
-        <el-input v-show="!searchState" v-model="queryParam.realname" clearable :placeholder="$t('user.realname')" @change="onSearch" />
+        <el-input
+          v-show="!searchState"
+          v-model="queryParam.realname"
+          clearable
+          :placeholder="$t('user.realname')"
+          @change="onSearch"
+        />
         <el-button :icon="Search" type="primary" @click="onSearch">{{ $t('operation.search') }}</el-button>
         <el-button :title="$t('title.reset')" @click="resetFilter">{{ $t('operation.reset') }}</el-button>
         <el-button
           :icon="searchState ? ArrowUp : ArrowDown"
-          :title="searchState ? '收起' : '展开'"
+          :title="searchState ? $t('searchState.up') : $t('searchState.down')"
           @click="searchState = !searchState"
         />
       </el-space>

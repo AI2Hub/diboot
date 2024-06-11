@@ -16,7 +16,7 @@ const en: Locale = {
       table: {
         total: 'Total on current page',
         avg: 'Average on current page',
-        config: { show: 'Show', name: 'Name', width: 'Width', sort: 'Sort', fixed: 'Fixed' },
+        config: { title: 'List Config', show: 'Show', name: 'Name', width: 'Width', sort: 'Sort', fixed: 'Fixed' },
         border: 'Vertical Border',
         stripe: 'Striped'
       }

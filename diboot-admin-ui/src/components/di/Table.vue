@@ -269,7 +269,7 @@ const headerDragend = (newWidth: number, oldWidth: number, column: { property: s
     </el-space>
   </div>
 
-  <el-dialog v-model="visible" :width="500" title="列表配置">
+  <el-dialog v-model="visible" :width="500" :title="$t('components.di.table.config.title')">
     <table class="sortable-table">
       <thead>
         <tr>

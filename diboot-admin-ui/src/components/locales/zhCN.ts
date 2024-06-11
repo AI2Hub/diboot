@@ -22,6 +22,7 @@ const zhCN = {
         total: '当前页总和',
         avg: '当前页平均',
         config: {
+          title: '列表配置',
           show: '显示',
           name: '名称',
           width: '宽度',
