@@ -120,6 +120,7 @@ const toggleBtnResourceCodeSelect = (permission: Resource) => {
   permission.resourceCode = ''
   permission.displayName = ''
 }
+const enableI18n = import.meta.env.VITE_APP_ENABLE_I18N === 'true'
 </script>
 
 <template>
@@ -158,7 +159,7 @@ const toggleBtnResourceCodeSelect = (permission: Resource) => {
                 :rules="{ required: true, message: i18n.t('rules.notnull'), trigger: 'blur' }"
               >
                 <el-input v-model="model.displayName" :placeholder="$t('resource.placeholder.displayName')" clearable>
-                  <template #append>
+                  <template v-if="enableI18n" #append>
                     <i18n-selector v-model="model.displayNameI18n" />
                   </template>
                 </el-input>

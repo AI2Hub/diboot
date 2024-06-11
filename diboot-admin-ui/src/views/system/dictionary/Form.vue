@@ -111,7 +111,7 @@ const validateChildren = () => {
     model.value.children = []
   }
 }
-
+const enableI18n = import.meta.env.VITE_APP_ENABLE_I18N === 'true'
 defineExpose({ open })
 </script>
 <template>
@@ -146,7 +146,7 @@ defineExpose({ open })
               <th><span class="required-flag">*</span> {{ $t('dictionary.item.itemName') }}</th>
               <th><span class="required-flag">*</span> {{ $t('dictionary.item.itemValue') }}</th>
               <th>{{ $t('dictionary.item.color') }}</th>
-              <th>{{ $t('dictionary.item.internationalization') }}</th>
+              <th v-if="enableI18n">{{ $t('dictionary.item.internationalization') }}</th>
               <th>
                 <el-button size="small" type="primary" @click="addItem">{{ $t('operation.add') }}</el-button>
               </th>
@@ -195,7 +195,7 @@ defineExpose({ open })
                     :predefine="predefineColors"
                   />
                 </td>
-                <td>
+                <td v-if="enableI18n">
                   <i18n-selector v-model="element.itemNameI18n" style="position: relative; top: -8px" />
                 </td>
                 <td>

@@ -57,12 +57,12 @@ public class AiPluginInitializer implements ApplicationRunner {
 
 
     private synchronized void insertInitData() {
-        // 插入iam组件所需的初始权限数据
+        // 插入ai组件所需的初始权限数据
         IamResourceService resourcePermissionService = ContextHolder.getBean(IamResourceService.class);
         // 初始化chat ai相关资源
         if (resourcePermissionService != null && !resourcePermissionService.exists(IamResource::getResourceCode, "ChatAI")) {
             List<IamResourceListVO> permissionListVOs = new ArrayList<>();
-            IamResourceListVO chatAIPermission = (IamResourceListVO) new IamResourceListVO().setChildren(new ArrayList<>()).setParentId("0").setDisplayType("MENU").setDisplayName("ChatAI").setRoutePath("chat-ai").setResourceCode("ChatAI").setPermissionCode("").setMeta("{\"icon\":\"Element:Cpu\",\"componentPath\":\"@/views/chat-ai/index.vue\",\"keepAlive\":false,\"hidden\":true}").setSortId(90L);
+            IamResourceListVO chatAIPermission = (IamResourceListVO) new IamResourceListVO().setChildren(new ArrayList<>()).setParentId("0").setDisplayType("MENU").setDisplayName("ChatAI").setDisplayNameI18n("Chat AI").setRoutePath("chat-ai").setResourceCode("ChatAI").setPermissionCode("").setMeta("{\"icon\":\"Element:Cpu\",\"componentPath\":\"@/views/chat-ai/index.vue\",\"keepAlive\":false,\"hidden\":true}").setSortId(90L);
             permissionListVOs.add(chatAIPermission);
             // 插入多层级资源权限初始数据
             try {
