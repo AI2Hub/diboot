@@ -22,12 +22,12 @@ const visible = ref(false)
 // 表单
 const formRef = ref<FormInstance>()
 const sortI18n = () => {
-  const zh = model.list.filter(item => item.language === 'zh_CN')
-  const en = model.list.filter(item => item.language === 'en')
+  const zh = model.list.find(item => item.language === 'zh_CN')
+  const en = model.list.find(item => item.language === 'en')
   const rest = model.list.filter(item => item.language !== 'zh_CN' && item.language !== 'en')
   const arr: Partial<I18nConfig>[] = []
-  if (zh && zh.length > 0) arr.push(zh[0])
-  if (en && en.length > 0) arr.push(en[0])
+  if (zh) arr.push(zh)
+  if (en) arr.push(en)
   if (rest && rest.length > 0) rest.forEach(item => arr.push(item))
   model.list = arr
 }
@@ -49,6 +49,7 @@ defineExpose({
           model.list.sort(
             (a, b) => locales.findIndex(e => e === a?.language) - locales.findIndex(e => e === b?.language)
           )
+          model.list = model.list.filter(item => !!locales.find(e => e === item?.language))
           sortI18n()
         })
         .catch(err => {

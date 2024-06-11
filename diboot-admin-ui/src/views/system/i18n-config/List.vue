@@ -41,12 +41,12 @@ const locales = i18n.availableLocales.map(e => e.replace(/-/g, '_'))
 
 const initI18nData = () => {
   const initData: Partial<I18nConfig>[] = Array.of(...locales).map(locale => ({ language: locale }))
-  const zh = initData.filter(item => item.language === 'zh_CN')
-  const en = initData.filter(item => item.language === 'en')
+  const zh = initData.find(item => item.language === 'zh_CN')
+  const en = initData.find(item => item.language === 'en')
   const rest = initData.filter(item => item.language !== 'zh_CN' && item.language !== 'en')
   const arr: Partial<I18nConfig>[] = []
-  if (zh && zh.length > 0) arr.push(zh[0])
-  if (en && en.length > 0) arr.push(en[0])
+  if (zh) arr.push(zh)
+  if (en) arr.push(en)
   if (rest && rest.length > 0) rest.forEach(item => arr.push(item))
   return arr
 }
