@@ -23,12 +23,12 @@ import com.diboot.core.binding.query.BindQuery;
 import com.diboot.core.binding.query.Comparison;
 import com.diboot.core.vo.LabelValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

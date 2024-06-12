@@ -6,11 +6,11 @@ import com.diboot.core.data.query.BaseCriteria;
 import com.diboot.core.util.S;
 import com.diboot.core.util.V;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

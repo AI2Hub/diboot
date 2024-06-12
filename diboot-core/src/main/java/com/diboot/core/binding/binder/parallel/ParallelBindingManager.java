@@ -19,7 +19,6 @@ import com.diboot.core.binding.annotation.*;
 import com.diboot.core.binding.binder.*;
 import com.diboot.core.binding.parser.ConditionManager;
 import com.diboot.core.binding.parser.FieldAnnotation;
-import com.diboot.core.exception.InvalidUsageException;
 import com.diboot.core.service.DictionaryServiceExtProvider;
 import com.diboot.core.service.I18nConfigService;
 import com.diboot.core.util.S;
@@ -29,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
