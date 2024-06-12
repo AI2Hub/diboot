@@ -69,7 +69,6 @@ public class TenantPluginInitializer implements ApplicationRunner {
                     "{\n" +
                             "  \"type\": \"TENANT_STATUS\",\n" +
                             "  \"itemName\": \"租户状态\",\n" +
-                            "  \"itemNameI18n\": \"Tenant Status\",\n" +
                             "  \"description\": \"租户状态定义\",\n" +
                             "  \"isEditable\": false,\n" +
                             "  \"children\": [\n" +
