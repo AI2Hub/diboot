@@ -61,7 +61,7 @@ public class CorePluginInitializer implements ApplicationRunner {
         if(dictionaryService != null && !dictionaryService.exists(Dictionary::getType, "I18N_TYPE")){
             // 插入iam组件所需的数据字典
             final String[] DICT_INIT_DATA = {
-                    "{\"type\":\"I18N_TYPE\",\"itemName\":\"国际化配置类型\",\"itemNameI18n\":\"Internationalization Configuration Type\",\"description\":\"国际化配置分类\",\"isEditable\":false,\"children\":[{\"itemName\":\"系统\",\"itemNameI18n\":\"System\",\"itemValue\":\"SYSTEM\",\"sortId\":1},{\"itemName\":\"自定义\",\"itemNameI18n\":\"Custom\",\"itemValue\":\"CUSTOM\",\"sortId\":2}]}"
+                    "{\"type\":\"I18N_TYPE\",\"itemName\":\"国际化配置类型\",\"itemNameI18n\":\"Internationalization Configuration Type\",\"description\":\"国际化配置分类\",\"isEditable\":false,\"children\":[{\"itemName\":\"系统\",\"itemNameI18n\":\"Dictionary.I18N_TYPE.System\",\"itemValue\":\"SYSTEM\",\"sortId\":1},{\"itemName\":\"自定义\",\"itemNameI18n\":\"Dictionary.I18N_TYPE.Custom\",\"itemValue\":\"CUSTOM\",\"sortId\":2}]}"
             };
             // 插入数据字典
             for (String dictJson : DICT_INIT_DATA) {

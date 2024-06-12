@@ -71,7 +71,7 @@ public class MobilePluginInitializer implements ApplicationRunner {
         DictionaryService dictionaryService = ContextHolder.getBean(DictionaryService.class);
         if(dictionaryService != null && !dictionaryService.exists(Dictionary::getType, "MEMBER_STATUS")){
             String[] DICT_INIT_DATA = {
-                    "{\"type\":\"MEMBER_STATUS\", \"itemName\":\"用户状态\", \"itemNameI18n\":\"Member Status\", \"description\":\"Member用户状态\", \"children\":[{\"itemName\":\"有效\", \"itemNameI18n\":\"Active\", \"itemValue\":\"A\", \"sortId\":1},{\"itemName\":\"无效\", \"itemNameI18n\":\"Invalid\", \"itemValue\":\"I\", \"sortId\":2}]}",
+                    "{\"type\":\"MEMBER_STATUS\", \"itemName\":\"用户状态\", \"itemNameI18n\":\"Member Status\", \"description\":\"Member用户状态\", \"children\":[{\"itemName\":\"有效\", \"itemNameI18n\":\"Dictionary.MEMBER_STATUS.A\", \"itemValue\":\"A\", \"sortId\":1},{\"itemName\":\"无效\", \"itemNameI18n\":\"Invalid\", \"Dictionary.MEMBER_STATUS.I\":\"I\", \"sortId\":2}]}",
             };
             // 插入数据字典
             for(String dictJson : DICT_INIT_DATA){

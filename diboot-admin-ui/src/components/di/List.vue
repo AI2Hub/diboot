@@ -214,7 +214,7 @@ const multiple = inject<boolean | undefined>(
         <el-table-column v-if="!hiddenActionColumn" :label="$t('operation.label')" width="160" fixed="right">
           <template #header>
             <el-space style="justify-content: space-between; margin-right: -8px; min-width: 90%">
-              <span style="width: 28px">{{$t('operation.label')}}</span>
+              <span style="width: 28px">{{ $t('operation.label') }}</span>
               <el-button
                 :icon="SetUp"
                 size="default"

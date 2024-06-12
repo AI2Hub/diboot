@@ -253,9 +253,19 @@ const enableI18n = import.meta.env.VITE_APP_ENABLE_I18N === 'true'
                     </el-tooltip>
                   </div>
                 </template>
-                <el-checkbox :key="reloadFormItem" v-model="model.status" true-label="A" false-label="I" :label="$t('resource.status')" />
+                <el-checkbox
+                  :key="reloadFormItem"
+                  v-model="model.status"
+                  true-label="A"
+                  false-label="I"
+                  :label="$t('resource.status')"
+                />
                 <el-checkbox :key="reloadFormItem" v-model="model.routeMeta.hidden" :label="$t('resource.hidden')" />
-                <el-checkbox :key="reloadFormItem" v-model="model.routeMeta.keepAlive" :label="$t('resource.keepAlive')" />
+                <el-checkbox
+                  :key="reloadFormItem"
+                  v-model="model.routeMeta.keepAlive"
+                  :label="$t('resource.keepAlive')"
+                />
                 <!-- <el-checkbox v-model="model.routeMeta.ignoreAuth" :label="$t('resource.ignoreAuth')" /> -->
               </el-form-item>
 

@@ -157,7 +157,7 @@ defineExpose({ open })
                   ]
                 },
                 columns: [
-                    { prop: 'userNum', label: $t('user.userNum') },
+                  { prop: 'userNum', label: $t('user.userNum') },
                   { prop: 'realname', label: $t('user.realname') },
                   { prop: 'genderLabel', label: $t('user.gender') },
                   { prop: 'mobilePhone', label: $t('user.mobilePhone') },
