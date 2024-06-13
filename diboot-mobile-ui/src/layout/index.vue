@@ -18,7 +18,13 @@ const active = ref<string>(firstLevelPath === 'mine' ? 'Mine' : firstLevelPath =
     <van-nav-bar :left-arrow="!$route.meta?.hideBack" :title="$route.meta?.title" @click-left="$router.back()" />
   </van-sticky>
 
-  <div :style="{ height: 'calc(100vh - ' + ($route.meta?.showTabbar ? 96 : 50) + 'px)', overflowY: 'auto' }">
+  <div
+    :style="{
+      height: 'calc(100vh - ' + ($route.meta?.showTabbar ? 96 : 46) + 'px)',
+      overflowY: 'auto',
+      backgroundColor: 'var(--van-gray-1)'
+    }"
+  >
     <RouterView />
   </div>
 

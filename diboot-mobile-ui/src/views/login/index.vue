@@ -114,7 +114,7 @@ const enableI18n = import.meta.env.VITE_APP_ENABLE_I18N === 'true'
           </template>
         </van-field>
       </van-cell-group>
-      <div style="margin: 16px">
+      <div style="margin: 40px 16px 16px">
         <van-button round block type="primary" native-type="submit"> {{ $t('login.submit') }} </van-button>
       </div>
     </van-form>
@@ -217,6 +217,12 @@ const enableI18n = import.meta.env.VITE_APP_ENABLE_I18N === 'true'
   }
   .van-radio__label {
     margin-left: 0;
+  }
+  h2 {
+    margin-bottom: 50px;
+  }
+  .van-cell {
+    padding: var(--van-padding-lg);
   }
 }
 </style>

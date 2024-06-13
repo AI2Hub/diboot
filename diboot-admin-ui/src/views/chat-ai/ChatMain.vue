@@ -217,7 +217,7 @@ const sendMessage = async (message: string, model: string) => {
     height: calc(100% - 100px - 62px);
   }
   .el-scrollbar {
-    background-color: #fff;
+    background-color: var(--el-menu-bg-color);
     border-radius: 10px;
   }
   .chat-model {
