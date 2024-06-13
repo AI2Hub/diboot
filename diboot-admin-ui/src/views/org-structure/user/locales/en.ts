@@ -20,8 +20,8 @@ const en: Locale = {
     general: 'Regular User',
     system: 'System User',
     modifyPassword: 'Change Password',
-    onJob: 'Employed',
-    dimission: 'Resigned',
+    onJob: 'Active',
+    dimission: 'Invalid',
     partTimeJob: 'Part-Time',
     rules: {
       email: 'Please enter a valid email address.',
