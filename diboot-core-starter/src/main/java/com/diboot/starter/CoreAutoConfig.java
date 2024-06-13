@@ -22,6 +22,7 @@ import com.diboot.core.cache.DictionaryCacheManager;
 import com.diboot.core.cache.DynamicMemoryCacheManager;
 import com.diboot.core.cache.I18nCacheManager;
 import com.diboot.core.config.Cons;
+import com.diboot.core.config.MessageSourceBeanPostProcessor;
 import com.diboot.core.converter.*;
 import com.diboot.core.data.protect.DataEncryptHandler;
 import com.diboot.core.data.protect.DataMaskHandler;
@@ -258,7 +259,10 @@ public class CoreAutoConfig implements WebMvcConfigurer {
     }
 
 
-
+    /**
+     * 国际化默认环境配置
+     * @return
+     */
     @Bean
     public LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
@@ -266,6 +270,10 @@ public class CoreAutoConfig implements WebMvcConfigurer {
         return localeResolver;
     }
 
+    /**
+     * Request上下文允许子线程使用
+     * @return
+     */
     @Bean
     public static RequestContextFilter requestContextFilter() {
         OrderedRequestContextFilter orderedRequestContextFilter = new OrderedRequestContextFilter();
@@ -273,5 +281,14 @@ public class CoreAutoConfig implements WebMvcConfigurer {
         return orderedRequestContextFilter;
     }
 
+    /**
+     * 国际化文件配置
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public static MessageSourceBeanPostProcessor messageSourceBeanPostProcessor() {
+        return new MessageSourceBeanPostProcessor();
+    }
 
 }
