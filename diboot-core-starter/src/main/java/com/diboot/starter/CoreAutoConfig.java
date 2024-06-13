@@ -287,7 +287,7 @@ public class CoreAutoConfig implements WebMvcConfigurer {
      */
     @Bean
     @ConditionalOnMissingBean
-    public static MessageSourceBeanPostProcessor messageSourceBeanPostProcessor() {
+    public MessageSourceBeanPostProcessor messageSourceBeanPostProcessor() {
         return new MessageSourceBeanPostProcessor();
     }
 
