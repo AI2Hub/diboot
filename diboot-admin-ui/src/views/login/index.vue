@@ -65,6 +65,8 @@ const submitForm = async () => {
 }
 const enableTenant = import.meta.env.VITE_APP_ENABLE_TENANT === 'true'
 
+const enableI18n = import.meta.env.VITE_APP_ENABLE_I18N === 'true'
+
 // 单点登录集成
 const { authorizeInfoMap, ssoLoading, initSsoParams, redirectTo } = useSso({
   callback: (token: string) => {
@@ -83,7 +85,7 @@ onMounted(() => {
   <div v-loading="ssoLoading" :element-loading-text="i18n.t('login.loading')" class="content">
     <div class="form">
       <h1 style="text-align: center">Diboot Admin UI</h1>
-      <div style="text-align: right; margin-bottom: 5px">
+      <div v-if="enableI18n" style="text-align: right; margin-bottom: 5px">
         <el-dropdown
           @command="
             (command: string) => {
@@ -120,7 +122,7 @@ onMounted(() => {
         >
           <el-input v-model="form.tenantCode">
             <template #prefix>
-              <span style="width: 85px">租户编码</span>
+              <span style="width: 85px">{{ $t('login.tenantCode') }}</span>
             </template>
           </el-input>
         </el-form-item>

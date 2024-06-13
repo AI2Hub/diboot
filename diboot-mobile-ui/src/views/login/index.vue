@@ -67,14 +67,14 @@ const selectI18n = (data: any) => {
   i18nStore.set(data.locale)
   i18n.locale.value = data.locale
 }
-const currentTime = ref()
+const enableI18n = import.meta.env.VITE_APP_ENABLE_I18N === 'true'
 </script>
 
 <template>
   <div class="content">
     <van-form @submit="onSubmit">
       <h2 style="text-align: center">Diboot Mobile v3.0</h2>
-      <div style="text-align: right; margin-bottom: 5px; padding-right: 70px">
+      <div style="text-align: right; margin-bottom: 5px; padding-right: 70px" v-if="enableI18n">
         <van-popover v-model:show="showPopover" :actions="i18nActions" @select="selectI18n">
           <template #reference>
             <Language style="width: 22px" />
