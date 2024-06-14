@@ -3,7 +3,6 @@ import * as locales from 'element-plus/es/locale/index'
 import { colorPrimary, isSmall } from '@/utils/theme'
 import useAppStore from './store/app'
 import { useI18n } from 'vue-i18n'
-import i18nStore from '@/utils/i18n'
 const appStore = useAppStore()
 const i18n = useI18n()
 
@@ -25,7 +24,7 @@ watch(
     if (locale.value == null) {
       locale.value = Object.values(locales).find(e => e.name === i18n.fallbackLocale.value)
     }
-    oldValue && oldValue !== value && window.location.reload(true)
+    oldValue && oldValue !== value && window.location.reload()
   },
   {
     immediate: true
