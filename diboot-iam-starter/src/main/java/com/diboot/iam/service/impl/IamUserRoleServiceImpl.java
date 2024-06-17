@@ -282,10 +282,7 @@ public class IamUserRoleServiceImpl extends BaseServiceImpl<IamUserRoleMapper, I
      * @param userId
      */
     private void clearUserAuthCache(String userType, String userId){
-        String username = iamAccountService.getAuthAccount(userType, userId);
-        if(V.notEmpty(username)){
-            iamCustomize.clearAuthorizationCache(username);
-        }
+        iamCustomize.clearAuthorizationCache(userType, userId);
     }
 
 }
