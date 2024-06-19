@@ -52,10 +52,15 @@ const openDetail = (id: string) => {
       <el-header>
         <el-space wrap class="list-operation">
           <el-button v-has-permission="'logDelete'" @click="batchRemove(selectedKeys)">{{
-              $t('operation.batchDelete')
-            }}</el-button>
+            $t('operation.batchDelete')
+          }}</el-button>
           <el-space>
-            <el-select v-model="queryParam.runStatus" :label="$t('scheduleJobLog.runStatus')" clearable @change="onSearch">
+            <el-select
+              v-model="queryParam.runStatus"
+              :label="$t('scheduleJobLog.runStatus')"
+              clearable
+              @change="onSearch"
+            >
               <el-option :label="$t('scheduleJobLog.success')" value="S" />
               <el-option :label="$t('scheduleJobLog.fail')" value="F" />
             </el-select>
