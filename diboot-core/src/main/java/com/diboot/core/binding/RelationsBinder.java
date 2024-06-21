@@ -20,6 +20,7 @@ import com.diboot.core.binding.helper.DeepRelationsBinder;
 import com.diboot.core.binding.parser.BindAnnotationGroup;
 import com.diboot.core.binding.parser.FieldAnnotation;
 import com.diboot.core.binding.parser.ParserCache;
+import com.diboot.core.service.I18nConfigService;
 import com.diboot.core.util.BeanUtils;
 import com.diboot.core.util.ContextHolder;
 import com.diboot.core.util.V;
@@ -173,12 +174,15 @@ public class RelationsBinder {
                 binderFutures.add(bindCountFuture);
             }
         }
-        // 绑定国际化翻译
-        List<FieldAnnotation> i18nAnnoList = bindAnnotationGroup.getBindI18nAnnotations();
-        if(i18nAnnoList != null){
-            for(FieldAnnotation anno : i18nAnnoList){
-                // 绑定关联对象count计数
-                parallelBindingManager.doBindingI18n(voList, anno);
+        // 开启国际化
+        if(isEnableI18N()) {
+            // 绑定国际化翻译
+            List<FieldAnnotation> i18nAnnoList = bindAnnotationGroup.getBindI18nAnnotations();
+            if(i18nAnnoList != null){
+                for(FieldAnnotation anno : i18nAnnoList){
+                    // 绑定关联对象count计数
+                    parallelBindingManager.doBindingI18n(voList, anno);
+                }
             }
         }
         // 执行绑定
@@ -201,6 +205,18 @@ public class RelationsBinder {
                 DeepRelationsBinder.deepBind(voList, deepBindEntityAnnoList, deepBindEntitiesAnnoList);
             }
         }
+    }
+
+    /**
+     * 是否启用 i18n
+     * @return
+     */
+    private static Boolean ENABLE_I18N = null;
+    private static boolean isEnableI18N() {
+        if(ENABLE_I18N == null){
+            ENABLE_I18N = ContextHolder.getBean(I18nConfigService.class) != null;
+        }
+        return ENABLE_I18N;
     }
 
 }
