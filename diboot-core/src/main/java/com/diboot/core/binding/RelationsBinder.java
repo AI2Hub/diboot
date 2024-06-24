@@ -215,6 +215,9 @@ public class RelationsBinder {
     private static boolean isEnableI18N() {
         if(ENABLE_I18N == null){
             ENABLE_I18N = ContextHolder.getBean(I18nConfigService.class) != null;
+            if(ENABLE_I18N){
+                log.info("启用 i8n 国际化翻译转换");
+            }
         }
         return ENABLE_I18N;
     }
