@@ -560,7 +560,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
             List<R> n2nRelations = new ArrayList<>(followerIdList.size());
             try {
                 for (Serializable followerId : followerIdList) {
-                    R relation = middleTableClass.newInstance();
+                    R relation = middleTableClass.getConstructor().newInstance();
 					BeanWrapper beanWrapper = BeanUtils.getBeanWrapper(relation);
 					beanWrapper.setPropertyValue(driverFieldName, driverId);
 					beanWrapper.setPropertyValue(followerFieldName, followerId);

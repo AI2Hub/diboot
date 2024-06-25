@@ -160,7 +160,7 @@ public class BeanUtils {
         }
         T entityInstance = null;
         try {
-            entityInstance = entityClass.newInstance();
+            entityInstance = entityClass.getConstructor().newInstance();
         }
         catch (Exception e){
             log.warn("实例化Bean {} 异常: {}", entityClass.getSimpleName(), e.getMessage());
