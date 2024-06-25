@@ -196,7 +196,7 @@ public class SqlFileInitializer {
         }
         for(String sqlStatement : sqlStatementList){
             try{
-                boolean success = SqlExecutor.executeUpdate(sqlStatement, null);
+                boolean success = SqlExecutor.executeUpdate(sqlStatement);
                 if(success){
                     log.info("SQL执行完成: {} ...", S.substring(sqlStatement, 0, 60));
                 }
