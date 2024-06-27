@@ -148,7 +148,16 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		PropInfo propInfo = BindingCacheManager.getPropInfoByClass(getEntityClass());
 		String fetchCol = propInfo.getColumnByField(BeanUtils.convertSFunctionToFieldName(getterFn));
 		String conditionCol = propInfo.getColumnByField(fieldKey);
-		QueryWrapper<T> queryWrapper = new QueryWrapper<T>().select(fetchCol).eq(conditionCol, fieldVal);
+		QueryWrapper<T> queryWrapper = new QueryWrapper<T>().select(fetchCol);
+		if((fieldVal instanceof Collection)){
+			queryWrapper.in(conditionCol, (Collection<?>) fieldVal);
+		}
+		else if(fieldVal.getClass().isArray()){
+			queryWrapper.in(conditionCol, (Object[]) fieldVal);
+		}
+		else {
+			queryWrapper.eq(conditionCol, fieldVal);
+		}
 		return getValuesOfField(queryWrapper, getterFn);
 	}
 

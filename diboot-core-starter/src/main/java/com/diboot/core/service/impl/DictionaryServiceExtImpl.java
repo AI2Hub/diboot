@@ -61,6 +61,15 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
      * 数据变动前先清空缓存
      * @param entity
      */
+    protected void beforeCreate(Dictionary entity) {
+        dictionaryCacheManager.removeCachedItems(entity.getType());
+        log.debug("字典 {}:{} 的缓存已被移除", entity.getItemName(), entity.getType());
+    }
+
+    /**
+     * 数据变动前先清空缓存
+     * @param entity
+     */
     protected void beforeUpdate(Dictionary entity) {
         dictionaryCacheManager.removeCachedItems(entity.getType());
         log.debug("字典 {}:{} 的缓存已被移除", entity.getItemName(), entity.getType());
@@ -87,7 +96,7 @@ public class DictionaryServiceExtImpl extends BaseServiceImpl<DictionaryMapper, 
      * @param type
      * @return
      */
-    protected List<Dictionary> getEntityListByType(String type) {
+    public List<Dictionary> getEntityListByType(String type) {
         List<Dictionary> dictList = dictionaryCacheManager.getCachedItems(type);
         if(dictList == null) {
             // 构建查询条件
