@@ -22,6 +22,7 @@ import com.diboot.core.data.access.DataAccessAnnoCache;
 import com.diboot.core.data.access.DataScopeManager;
 import com.diboot.core.exception.InvalidUsageException;
 import com.diboot.core.holder.ThreadLocalHolder;
+import com.diboot.core.mapper.DynamicQueryMapper;
 import com.diboot.core.util.ContextHolder;
 import com.diboot.core.util.S;
 import net.sf.jsqlparser.JSQLParserException;
@@ -61,13 +62,14 @@ public class DataAccessControlHandler implements MultiDataPermissionHandler {
             return null;
         }
         // 如果忽略此来源
-        if(ThreadLocalHolder.ignoreInterceptor()) {
+        if (ThreadLocalHolder.ignoreInterceptor()) {
             return null;
         }
         TableInfo tableInfo = TableInfoHelper.getTableInfo(S.removeEsc(table.getName()));
         // 无权限检查点注解，不处理
         if (tableInfo == null || tableInfo.getEntityType() == null || !DataAccessAnnoCache.hasDataAccessCheckpoint(tableInfo.getEntityType())) {
-            noCheckpointCache.add(mappedStatementId);
+            if (!S.substringBeforeLast(mappedStatementId, ".").equals(DynamicQueryMapper.class.getName()))
+                noCheckpointCache.add(mappedStatementId);
             return null;
         }
         return buildDataAccessExpression(table, tableInfo.getEntityType());
