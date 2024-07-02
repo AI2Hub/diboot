@@ -187,4 +187,16 @@ public class BaseConfig {
 		return dataCenterId;
 	}
 
+	/***
+	 * 默认页数
+	 * @return
+	 */
+	private static Boolean enableI18n = null;
+	public static boolean isEnabledI18n() {
+		if(enableI18n == null){
+			enableI18n = PropertiesUtils.getBoolean("diboot.i18n");
+		}
+		return enableI18n;
+	}
+
 }
