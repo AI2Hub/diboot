@@ -21,7 +21,7 @@ const en: Locale = {
     system: 'System User',
     modifyPassword: 'Change Password',
     onJob: 'Active',
-    dimission: 'Invalid',
+    dimission: 'Inactive',
     partTimeJob: 'Part-Time',
     rules: {
       email: 'Please enter a valid email address.',
