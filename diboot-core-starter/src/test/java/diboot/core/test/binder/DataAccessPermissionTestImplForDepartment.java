@@ -16,10 +16,12 @@
 package diboot.core.test.binder;
 
 import com.diboot.core.data.access.DataScopeManager;
+import diboot.core.test.binder.entity.Department;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,22 +30,22 @@ import java.util.List;
  * @version v2.0
  * @date 2020/04/24
  */
-@Component
-public class DataAccessPermissionTestImpl implements DataScopeManager {
+public class DataAccessPermissionTestImplForDepartment implements DataScopeManager {
 
     @Override
     public List<Serializable> getAccessibleIds(String fieldName) {
         // 提取其可访问ids
         List<Serializable> accessibleIds = new ArrayList<>();
         if("parentId".equals(fieldName)){
-            accessibleIds.add(0L);
-            accessibleIds.add(10000L);
-        }
-        else if("regionId".equals(fieldName)){
-            return null;
+            accessibleIds.add(10001L);
         }
         // ... 其他类型字段
         return accessibleIds;
+    }
+
+    @Override
+    public List<Class<?>> getEntityClasses() {
+        return Arrays.asList(Department.class);
     }
 
 }

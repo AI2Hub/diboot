@@ -17,17 +17,14 @@ package com.diboot.starter;
 
 import com.diboot.core.cache.BaseCacheManager;
 import com.diboot.core.cache.DynamicMemoryCacheManager;
-import com.diboot.core.data.access.DataScopeManager;
 import com.diboot.core.util.V;
 import com.diboot.iam.config.Cons;
 import com.diboot.iam.config.IamProperties;
-import com.diboot.iam.data.UserOrgDataAccessScopeManager;
 import com.diboot.iam.init.IamRedisAutoConfig;
 import com.diboot.iam.shiro.IamAuthorizingRealm;
 import com.diboot.iam.shiro.StatelessAccessControlFilter;
 import com.diboot.iam.shiro.StatelessSubjectFactory;
 import jakarta.servlet.Filter;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
@@ -55,7 +52,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
-import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.task.TaskDecorator;
@@ -253,17 +249,6 @@ public class IamAutoConfig {
             put(Cons.CACHE_CAPTCHA, 5);
         }};
         return new DynamicMemoryCacheManager(cacheName2ExpireMap);
-    }
-
-    /**
-     * 数据访问控制实现，默认基于用户和部门过滤
-     *
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public DataScopeManager dataAccessInterface() {
-        return new UserOrgDataAccessScopeManager();
     }
 
     @Configuration

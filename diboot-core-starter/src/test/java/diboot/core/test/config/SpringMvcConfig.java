@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.diboot.core.converter.*;
+import com.diboot.core.data.access.DataScopeManager;
 import com.diboot.core.data.protect.DataEncryptHandler;
 import com.diboot.core.data.protect.DataMaskHandler;
 import com.diboot.core.data.protect.DefaultDataEncryptHandler;
@@ -36,6 +37,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import diboot.core.test.binder.DataAccessPermissionTestImplForDepartment;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -191,9 +193,22 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 数据权限拦截器
-        interceptor.addInnerInterceptor(new DataPermissionInterceptor(new DataAccessControlHandler()));
+        interceptor.addInnerInterceptor(new DataPermissionInterceptor(dataAccessControlHandler()));
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         return interceptor;
     }
 
+    @Bean
+    public DataAccessControlHandler dataAccessControlHandler() {
+        return new DataAccessControlHandler();
+    }
+
+    /**
+     * 通过spring初始化一个实例
+     * @return
+     */
+    @Bean
+    public DataScopeManager dataScopeManager() {
+        return new DataAccessPermissionTestImplForDepartment();
+    }
 }
