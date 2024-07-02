@@ -100,14 +100,14 @@ public class I18nConfigServiceImpl extends BaseServiceImpl<I18nConfigMapper, I18
         }
         LambdaQueryWrapper<I18nConfig> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.select(I18nConfig::getLanguage,I18nConfig::getCode,I18nConfig::getContent);
-        queryWrapper.in(I18nConfig::getCode,codes);
+        queryWrapper.in(I18nConfig::getCode, codes);
         queryWrapper.eq(I18nConfig::getLanguage, language);
-        Map<String, List<I18nConfig>> map = getEntityList(queryWrapper).stream().collect(Collectors.groupingBy(I18nConfig::getLanguage));
-        List<I18nConfig> list = map.get(language);
-        if (list == null && (list = map.get(language)) == null) {
+        List<I18nConfig> i18nConfigList = getEntityList(queryWrapper);
+        if(V.isEmpty(i18nConfigList)){
+            log.warn("未获取到国际化翻译 {}: {}，请检查国际化翻译配置", language, codes);
             return;
         }
-        Map<String, String> i18nMap = list.stream().collect(Collectors.toMap(I18nConfig::getCode, I18nConfig::getContent));
+        Map<String, String> i18nMap = i18nConfigList.stream().collect(Collectors.toMap(I18nConfig::getCode, I18nConfig::getContent));
         // 将查询的数据缓存
         i18nCacheManager.cacheLanguage(language, i18nMap);
         // 将剩下的国际化数据进行赋值
@@ -123,5 +123,47 @@ public class I18nConfigServiceImpl extends BaseServiceImpl<I18nConfigMapper, I18
                 }
             }
         }
+
     }
+
+    @Override
+    public Map<String, String> translate(List<String> i18nKeys) {
+        if(V.isEmpty(i18nKeys)){
+            return Collections.emptyMap();
+        }
+        Map<String, String> i18nTranslateMap = new HashMap<>(i18nKeys.size());
+        Locale locale = LocaleContextHolder.getLocale();
+        String language = locale.toString();
+        // 获取当前语言的缓存数据
+        Map<String, String> languageCached = i18nCacheManager.getLanguageCached(language);
+        Set<String> noCachedCodes = new HashSet<>();
+        for (String i18nCode : i18nKeys) {
+            if (V.notEmpty(languageCached) && V.notEmpty(languageCached.get(i18nCode))) {
+                i18nTranslateMap.put(i18nCode, languageCached.get(i18nCode));
+                log.trace("从缓存中获取国际化翻译 {}: {} ", language, i18nCode);
+            }
+            else {
+                noCachedCodes.add(i18nCode);
+            }
+        }
+        if(V.isEmpty(noCachedCodes)){
+            return i18nTranslateMap;
+        }
+        LambdaQueryWrapper<I18nConfig> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.select(I18nConfig::getLanguage, I18nConfig::getCode, I18nConfig::getContent);
+        queryWrapper.eq(I18nConfig::getLanguage, language);
+        queryWrapper.in(I18nConfig::getCode, noCachedCodes);
+        List<I18nConfig> i18nConfigList = getEntityList(queryWrapper);
+        if(V.isEmpty(i18nConfigList)){
+            log.warn("未获取到国际化翻译 {}: {}，请检查国际化翻译配置", language, noCachedCodes);
+            return i18nTranslateMap;
+        }
+        Map<String, String> i18nMap = i18nConfigList.stream().collect(Collectors.toMap(I18nConfig::getCode, I18nConfig::getContent));
+        // 将查询的数据缓存
+        i18nCacheManager.cacheLanguage(language, i18nMap);
+        i18nTranslateMap.putAll(i18nMap);
+        // 返回全部结果
+        return i18nTranslateMap;
+    }
+
 }
