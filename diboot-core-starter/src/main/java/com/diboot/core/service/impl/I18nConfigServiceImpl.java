@@ -19,7 +19,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.diboot.core.cache.DictionaryCacheManager;
 import com.diboot.core.cache.I18nCacheManager;
 import com.diboot.core.entity.I18nConfig;
 import com.diboot.core.mapper.I18nConfigMapper;
@@ -34,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,6 +52,61 @@ public class I18nConfigServiceImpl extends BaseServiceImpl<I18nConfigMapper, I18
 
     @Autowired
     private I18nCacheManager i18nCacheManager;
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean createOrUpdateEntities(Collection entityList) {
+        if(V.isEmpty(entityList)){
+            return false;
+        }
+        // 获取当前语言的缓存数据
+        for(Object entity : entityList){
+            I18nConfig i18nConfig = (I18nConfig)entity;
+            Map<String, String> languageCached = i18nCacheManager.getLanguageCached(i18nConfig.getLanguage());
+            if(V.notEmpty(languageCached)){
+                languageCached.remove(i18nConfig.getCode());
+                log.debug("I18N {}:{} 的缓存已被移除", i18nConfig.getLanguage(), i18nConfig.getCode());
+            }
+        }
+        // 批量插入
+        return super.createOrUpdateEntities(entityList);
+    }
+
+    /**
+     * 数据变动前先清空缓存
+     * @param entity
+     */
+    protected void beforeCreate(I18nConfig entity) {
+        // 获取当前语言的缓存数据
+        Map<String, String> languageCached = i18nCacheManager.getLanguageCached(entity.getLanguage());
+        if(V.notEmpty(languageCached)){
+            languageCached.remove(entity.getCode());
+            log.debug("I18N {}:{} 的缓存已被移除", entity.getLanguage(), entity.getCode());
+        }
+    }
+
+    /**
+     * 数据变动前先清空缓存
+     * @param entity
+     */
+    protected void beforeUpdate(I18nConfig entity) {
+        beforeCreate(entity);
+    }
+
+    /**
+     * 数据变动前先清空缓存
+     * @param fieldKey
+     * @param fieldVal
+     */
+    protected void beforeDelete(String fieldKey, Object fieldVal) {
+        QueryWrapper<I18nConfig> queryWrapper = buildQueryWrapperByFieldValue(fieldKey, fieldVal);
+        queryWrapper.lambda().select(I18nConfig::getLanguage, I18nConfig::getCode);
+        List<I18nConfig> i18nConfigList = getEntityList(queryWrapper);
+        if(V.isEmpty(i18nConfigList)){
+            return;
+        }
+        i18nConfigList.forEach(this::beforeCreate);
+    }
 
     @Override
     public Collection<List<I18nConfigVO>> getI18nList(I18nConfig entity, Pagination pagination) {
