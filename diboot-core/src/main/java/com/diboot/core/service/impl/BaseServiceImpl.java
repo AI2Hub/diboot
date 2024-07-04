@@ -145,10 +145,23 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 
 	@Override
 	public <FT> List<FT> getValuesOfField(String fieldKey, Object fieldVal, SFunction<T, FT> getterFn) {
+		QueryWrapper<T> queryWrapper = buildQueryWrapperByFieldValue(fieldKey, fieldVal);
 		PropInfo propInfo = BindingCacheManager.getPropInfoByClass(getEntityClass());
 		String fetchCol = propInfo.getColumnByField(BeanUtils.convertSFunctionToFieldName(getterFn));
+		queryWrapper.select(fetchCol);
+		return getValuesOfField(queryWrapper, getterFn);
+	}
+
+	/**
+	 * 基于给定的字段和值，构建 QueryWrapper
+	 * @param fieldKey
+	 * @param fieldVal
+	 * @return
+	 */
+	protected QueryWrapper<T> buildQueryWrapperByFieldValue(String fieldKey, Object fieldVal){
+		PropInfo propInfo = BindingCacheManager.getPropInfoByClass(getEntityClass());
 		String conditionCol = propInfo.getColumnByField(fieldKey);
-		QueryWrapper<T> queryWrapper = new QueryWrapper<T>().select(fetchCol);
+		QueryWrapper<T> queryWrapper = new QueryWrapper<T>();
 		if((fieldVal instanceof Collection)){
 			queryWrapper.in(conditionCol, (Collection<?>) fieldVal);
 		}
@@ -158,7 +171,7 @@ public class BaseServiceImpl<M extends BaseCrudMapper<T>, T> extends ServiceImpl
 		else {
 			queryWrapper.eq(conditionCol, fieldVal);
 		}
-		return getValuesOfField(queryWrapper, getterFn);
+		return queryWrapper;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
