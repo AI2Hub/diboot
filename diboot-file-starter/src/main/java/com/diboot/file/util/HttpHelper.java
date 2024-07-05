@@ -60,7 +60,6 @@ public class HttpHelper {
      * 文件扩展名-ContentType的对应关系
      */
     private static final Map<String, String> EXT_CONTENT_TYPE_MAP = new HashMap(){{
-        put("", "text/plain"); //无后缀，默认为文本
         put("xls", "application/x-msdownload");
         put("xlsx", "application/x-msdownload");
         put("doc", "application/x-msdownload");
